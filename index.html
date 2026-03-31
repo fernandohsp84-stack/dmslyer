@@ -1,938 +1,739 @@
-import { useState, useEffect, useRef, useCallback } from “react”;
+<!DOCTYPE html>
 
-// ─── PALETTE & THEME ──────────────────────────────────────
-const C = {
-bg:      “#0d0d1f”,
-panel:   “#16162e”,
-card:    “#1e1e3c”,
-border:  “#2e2e5a”,
-gold:    “#f5c842”,
-goldDim: “#a88a1a”,
-crimson: “#c0183a”,
-ember:   “#e84e0f”,
-jade:    “#1db87a”,
-water:   “#3a8fd4”,
-text:    “#f0e6cc”,
-muted:   “#7a7090”,
-white:   “#fffef0”,
-};
-
-// ─── CHARACTERS (chibi SVG inline art) ───────────────────
-const CHARS = [
-{ id:“tanjiro”,  name:“Tanjiro”,   full:“Tanjiro Kamado”,    color:”#3a8fd4”, bg:”#0d2a4a”,
-breath:“Água · Sol”, rank:“Caçador”,
-svg: <TanjiroSVG /> },
-{ id:“nezuko”,   name:“Nezuko”,    full:“Nezuko Kamado”,     color:”#e06fa0”, bg:”#3a0d22”,
-breath:“Sangue Demoníaco”, rank:“Demônio”,
-svg: <NezukoSVG /> },
-{ id:“zenitsu”,  name:“Zenitsu”,   full:“Zenitsu Agatsuma”,  color:”#f5c842”, bg:”#3a2e00”,
-breath:“Trovão”, rank:“Caçador”,
-svg: <ZenitsuSVG /> },
-{ id:“inosuke”,  name:“Inosuke”,   full:“Inosuke Hashibira”, color:”#6dcf7a”, bg:”#0a2a10”,
-breath:“Besta”, rank:“Feroz”,
-svg: <InosukeSVG /> },
-{ id:“rengoku”,  name:“Rengoku”,   full:“Kyojuro Rengoku”,   color:”#e84e0f”, bg:”#3a0e00”,
-breath:“Chamas”, rank:“Hashira 🔥”,
-svg: <RengokuSVG /> },
-{ id:“giyuu”,    name:“Giyu”,      full:“Giyu Tomioka”,      color:”#3a8fd4”, bg:”#0a1a2e”,
-breath:“Água”, rank:“Hashira 💧”,
-svg: <GiyuuSVG /> },
-{ id:“shinobu”,  name:“Shinobu”,   full:“Shinobu Kocho”,     color:”#c8a0f0”, bg:”#1e0a3a”,
-breath:“Insetos”, rank:“Hashira 🦋”,
-svg: <ShinobuSVG /> },
-{ id:“muichiro”, name:“Muichiro”,  full:“Muichiro Tokito”,   color:”#90d4d4”, bg:”#0a1e22”,
-breath:“Névoa”, rank:“Hashira 🌫️”,
-svg: <MuichiroSVG /> },
-];
-
-// ─── CHIBI SVG CHARACTERS ────────────────────────────────
-function ChibiBase({ skin=”#f5d5aa”, hair=”#2a1a0a”, hairColor=”#2a1a0a”, outfit=”#1a3a5a”, accent=”#f5c842”, extras=null, eyeColor=”#4a8fd4” }) {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-{/* body */}
-<ellipse cx="40" cy="82" rx="22" ry="18" fill={outfit}/>
-{/* neck */}
-<rect x="36" y="62" width="8" height="8" rx="2" fill={skin}/>
-{/* head */}
-<ellipse cx="40" cy="50" rx="26" ry="24" fill={skin}/>
-{/* hair back */}
-<ellipse cx="40" cy="40" rx="26" ry="20" fill={hairColor}/>
-{/* face details */}
-{/* eyes */}
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill={eyeColor}/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill={eyeColor}/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-{/* nose */}
-<circle cx=“40” cy=“56” r=“1.5” fill={skin} style={{filter:“brightness(0.85)”}}/>
-{/* mouth */}
-<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-{/* cheeks */}
-<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
-<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
-{extras}
-</svg>
-);
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Demon Slayer Quiz · 鬼滅の刃</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07071a;--panel:#10102a;--card:#181835;
+  --gold:#f8c832;--gold2:#a87e10;--crimson:#c8173a;--ember:#e85a0a;
+  --jade:#18c87a;--water:#2a8fdc;--text:#f0e8d0;--muted:#6a6285;--white:#fffef2;
+  --shadow:0 8px 40px rgba(0,0,0,.7);
 }
-
-function TanjiroSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a5a3a"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-<ellipse cx="40" cy="38" rx="26" ry="18" fill="#2a1a0a"/>
-{/* scar */}
-<ellipse cx="32" cy="44" rx="5" ry="4" fill="#c0183a" opacity="0.7"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#3a6a9a"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#3a6a9a"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="40" cy="56" r="1.5" fill="#e8c090"/>
-<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
-<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
-{/* hanafuda earring */}
-<circle cx="66" cy="52" r="4" fill="#e8d0a0" stroke="#c0a060" strokeWidth="1"/>
-<circle cx="66" cy="52" r="2" fill="#c0183a"/>
-{/* sword hilt */}
-<rect x="54" y="68" width="6" height="18" rx="2" fill="#2a6a4a" stroke="#1a4a2a" strokeWidth="0.5"/>
-</svg>
-);
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% -10%,rgba(200,23,58,.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 110%,rgba(232,90,10,.12) 0%,transparent 55%);
 }
-
-function NezukoSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#c0183a"/>
-{/* kimono pattern */}
-<ellipse cx="40" cy="82" rx="16" ry="12" fill="#e8a0b8" opacity="0.4"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-<ellipse cx="40" cy="36" rx="27" ry="20" fill="#1a0a1a"/>
-{/* hair bow */}
-<path d="M52 35 Q58 28 65 32 Q58 36 52 35" fill="#e06fa0"/>
-<path d="M52 35 Q58 42 65 38 Q58 36 52 35" fill="#e06fa0"/>
-<circle cx="57" cy="35" r="3" fill="#f090b0"/>
-{/* bamboo muzzle */}
-<rect x="28" y="56" width="24" height="9" rx="4" fill="#5a8a3a" stroke="#3a6a1a" strokeWidth="1"/>
-<line x1="36" y1="56" x2="36" y2="65" stroke="#3a6a1a" strokeWidth="0.8"/>
-<line x1="44" y1="56" x2="44" y2="65" stroke="#3a6a1a" strokeWidth="0.8"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#d060a0"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#d060a0"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<ellipse cx="27" cy="54" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-<ellipse cx="53" cy="54" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-</svg>
-);
+#cv{position:fixed;inset:0;pointer-events:none;z-index:999;width:100%;height:100%}
+.ptcl{position:fixed;pointer-events:none;z-index:0;inset:0;overflow:hidden}
+.ptcl span{position:absolute;font-size:1rem;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0}8%{opacity:.5}90%{opacity:.35}100%{transform:translateY(-60px) rotate(540deg);opacity:0}}
+.scr{display:none;min-height:100vh;align-items:center;justify-content:center;padding:16px;position:relative;z-index:1;flex-direction:column}
+.scr.on{display:flex}
+.card{
+  background:linear-gradient(145deg,rgba(30,30,64,.97),rgba(16,16,42,.98));
+  border:1px solid rgba(248,200,50,.16);border-radius:24px;
+  padding:28px 22px;width:100%;max-width:660px;position:relative;
+  box-shadow:var(--shadow),inset 0 1px 0 rgba(248,200,50,.12);overflow:hidden;
 }
+.card::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;
+  background:linear-gradient(180deg,var(--gold),var(--crimson),var(--gold));
+  border-radius:24px 0 0 24px;}
+.card-sm{max-width:460px}
+.logo-title{font-family:'Cinzel',serif;font-size:clamp(1.7rem,6vw,3rem);font-weight:900;color:var(--gold);line-height:1.15;letter-spacing:2px;text-align:center;text-shadow:0 0 40px rgba(248,200,50,.55),0 2px 6px rgba(0,0,0,.9)}
+.logo-jp{font-family:'Noto Serif JP',serif;font-size:.85rem;color:var(--crimson);letter-spacing:10px;text-align:center;margin-top:4px}
+.logo-icon{font-size:3.2rem;display:block;text-align:center;margin-bottom:8px;animation:sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 14px rgba(232,90,10,.7))}
+@keyframes sway{from{transform:rotate(-8deg) scale(.97)}to{transform:rotate(8deg) scale(1.04)}}
+.divl{height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--crimson),var(--gold),transparent);margin:12px 0}
+.divd{width:10px;height:10px;background:var(--gold);transform:rotate(45deg);margin:-6px auto 10px}
+.lbl{display:block;font-size:.7rem;color:var(--gold2);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:'Noto Serif JP',serif}
+.inp{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1.5px solid rgba(248,200,50,.28);border-radius:12px;color:var(--white);font-family:'Nunito',sans-serif;font-size:1rem;outline:none;transition:border .2s,background .2s}
+.inp:focus{border-color:var(--gold);background:rgba(248,200,50,.07)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border:none;border-radius:12px;font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.btn:active{transform:scale(.96)}
+.btn-red{background:linear-gradient(135deg,var(--crimson) 0%,#8a0020 100%);color:var(--gold);box-shadow:0 4px 22px rgba(200,23,58,.45);width:100%}
+.btn-red:hover{box-shadow:0 6px 32px rgba(200,23,58,.7);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a0e00;box-shadow:0 4px 18px rgba(248,200,50,.3)}
+.btn-gold:hover{box-shadow:0 6px 28px rgba(248,200,50,.55);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--gold);border:2px solid rgba(248,200,50,.35)}
+.btn-outline:hover{border-color:var(--gold);background:rgba(248,200,50,.08)}
+.btn-sm{padding:8px 18px;font-size:.72rem}
+.char-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+@media(max-width:380px){.char-grid{grid-template-columns:repeat(4,1fr);gap:6px}}
+.char-card{border:2.5px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 6px 8px;text-align:center;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);background:rgba(255,255,255,.03);position:relative;overflow:hidden}
+.char-card:hover{transform:translateY(-5px) scale(1.04);border-color:rgba(248,200,50,.5)}
+.char-card.sel{transform:translateY(-6px) scale(1.06)}
+.char-card.sel::after{content:'✓';position:absolute;top:5px;right:7px;font-size:.7rem;font-weight:900}
+.char-name{font-size:.65rem;font-weight:800;color:var(--white);line-height:1.2;margin-top:5px}
+.char-rank{font-size:.55rem;font-weight:700;margin-top:4px;padding:2px 6px;border-radius:20px;display:inline-block;letter-spacing:.5px}
+.char-svg{display:flex;justify-content:center;align-items:flex-end;height:72px}
+.prog-wrap{margin-bottom:18px}
+.prog-bar{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--crimson),var(--gold));border-radius:4px;transition:width .45s ease;position:relative}
+.prog-fill::after{content:'';position:absolute;right:-1px;top:-3px;width:13px;height:13px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold)}
+.phase-dots{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.pd{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'Cinzel',serif;transition:all .3s;border:2px solid rgba(255,255,255,.12);color:var(--muted)}
+.pd.done{background:var(--gold);border-color:var(--gold);color:#1a0a00}
+.pd.cur{border-color:var(--crimson);color:var(--crimson);box-shadow:0 0 12px rgba(200,23,58,.6);animation:pdp 1.5s infinite}
+@keyframes pdp{0%,100%{box-shadow:0 0 8px rgba(200,23,58,.5)}50%{box-shadow:0 0 20px rgba(200,23,58,.9)}}
+.timer{width:56px;height:56px;border-radius:50%;border:3.5px solid rgba(248,200,50,.25);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);background:rgba(0,0,0,.35);margin:0 auto 16px;transition:all .3s}
+.timer.warn{border-color:var(--crimson);color:var(--crimson);box-shadow:0 0 22px rgba(200,23,58,.6);animation:tshk .5s ease}
+@keyframes tshk{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ph-banner{text-align:center;padding:10px 12px;border-radius:12px;margin-bottom:14px;background:linear-gradient(135deg,rgba(200,23,58,.22),rgba(248,200,50,.09));border:1px solid rgba(248,200,50,.14)}
+.ph-num{font-size:.62rem;color:var(--gold2);letter-spacing:4px;font-family:'Noto Serif JP',serif}
+.ph-title{font-family:'Cinzel',serif;font-size:clamp(.85rem,2.5vw,1.1rem);color:var(--gold);margin-top:3px}
+.q-text{text-align:center;font-family:'Noto Serif JP',serif;font-size:clamp(.95rem,2.8vw,1.13rem);color:var(--white);line-height:1.65;margin-bottom:18px;padding:0 4px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+@media(max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{padding:13px 14px;border:2px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer;text-align:left;transition:all .18s;line-height:1.4;display:flex;align-items:flex-start;gap:9px}
+.opt:hover:not(:disabled){border-color:rgba(248,200,50,.55);background:rgba(248,200,50,.07);transform:translateX(4px)}
+.opt:disabled{cursor:default}
+.opt.correct{border-color:var(--jade)!important;background:rgba(24,200,122,.18)!important;color:#7fffd4!important}
+.opt.wrong{border-color:var(--crimson)!important;background:rgba(200,23,58,.2)!important;color:#ff9090!important}
+.opt-ltr{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(248,200,50,.3);background:rgba(248,200,50,.1);display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--gold2);font-family:'Cinzel',serif;margin-top:1px}
+.feedback{padding:12px 16px;border-radius:12px;margin-bottom:14px;font-family:'Noto Serif JP',serif;font-size:.88rem;line-height:1.55;display:none;animation:slu .3s ease}
+.feedback.show{display:block}
+.fb-ok{background:rgba(24,200,122,.12);border:1px solid rgba(24,200,122,.4);color:#7fffd4}
+.fb-err{background:rgba(200,23,58,.15);border:1px solid rgba(200,23,58,.4);color:#ffaaaa}
+@keyframes slu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.p-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;font-size:.75rem;font-weight:800}
+.bdot{width:7px;height:7px;border-radius:50%;animation:pdp 1.5s infinite}
+.pc-icon{font-size:5rem;margin-bottom:10px;display:block;text-align:center}
+.pc-title{font-family:'Cinzel',serif;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--gold);text-shadow:0 0 28px rgba(248,200,50,.5);margin-bottom:10px;text-align:center}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.chip{padding:5px 14px;border-radius:20px;font-size:.72rem;font-family:'Noto Serif JP',serif;border:1px solid rgba(248,200,50,.3);background:rgba(248,200,50,.08);color:var(--gold)}
+.rank-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;margin-bottom:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+.rank-item.r1{background:rgba(248,200,50,.1);border-color:rgba(248,200,50,.35)}
+.rank-item.r2{background:rgba(192,192,192,.08);border-color:rgba(192,192,192,.25)}
+.rank-item.r3{background:rgba(205,127,50,.08);border-color:rgba(205,127,50,.25)}
+.scroll{max-height:360px;overflow-y:auto;padding-right:4px}
+.scroll::-webkit-scrollbar{width:4px}
+.scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:2px}
+.scroll::-webkit-scrollbar-thumb{background:rgba(248,200,50,.3);border-radius:2px}
+.final-score{font-family:'Cinzel',serif;font-size:3.2rem;color:var(--gold);text-shadow:0 0 30px rgba(248,200,50,.5);line-height:1;margin:10px 0}
+.a1{animation:fdu .5s ease .08s both}.a2{animation:fdu .5s ease .18s both}.a3{animation:fdu .5s ease .3s both}.a4{animation:fdu .5s ease .44s both}.a5{animation:fdu .5s ease .58s both}
+@keyframes fdu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.bst span{position:fixed;pointer-events:none;z-index:1000;font-size:1.4rem;animation:bst .85s forwards}
+@keyframes bst{0%{opacity:1;transform:translate(-50%,-50%) scale(.1)}60%{opacity:1;transform:translate(var(--tx),var(--ty)) scale(1.2)}100%{opacity:0;transform:translate(calc(var(--tx)*1.8),calc(var(--ty)*1.8)) scale(.4)}}
+.tc{text-align:center}.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb8{margin-bottom:8px}.mb16{margin-bottom:16px}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="ptcl" id="ptcl"></div>
 
-function ZenitsuSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#2a1a0a"/>
-{/* yellow haori */}
-<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#e8b820" opacity="0.7"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-{/* blond spiky hair */}
-<ellipse cx="40" cy="36" rx="26" ry="18" fill="#e8c020"/>
-<path d="M14 44 Q10 30 18 28 Q16 38 22 40" fill="#e8c020"/>
-<path d="M66 44 Q70 30 62 28 Q64 38 58 40" fill="#e8c020"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#7a4a20"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#7a4a20"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.5"/>
-<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.5"/>
-{/* lightning bolt */}
-<path d="M68 42 L63 52 L67 52 L62 62" stroke="#f5c842" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-</svg>
-);
-}
+<!-- HOME -->
 
-function InosukeSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a2a1a"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-{/* boar mask */}
-<ellipse cx="40" cy="48" rx="26" ry="24" fill="#f0ece8"/>
-{/* mask details */}
-<ellipse cx="32" cy="48" rx="5" ry="6" fill="#2a1a0a"/>
-<ellipse cx="48" cy="48" rx="5" ry="6" fill="#2a1a0a"/>
-<circle cx="31" cy="48" r="2" fill="#6a9a6a"/>
-<circle cx="47" cy="48" r="2" fill="#6a9a6a"/>
-<circle cx="31" cy="47" r="0.8" fill="white" opacity="0.8"/>
-<circle cx="47" cy="47" r="0.8" fill="white" opacity="0.8"/>
-{/* snout */}
-<ellipse cx="40" cy="56" rx="8" ry="6" fill="#e0c8b8"/>
-<circle cx="37" cy="57" r="2" fill="#c0a090"/>
-<circle cx="43" cy="57" r="2" fill="#c0a090"/>
-{/* tusks */}
-<path d="M24 62 Q18 70 20 76" stroke="#f0ece8" strokeWidth="3" fill="none" strokeLinecap="round"/>
-<path d="M56 62 Q62 70 60 76" stroke="#f0ece8" strokeWidth="3" fill="none" strokeLinecap="round"/>
-{/* hair inside mask */}
-<ellipse cx="40" cy="36" rx="24" ry="14" fill="#1a0a2a"/>
-{/* ears */}
-<ellipse cx="15" cy="46" rx="5" ry="7" fill="#f0ece8"/>
-<ellipse cx="65" cy="46" rx="5" ry="7" fill="#f0ece8"/>
-<ellipse cx="15" cy="46" rx="3" ry="5" fill="#e8a090"/>
-<ellipse cx="65" cy="46" rx="3" ry="5" fill="#e8a090"/>
-</svg>
-);
-}
-
-function RengokuSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a00"/>
-{/* flame haori */}
-<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#e84e0f" opacity="0.8"/>
-<path d="M22 72 Q24 95 40 95 Q56 95 58 72" fill="#f5c842" opacity="0.5"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-{/* flame hair */}
-<ellipse cx="40" cy="36" rx="26" ry="18" fill="#2a1000"/>
-<path d="M30 28 Q28 18 35 14 Q33 24 38 26" fill="#e84e0f"/>
-<path d="M40 26 Q38 14 44 10 Q44 22 48 24" fill="#f5c842"/>
-<path d="M50 28 Q54 18 50 12 Q48 24 44 26" fill="#e84e0f"/>
-<path d="M14 44 Q10 34 16 28 Q15 40 20 42" fill="#e84e0f"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#c05820"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#c05820"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<path d="M35 61 Q40 64 45 61" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-</svg>
-);
-}
-
-function GiyuuSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a0a"/>
-{/* split haori */}
-<path d="M18 70 Q20 98 30 98 L30 70" fill="#c0183a" opacity="0.9"/>
-<path d="M50 70 L50 98 Q60 98 62 70" fill="#1a3a6a" opacity="0.9"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-<ellipse cx="40" cy="36" rx="26" ry="18" fill="#1a1a2a"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#2a5a8a"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#2a5a8a"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-{/* stoic mouth - flat */}
-<line x1="35" y1="61" x2="45" y2="61" stroke="#b07060" strokeWidth="1.5" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.25"/>
-<ellipse cx="53" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.25"/>
-</svg>
-);
-}
-
-function ShinobuSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a2a"/>
-{/* butterfly haori */}
-<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#c8a0f0" opacity="0.6"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-<ellipse cx="40" cy="36" rx="26" ry="18" fill="#1a1a1a"/>
-{/* butterfly hair ornament */}
-<path d="M52 34 Q60 26 66 30 Q60 34 52 34" fill="#c8a0f0"/>
-<path d="M52 34 Q60 42 66 38 Q60 34 52 34" fill="#9060d0"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#8050c0"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#8050c0"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<path d="M35 61 Q40 64 45 61" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
-</svg>
-);
-}
-
-function MuichiroSVG() {
-return (
-<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
-<ellipse cx="40" cy="82" rx="22" ry="18" fill="#0a1a1a"/>
-<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#4ab0b0" opacity="0.5"/>
-<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
-<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
-{/* long teal hair */}
-<ellipse cx="40" cy="36" rx="26" ry="18" fill="#70c0a0"/>
-<rect x="56" y="52" width="6" height="28" rx="3" fill="#70c0a0"/>
-<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
-<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#50a0a0"/>
-<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#50a0a0"/>
-<circle cx="31" cy="50" r="1.5" fill="#111"/>
-<circle cx="47" cy="50" r="1.5" fill="#111"/>
-<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
-<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
-<line x1="35" y1="61" x2="45" y2="61" stroke="#b07060" strokeWidth="1.5" strokeLinecap="round"/>
-<ellipse cx="27" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.2"/>
-<ellipse cx="53" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.2"/>
-</svg>
-);
-}
-
-// ─── PHASES DATA ──────────────────────────────────────────
-const PHASES = [
-{ num:1, title:“Primeiros Passos”, level:“NOVATO”, emoji:“🌱”, minCorrect:3,
-questions:[
-{ q:“Qual é o nome completo do protagonista de Demon Slayer?”, opts:[“Tanjiro Kamado”,“Zenitsu Agatsuma”,“Inosuke Hashibira”,“Giyu Tomioka”], ans:0, tip:“Ele carrega a caixinha da irmã nas costas!” },
-{ q:“O que aconteceu com a família de Tanjiro no início da história?”, opts:[“Mudaram de cidade”,“Foram atacados por um demônio”,“Viajaram para a capital”,“Adoeceram de gripe”], ans:1, tip:“Muzan Kibutsuji é o culpado indireto.” },
-{ q:“Quem é a irmã de Tanjiro que se torna demônio?”, opts:[“Aoi”,“Kanao”,“Nezuko”,“Makomo”], ans:2, tip:“Ela viaja numa caixinha de bambu.” },
-{ q:“Qual organização combate os demônios em Demon Slayer?”, opts:[“Anbu”,“Corpo de Caçadores de Demônios”,“Liga dos Vilões”,“Força Oculta”], ans:1, tip:“Em japonês: Kisatsutai.” },
-{ q:‘O nome japonês de Demon Slayer é “Kimetsu no ___”:’, opts:[“Yume”,“Yaiba”,“Yasha”,“Yoroi”], ans:1, tip:“Significa Lâmina em japonês.” },
-]},
-{ num:2, title:“Sopro Inicial”, level:“APRENDIZ”, emoji:“💧”, minCorrect:3,
-questions:[
-{ q:“Qual Respiração Tanjiro aprende com Sakonji Urokodaki?”, opts:[“Respiração do Fogo”,“Respiração da Água”,“Respiração do Trovão”,“Respiração do Vento”], ans:1, tip:“Flui como a água corrente!” },
-{ q:“Quantas Formas tem a Respiração da Água que Tanjiro aprende?”, opts:[“6”,“8”,“10”,“12”], ans:2, tip:“Dez técnicas aquáticas diferentes.” },
-{ q:“Quem treinou Tanjiro nas artes de Caçador de Demônios?”, opts:[“Rengoku”,“Giyu Tomioka”,“Sakonji Urokodaki”,“Kanae Kocho”], ans:2, tip:“Ele usa uma máscara de raposa tengu.” },
-{ q:“Que animal Inosuke tem como máscara?”, opts:[“Urso”,“Javali”,“Lobo”,“Tigre”], ans:1, tip:“Ele foi criado por esse animal na floresta.” },
-{ q:“Qual é o símbolo na testa de Tanjiro?”, opts:[“Lua”,“Sol”,“Cicatriz de nascença”,“Flor de cerejeira”], ans:2, tip:“Virou uma marca do Caçador com o tempo.” },
-]},
-{ num:3, title:“Os Hashira”, level:“INTERMEDIÁRIO”, emoji:“⚔️”, minCorrect:3,
-questions:[
-{ q:“Quantos Hashira (Pilares) existem no Corpo de Caçadores?”, opts:[“7”,“8”,“9”,“10”], ans:2, tip:“Nove respirações, nove pilares.” },
-{ q:“Giyu Tomioka é o Pilar de qual Respiração?”, opts:[“Fogo”,“Pedra”,“Água”,“Névoa”], ans:2, tip:“Ele ensinou a técnica a Tanjiro.” },
-{ q:“Por que Shinobu não pode decepar cabeças de demônios?”, opts:[“É proibido”,“Falta força física”,“Espada curta demais”,“Não quer”], ans:1, tip:“Por isso ela usa veneno em vez de corte.” },
-{ q:“Kyojuro Rengoku é o Pilar de qual Respiração?”, opts:[“Sol”,“Trovão”,“Chamas”,“Pedra”], ans:2, tip:“SET YOUR HEART ABLAZE!” },
-{ q:“Tengen Uzui usa duas enormes katanas encurvadas. Qual sua Respiração?”, opts:[“Dança”,“Som”,“Ritmo”,“Música”], ans:1, tip:“Ele é extravagante por natureza!” },
-]},
-{ num:4, title:“Os Doze Luas”, level:“INTERMEDIÁRIO+”, emoji:“🌙”, minCorrect:3,
-questions:[
-{ q:“Como se chamam os 12 demônios mais poderosos a serviço de Muzan?”, opts:[“Guardiões da Noite”,“Doze Luas Demoníacas”,“Legião das Trevas”,“Oni Supremos”], ans:1, tip:“Em japonês: Jūnikizuki.” },
-{ q:“Quem é o demônio criador de todos os outros demônios?”, opts:[“Kokushibo”,“Doma”,“Akaza”,“Muzan Kibutsuji”], ans:3, tip:“Ele existe há mais de 1000 anos.” },
-{ q:“Akaza é qual número entre as Luas Superiores?”, opts:[“1”,“2”,“3”,“4”], ans:2, tip:“Ele derrotou Rengoku no Trem Infinito.” },
-{ q:“O que os demônios precisam evitar para não morrer?”, opts:[“Fogo e água”,“Sal e alho”,“Luz do sol e decapitação”,“Orações e cruzes”], ans:2, tip:“A luz solar os destrói em segundos.” },
-{ q:“Os Doze Luas são divididos em Luas Superiores e Luas ___:”, opts:[“Inferiores”,“Menores”,“Fracas”,“Comuns”], ans:0, tip:“Kizuki Superior e Kizuki Inferior.” },
-]},
-{ num:5, title:“O Trem Infinito”, level:“MÉDIO”, emoji:“🚂”, minCorrect:4,
-questions:[
-{ q:“No arco do Trem Infinito, qual Hashira acompanha o grupo?”, opts:[“Giyu”,“Shinobu”,“Rengoku”,“Tengen”], ans:2, tip:“O Pilar das Chamas enfrenta Akaza.” },
-{ q:“Qual é o poder de Enmu no arco do Trem Infinito?”, opts:[“Controlar o fogo”,“Criar sonhos e manipular o sono”,“Absorver almas”,“Regeneração infinita”], ans:1, tip:“Ele adormece os passageiros do trem.” },
-{ q:“Qual amigo de Tanjiro fica dormindo involuntariamente no trem?”, opts:[“Inosuke”,“Zenitsu”,“Nezuko”,“Giyu”], ans:1, tip:“Ele ronca bastante!” },
-{ q:“No combate final do trem, quem Rengoku enfrenta?”, opts:[“Muzan”,“Doma”,“Akaza”,“Kokushibo”], ans:2, tip:“Luna Superior Três.” },
-{ q:“O que caracteriza a Marca do Caçador que surge em alguns personagens?”, opts:[“Uma tatuagem escolhida”,“Marca que surge em batalha extrema”,“Selo mágico de Urokodaki”,“Um emblema do Corpo”], ans:1, tip:“Tanjiro e Rengoku apresentam sinais disso.” },
-]},
-{ num:6, title:“Distrito do Entretenimento”, level:“AVANÇADO”, emoji:“🎭”, minCorrect:4,
-questions:[
-{ q:“Qual Hashira lidera a missão no Distrito do Entretenimento?”, opts:[“Mitsuri”,“Tengen Uzui”,“Sanemi”,“Muichiro”], ans:1, tip:“Flamboyant ninja com três esposas!” },
-{ q:“Quais demônios-irmãos os heróis enfrentam no Distrito?”, opts:[“Gyutaro e Daki”,“Akaza e Doma”,“Rui e sua família”,“Kokushibo e Doma”], ans:0, tip:“Luas Superiores Seis, em um só par.” },
-{ q:“Zenitsu domina quantas formas da Respiração do Trovão?”, opts:[“1”,“3”,“5”,“7”], ans:0, tip:“Ele usa a Primeira Forma: Trovão Furioso.” },
-{ q:“Qual é o nome da Primeira Forma da Respiração do Trovão de Zenitsu?”, opts:[“Raio Infinito”,“Trovão Furioso (Thunderclap and Flash)”,“Tempestade Elétrica”,“Descarga Divina”], ans:1, tip:“É quase instantânea como um raio.” },
-{ q:“Como o estilo de luta de Inosuke é único em relação ao seu corpo?”, opts:[“Usa dois estilos ao mesmo tempo”,“Move órgãos internos e distorce a percepção inimiga”,“Luta sem ver”,“Copia os inimigos”], ans:1, tip:“Ele treinou os músculos do tórax para isso.” },
-]},
-{ num:7, title:“Vila dos Ferreiros”, level:“EXPERIENTE”, emoji:“⚒️”, minCorrect:4,
-questions:[
-{ q:“Como se chama o jovem ferreiro amigo de Tanjiro na Vila dos Ferreiros?”, opts:[“Haganezuka”,“Kotetsu”,“Hotaru”,“Kanamori”], ans:1, tip:“Ele usa máscara e treina Tanjiro com o boneco.” },
-{ q:“Qual Lua Superior aparece na Vila dos Ferreiros para roubar o Espelho do Sangue?”, opts:[“Hantengu”,“Gyokko”,“Doma”,“Akaza”], ans:1, tip:“Ele guarda criaturas dentro de potes.” },
-{ q:“Muichiro Tokito desperta sua Marca do Caçador ao lutar contra quem?”, opts:[“Hantengu”,“Gyokko”,“Kokushibo”,“Akaza”], ans:1, tip:“O Pilar da Névoa com apenas 14 anos.” },
-{ q:“O Boneco de Treinamento Yoriichi Type Zero representa qual lendário Caçador?”, opts:[“Urokodaki”,“Yoriichi Tsugikuni”,“Kokushibo”,“Um Hashira sem nome”], ans:1, tip:“O maior espadachim da história.” },
-{ q:“Qual é o material especial das espadas dos Caçadores que permite matar demônios?”, opts:[“Ouro purificado”,“Aço solar (Nichirin)”,“Prata sagrada”,“Pedra do trovão”], ans:1, tip:“Absorve a luz solar durante a forja.” },
-]},
-{ num:8, title:“Castelo da Lua Infinita”, level:“ÉLITE”, emoji:“🌕”, minCorrect:4,
-questions:[
-{ q:“Quem é Yoriichi Tsugikuni?”, opts:[“O primeiro Hashira”,“O criador da Respiração Total do Sol e o mais poderoso Caçador”,“O irmão de Muzan”,“O mestre de Urokodaki”], ans:1, tip:“Ele quase matou Muzan sozinho.” },
-{ q:“Qual é a relação de Kokushibo com Yoriichi?”, opts:[“Eram melhores amigos”,“São gêmeos — Kokushibo era o irmão de Yoriichi”,“Eram inimigos desde crianças”,“Sem relação”], ans:1, tip:“Michikatsu Tsugikuni — o irmão invejoso.” },
-{ q:“A Respiração Total do Sol é a origem de todas as outras Respirações?”, opts:[“Verdadeiro”,“Falso”,“Apenas metade das Respirações”,“Só da Respiração de Água”], ans:0, tip:“Todas derivam da Respiração do Sol.” },
-{ q:“O que é o Castelo do Labirinto Demoníaco de Muzan?”, opts:[“Fortaleza nas montanhas”,“Dimensão ilusória controlada por Nakime”,“Uma caverna subterrânea”,“Um templo amaldiçoado”], ans:1, tip:“Nakime controla o espaço com seu biwa.” },
-{ q:“Qual habilidade especial Nezuko desenvolve única entre todos os demônios?”, opts:[“Voar”,“Resistência à luz solar”,“Telepatia”,“Controlar outros demônios”], ans:1, tip:“Nenhum outro demônio conseguiu isso.” },
-]},
-{ num:9, title:“Batalha Final”, level:“MESTRE”, emoji:“💀”, minCorrect:4,
-questions:[
-{ q:“Qual é a fraqueza crucial de Muzan que os Caçadores exploram no clímax?”, opts:[“Espadas de ouro”,“O amanhecer — ele não pode ficar no sol”,“Água benta”,“Chamas do Pilar do Fogo”], ans:1, tip:“Eles precisam mantê-lo lutando até o amanhecer.” },
-{ q:“A Dança do Deus do Fogo é a técnica ancestral de qual Respiração?”, opts:[“Respiração das Chamas”,“Respiração do Sol”,“Respiração da Água”,“Respiração da Lua”], ans:1, tip:“Tanjiro a usa imitando a dança do pai.” },
-{ q:“O que acontece com Muzan ao ser exposto à luz do sol?”, opts:[“Foge para outro reino”,“É destruído completamente”,“Vira humano”,“Hiberna por séculos”], ans:1, tip:“Fim de mais de mil anos de existência.” },
-{ q:“Qual personagem injeta veneno no corpo de Muzan para diminuir sua regeneração?”, opts:[“Kanao”,“Shinobu (veneno guardado em seu corpo)”,“Aoi”,“Doma após ser derrotado”], ans:1, tip:“Shinobu planejou isso muito antes de morrer.” },
-{ q:“Qual herói fica temporariamente transformado por Muzan antes de ser curado?”, opts:[“Zenitsu”,“Inosuke”,“Tanjiro”,“Giyu”], ans:2, tip:“Muzan tentou fazê-lo seu sucessor.” },
-]},
-{ num:10, title:“Lâmina do Caçador Supremo”, level:“LENDA ☀️”, emoji:“☀️”, minCorrect:5,
-questions:[
-{ q:“Como termina a história de Tanjiro Kamado no final do mangá?”, opts:[“Torna-se novo líder do Corpo”,“Morre heroicamente”,“Vira demônio temporariamente e depois é curado, vivendo vida normal”,“Desaparece misteriosamente”], ans:2, tip:“Muzan tentou transformá-lo em seu sucessor.” },
-{ q:“O epílogo de Demon Slayer mostra os descendentes. Em qual época se passa?”, opts:[“50 anos depois”,“100 anos depois”,“Era moderna contemporânea”,“500 anos depois”], ans:2, tip:“Há ônibus e smartphones no epílogo.” },
-{ q:“Douma, Luna Superior Dois, é derrotado por qual dupla?”, opts:[“Tanjiro e Giyu”,“Kanao e Inosuke”,“Zenitsu e Tengen”,“Sanemi e Muichiro”], ans:1, tip:“Vingança por Shinobu Kocho.” },
-{ q:“Qual é a moral central que Tanjiro carrega sobre o valor da vida?”, opts:[“Odeie os demônios sem piedade”,“Mesmo demônios um dia foram humanos e merecem alguma compaixão”,“A força é o que importa”,“Os fortes sobrevivem”], ans:1, tip:“Ele chora pelos demônios que mata, sabendo sua história.” },
-{ q:“Quem é Tamayo e qual sua importância para a derrota de Muzan?”, opts:[“Uma humana que descobriu o veneno”,“Demônia médica que trabalhou anos num antídoto para reverter a demonização”,“A mãe de Tanjiro reencarnada”,“Uma Hashira aposentada”], ans:1, tip:“Ela e Yushiro são demônios aliados dos Caçadores.” },
-{ q:”[BÔNUS] Qual é o nome completo das 13 Formas de Tanjiro?”, opts:[“Respiração do Sol – Sequência Celestial”,“Respiração Hinokami Kagura – Dança Circular”,“Respiração Total do Sol – Todas as 13 Formas em Ciclo Contínuo”,“Respiração Divina do Fogo”], ans:2, tip:“A décima terceira forma conecta todas as anteriores.” },
-]},
-];
-
-function getRank(score) {
-if (score >= 13000) return { name:“Respiração Total do Sol”, label:“LENDA SUPREMA”, color:”#FF8C00”, bg:“rgba(255,140,0,0.2)” };
-if (score >= 9500)  return { name:“Hashira”, label:“PILAR”, color:”#f5c842”, bg:“rgba(245,200,66,0.15)” };
-if (score >= 6500)  return { name:“Caçador Élite”, label:“ÉLITE”, color:”#c8a0f0”, bg:“rgba(200,160,240,0.15)” };
-if (score >= 4000)  return { name:“Caçador Experiente”, label:“EXPERIENTE”, color:”#6dcf7a”, bg:“rgba(109,207,122,0.15)” };
-if (score >= 2000)  return { name:“Caçador Iniciante”, label:“INICIANTE”, color:”#3a8fd4”, bg:“rgba(58,143,212,0.15)” };
-return { name:“Estudante de Respiração”, label:“NOVATO”, color:”#8B7060”, bg:“rgba(139,112,96,0.15)” };
-}
-
-// ─── CONFETTI ─────────────────────────────────────────────
-function useConfetti(active) {
-const ref = useRef(null);
-useEffect(() => {
-if (!active || !ref.current) return;
-const canvas = ref.current;
-const ctx = canvas.getContext(“2d”);
-canvas.width = canvas.offsetWidth;
-canvas.height = canvas.offsetHeight;
-const colors = [”#f5c842”,”#c0183a”,”#e84e0f”,”#3a8fd4”,”#6dcf7a”,”#c8a0f0”,”#e06fa0”];
-const pieces = Array.from({length:100}, () => ({
-x: Math.random()*canvas.width, y: -20-Math.random()*100,
-vx:(Math.random()-0.5)*5, vy:2+Math.random()*4,
-color:colors[Math.floor(Math.random()*colors.length)],
-w:6+Math.random()*8, h:4+Math.random()*5,
-rot:Math.random()*360, rv:(Math.random()-0.5)*8,
-}));
-let raf, frame=0;
-const draw = () => {
-ctx.clearRect(0,0,canvas.width,canvas.height);
-pieces.forEach(p => {
-ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
-ctx.fillStyle=p.color+“CC”; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
-ctx.restore();
-p.x+=p.vx; p.y+=p.vy; p.rot+=p.rv;
-});
-if (++frame < 200) raf = requestAnimationFrame(draw);
-else ctx.clearRect(0,0,canvas.width,canvas.height);
-};
-draw();
-return () => cancelAnimationFrame(raf);
-}, [active]);
-return ref;
-}
-
-// ─── TIMER HOOK ───────────────────────────────────────────
-function useTimer(active, seconds, onEnd) {
-const [val, setVal] = useState(seconds);
-const ref = useRef(null);
-useEffect(() => {
-if (!active) { clearInterval(ref.current); return; }
-setVal(seconds);
-ref.current = setInterval(() => {
-setVal(v => { if (v <= 1) { clearInterval(ref.current); onEnd(); return 0; } return v-1; });
-}, 1000);
-return () => clearInterval(ref.current);
-}, [active]);
-return val;
-}
-
-// ─── MAIN APP ─────────────────────────────────────────────
-export default function App() {
-const [screen, setScreen] = useState(“home”); // home | quiz | phaseclear | gameover | final | ranking
-const [playerName, setPlayerName] = useState(””);
-const [charId, setCharId] = useState(null);
-const [phase, setPhase] = useState(0);
-const [qIdx, setQIdx] = useState(0);
-const [score, setScore] = useState(0);
-const [correct, setCorrect] = useState(0);
-const [answered, setAnswered] = useState(false);
-const [chosen, setChosen] = useState(null);
-const [timerActive, setTimerActive] = useState(false);
-const [confettiOn, setConfettiOn] = useState(false);
-const [rankData] = useState(() => {
-try { return JSON.parse(localStorage.getItem(“ds_rank2025”)||”[]”); } catch { return []; }
-});
-const [allRanks, setAllRanks] = useState(rankData);
-const confRef = useConfetti(confettiOn);
-
-const ch = CHARS.find(c=>c.id===charId);
-const phaseData = PHASES[phase];
-const qData = phaseData?.questions[qIdx];
-
-const handleTimeout = useCallback(() => {
-if (answered) return;
-setAnswered(true); setChosen(-1); setTimerActive(false);
-}, [answered]);
-
-const timeLeft = useTimer(timerActive && !answered, 30, handleTimeout);
-
-function startGame() {
-if (!playerName.trim()) return alert(“Digite seu nome!”);
-if (!charId) return alert(“Escolha um personagem!”);
-setPhase(0); setQIdx(0); setScore(0); setCorrect(0);
-setAnswered(false); setChosen(null); setTimerActive(true);
-setScreen(“quiz”);
-}
-
-function pick(i) {
-if (answered) return;
-setAnswered(true); setChosen(i); setTimerActive(false);
-if (i === qData.ans) {
-const bonus = Math.ceil(timeLeft/30*50);
-setScore(s => s + 100 + bonus);
-setCorrect(c => c + 1);
-}
-}
-
-function next() {
-const nextQ = qIdx + 1;
-if (nextQ >= phaseData.questions.length) {
-const passed = (correct + (chosen === qData.ans ? 1 : 0)) >= phaseData.minCorrect;
-// recalculate correct count including this answer
-const finalCorrect = chosen === qData.ans ? correct + 1 : correct;
-if (passed || finalCorrect >= phaseData.minCorrect) {
-setConfettiOn(true); setTimeout(()=>setConfettiOn(false),3500);
-if (phase === PHASES.length-1) {
-saveScore(); setScreen(“final”);
-} else {
-setScreen(“phaseclear”);
-}
-} else {
-setScreen(“gameover”);
-}
-} else {
-setQIdx(nextQ); setAnswered(false); setChosen(null); setTimerActive(true);
-}
-}
-
-function advPhase() {
-setPhase(p=>p+1); setQIdx(0); setCorrect(0);
-setAnswered(false); setChosen(null); setTimerActive(true);
-setScreen(“quiz”);
-}
-
-function retry() {
-setQIdx(0); setCorrect(0);
-setAnswered(false); setChosen(null); setTimerActive(true);
-setScreen(“quiz”);
-}
-
-function saveScore() {
-const entry = { name:playerName, charId, score,
-charName:ch?.full, charAvatar:ch?.svg,
-date:new Date().toLocaleDateString(“pt-BR”) };
-const updated = […allRanks, entry].sort((a,b)=>b.score-a.score).slice(0,20);
-setAllRanks(updated);
-try { localStorage.setItem(“ds_rank2025”, JSON.stringify(updated)); } catch {}
-}
-
-function restart() {
-setPlayerName(””); setCharId(null); setScreen(“home”);
-}
-
-const pct = ((phase * (phaseData?.questions.length||5) + qIdx) / (PHASES.length * 5)) * 100;
-const rank = getRank(score);
-
-// ── STYLES ──
-const S = {
-root: { minHeight:“100vh”, background:`radial-gradient(ellipse at 20% 0%, #1a0a1e 0%, #0d0d1f 50%, #000814 100%)`,
-fontFamily:”‘Segoe UI’, system-ui, sans-serif”, color:C.text, display:“flex”,
-flexDirection:“column”, alignItems:“center”, justifyContent:“center”,
-padding:“16px”, position:“relative”, overflow:“hidden” },
-confCanvas: { position:“fixed”, inset:0, pointerEvents:“none”, zIndex:999, width:“100%”, height:“100%” },
-// decorative bg kanji
-bgKanji: { position:“fixed”, top:“50%”, left:“50%”, transform:“translate(-50%,-50%)”,
-fontSize:“40vw”, opacity:0.03, pointerEvents:“none”, zIndex:0,
-fontFamily:“serif”, color:”#fff”, userSelect:“none”, lineHeight:1 },
-card: { background:`linear-gradient(145deg, #1e1e3c, #16162e)`,
-border:`1px solid rgba(245,200,66,0.18)`, borderRadius:20,
-padding:“28px 24px”, maxWidth:680, width:“100%”, position:“relative”, zIndex:1,
-boxShadow:“0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(245,200,66,0.1)” },
-cardAccent: { position:“absolute”, left:0, top:0, width:4, height:“100%”,
-background:`linear-gradient(180deg, ${C.gold}, ${C.crimson}, ${C.gold})`,
-borderRadius:“20px 0 0 20px” },
-title: { fontFamily:“Georgia, serif”, fontSize:“clamp(1.6rem,5vw,2.8rem)”,
-fontWeight:900, color:C.gold, textShadow:`0 0 30px rgba(245,200,66,0.5), 0 2px 4px rgba(0,0,0,0.8)`,
-textAlign:“center”, letterSpacing:2, lineHeight:1.2 },
-sub: { textAlign:“center”, color:C.crimson, letterSpacing:8, fontSize:“0.8rem”,
-fontFamily:“serif”, marginTop:4 },
-line: { height:2, background:`linear-gradient(90deg, transparent, ${C.gold}, ${C.crimson}, ${C.gold}, transparent)`,
-margin:“12px 0” },
-label: { display:“block”, fontSize:“0.7rem”, color:C.goldDim, letterSpacing:3,
-textTransform:“uppercase”, marginBottom:8, fontFamily:“serif” },
-input: { width:“100%”, padding:“12px 16px”, background:“rgba(255,255,255,0.05)”,
-border:`1px solid rgba(245,200,66,0.3)`, borderRadius:10, color:C.white,
-fontSize:“1rem”, outline:“none”, boxSizing:“border-box” },
-btnPrimary: { padding:“14px 28px”, background:`linear-gradient(135deg, ${C.crimson}, #8a0020)`,
-color:C.gold, border:“none”, borderRadius:10, fontWeight:700, fontSize:“1rem”,
-cursor:“pointer”, width:“100%”, letterSpacing:1, fontFamily:“Georgia, serif”,
-boxShadow:`0 4px 20px rgba(192,24,58,0.4)`, transition:“all .2s” },
-btnGold: { padding:“12px 28px”, background:`linear-gradient(135deg, ${C.goldDim}, ${C.gold})`,
-color:”#1a1000”, border:“none”, borderRadius:10, fontWeight:700, fontSize:“0.95rem”,
-cursor:“pointer”, letterSpacing:1, fontFamily:“Georgia, serif” },
-btnOutline: { padding:“10px 20px”, background:“transparent”,
-color:C.gold, border:`2px solid rgba(245,200,66,0.4)`, borderRadius:10,
-fontSize:“0.8rem”, cursor:“pointer”, fontFamily:“Georgia, serif” },
-};
-
-// ── SCREENS ──
-return (
-<div style={S.root}>
-<canvas ref={confRef} style={S.confCanvas}/>
-<div style={S.bgKanji}>鬼</div>
-
-```
-  {/* ── HOME ── */}
-  {screen==="home" && (
-    <div style={S.card}>
-      <div style={S.cardAccent}/>
-      <div style={{textAlign:"center",marginBottom:16}}>
-        <div style={{fontSize:"3rem",marginBottom:8,filter:"drop-shadow(0 0 12px rgba(232,78,15,0.7))"}}>⚔️</div>
-        <div style={S.line}/>
-        <h1 style={S.title}>Demon Slayer<br/>Quiz</h1>
-        <p style={S.sub}>鬼 滅 の 刃</p>
-        <div style={S.line}/>
-        <p style={{color:C.muted,fontSize:"0.85rem",marginTop:8,lineHeight:1.6}}>
-          10 fases progressivas • Timer de 30s • Ranking de Caçadores
-        </p>
-      </div>
-
-      <div style={{marginBottom:18}}>
-        <label style={S.label}>⚔ Seu nome de guerreiro</label>
-        <input style={S.input} value={playerName}
-          onChange={e=>setPlayerName(e.target.value)} maxLength={20}
-          placeholder="Ex: Tanjiro Kamado..." onKeyDown={e=>e.key==="Enter"&&startGame()}/>
-      </div>
-
-      <div style={{marginBottom:24}}>
-        <label style={S.label}>🗡 Escolha seu personagem</label>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
-          {CHARS.map(c=>(
-            <div key={c.id} onClick={()=>setCharId(c.id)}
-              style={{border:`2px solid ${charId===c.id ? c.color : "rgba(255,255,255,0.1)"}`,
-                borderRadius:14, padding:"10px 6px", textAlign:"center", cursor:"pointer",
-                background: charId===c.id ? c.bg : "rgba(255,255,255,0.03)",
-                boxShadow: charId===c.id ? `0 0 18px ${c.color}55` : "none",
-                transition:"all .2s", position:"relative",transform: charId===c.id ? "translateY(-4px)":"none"}}>
-              {charId===c.id && <div style={{position:"absolute",top:4,right:6,color:c.color,fontSize:"0.75rem"}}>✓</div>}
-              <div style={{display:"flex",justifyContent:"center",marginBottom:4}}>{c.svg}</div>
-              <div style={{fontSize:"0.72rem",fontWeight:700,color:C.white,lineHeight:1.2}}>{c.name}</div>
-              <div style={{fontSize:"0.58rem",color:c.color,marginTop:3,fontWeight:700}}>{c.rank}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button style={S.btnPrimary} onClick={startGame}
-        onMouseEnter={e=>e.target.style.transform="translateY(-2px)"}
-        onMouseLeave={e=>e.target.style.transform="none"}>
-        ⚔️ &nbsp;COMEÇAR MISSÃO
-      </button>
-      <div style={{textAlign:"center",marginTop:10}}>
-        <button style={{...S.btnOutline,fontSize:"0.75rem",padding:"8px 16px"}} onClick={()=>setScreen("ranking")}>
-          🏆 Ver Ranking
-        </button>
-      </div>
+<div class="scr on" id="s-home">
+  <div style="position:absolute;top:14px;right:14px;z-index:5">
+    <button class="btn btn-outline btn-sm" onclick="go('s-rank')">🏆 Ranking</button>
+  </div>
+  <div class="card a1">
+    <div style="position:absolute;bottom:-40px;right:-20px;font-family:'Noto Serif JP',serif;font-size:16rem;opacity:.03;color:#fff;pointer-events:none;line-height:1;user-select:none">鬼</div>
+    <div class="a2" style="text-align:center;margin-bottom:20px">
+      <span class="logo-icon">⚔️</span>
+      <div class="divl"></div>
+      <h1 class="logo-title">Demon Slayer<br>Quiz</h1>
+      <p class="logo-jp">鬼 滅 の 刃</p>
+      <div class="divl"></div>
+      <div class="divd"></div>
+      <p style="color:var(--muted);font-size:.82rem;margin-top:6px;line-height:1.6">10 fases · Timer de 30s · Ranking de Caçadores</p>
     </div>
-  )}
-
-  {/* ── QUIZ ── */}
-  {screen==="quiz" && qData && (
-    <div style={{...S.card,maxWidth:680}}>
-      <div style={S.cardAccent}/>
-      {/* header */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-        <div style={{display:"flex",alignItems:"center",gap:8,
-          padding:"5px 12px",borderRadius:20,fontSize:"0.78rem",fontWeight:700,
-          background:ch?.bg, border:`1px solid ${ch?.color}60`, color:ch?.color}}>
-          <span style={{fontSize:"0.6rem",width:8,height:8,borderRadius:"50%",
-            background:ch?.color,display:"inline-block",
-            animation:"pulse 1.5s ease-in-out infinite"}}/>
-          {ch?.svg && <span style={{width:28,height:36,display:"inline-flex",alignItems:"center"}}>
-            <svg viewBox="30 35 20 25" width="20" height="24">{ch.svg.props.children}</svg>
-          </span>}
-          {playerName}
-        </div>
-        <div style={{fontFamily:"Georgia,serif",fontSize:"0.9rem",color:C.gold}}>
-          ⭐ {score}
-        </div>
-      </div>
-
-      {/* progress */}
-      <div style={{marginBottom:16}}>
-        <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
-          <span style={{fontSize:"0.72rem",color:C.gold,fontFamily:"serif"}}>
-            Fase {phaseData.num}/10 — {phaseData.title}
-          </span>
-          <span style={{fontSize:"0.72rem",color:C.muted}}>Q {qIdx+1}/{phaseData.questions.length}</span>
-        </div>
-        <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden"}}>
-          <div style={{height:"100%",width:`${pct}%`,
-            background:`linear-gradient(90deg,${C.crimson},${C.gold})`,
-            borderRadius:3,transition:"width 0.4s"}}/>
-        </div>
-        <div style={{display:"flex",gap:5,marginTop:8,flexWrap:"wrap"}}>
-          {PHASES.map((_,i)=>(
-            <div key={i} style={{width:22,height:22,borderRadius:"50%",
-              display:"flex",alignItems:"center",justifyContent:"center",
-              fontSize:"0.58rem",fontFamily:"serif",
-              background: i<phase ? C.gold : i===phase ? "transparent" : "transparent",
-              color: i<phase ? "#1a0a00" : i===phase ? C.crimson : C.muted,
-              border: `2px solid ${i<phase ? C.gold : i===phase ? C.crimson : "rgba(255,255,255,0.15)"}`,
-              boxShadow: i===phase ? `0 0 10px ${C.crimson}80` : "none"
-            }}>{i+1}</div>
-          ))}
-        </div>
-      </div>
-
-      {/* timer */}
-      <div style={{display:"flex",justifyContent:"center",marginBottom:16}}>
-        <div style={{width:52,height:52,borderRadius:"50%",
-          border:`3px solid ${timeLeft<=10 ? C.crimson : "rgba(245,200,66,0.3)"}`,
-          display:"flex",alignItems:"center",justifyContent:"center",
-          fontFamily:"Georgia,serif",fontSize:"1.1rem",
-          color: timeLeft<=10 ? C.crimson : C.gold,
-          background:"rgba(0,0,0,0.4)",
-          boxShadow: timeLeft<=10 ? `0 0 16px ${C.crimson}80` : "none",
-          transition:"all 0.3s"}}>
-          {answered ? "—" : timeLeft}
-        </div>
-      </div>
-
-      {/* phase banner */}
-      <div style={{textAlign:"center",padding:"10px 12px",borderRadius:10,marginBottom:14,
-        background:"linear-gradient(135deg,rgba(192,24,58,0.2),rgba(245,200,66,0.08))",
-        border:"1px solid rgba(245,200,66,0.12)"}}>
-        <div style={{fontSize:"0.65rem",color:C.goldDim,letterSpacing:4,fontFamily:"serif"}}>
-          FASE {phaseData.num} — {phaseData.level}
-        </div>
-        <div style={{fontSize:"clamp(0.85rem,2.5vw,1.05rem)",color:C.gold,fontFamily:"serif",marginTop:3}}>
-          {phaseData.emoji} {phaseData.title}
-        </div>
-      </div>
-
-      <p style={{textAlign:"center",color:C.muted,fontSize:"0.7rem",marginBottom:10,letterSpacing:2}}>
-        Questão {qIdx+1} de {phaseData.questions.length}
-      </p>
-      <p style={{textAlign:"center",fontSize:"clamp(0.95rem,3vw,1.15rem)",
-        color:C.white,lineHeight:1.65,marginBottom:20,fontFamily:"serif",padding:"0 4px"}}>
-        {qData.q}
-      </p>
-
-      {/* options */}
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-        {["A","B","C","D"].map((ltr,i)=>{
-          const isAns = i===qData.ans;
-          const isChosen = i===chosen;
-          let bg = "rgba(255,255,255,0.04)";
-          let border = "rgba(255,255,255,0.12)";
-          let col = C.text;
-          if (answered) {
-            if (isAns) { bg="rgba(29,184,122,0.18)"; border=C.jade; col="#7fffd4"; }
-            else if (isChosen&&!isAns) { bg="rgba(192,24,58,0.2)"; border=C.crimson; col="#ff9090"; }
-          }
-          return (
-            <button key={i} disabled={answered} onClick={()=>pick(i)}
-              style={{padding:"13px 14px",border:`2px solid ${border}`,borderRadius:10,
-                background:bg, color:col, cursor:answered?"default":"pointer",
-                textAlign:"left",transition:"all .18s",fontSize:"0.88rem",lineHeight:1.4,
-                display:"flex",alignItems:"flex-start",gap:9}}
-              onMouseEnter={e=>{if(!answered)e.currentTarget.style.transform="translateX(3px)"}}
-              onMouseLeave={e=>{e.currentTarget.style.transform="none"}}>
-              <span style={{width:22,height:22,borderRadius:"50%",flexShrink:0,
-                border:`1px solid rgba(245,200,66,0.35)`,background:"rgba(245,200,66,0.1)",
-                display:"inline-flex",alignItems:"center",justifyContent:"center",
-                fontSize:"0.62rem",color:C.goldDim,fontFamily:"serif",marginTop:1}}>
-                {ltr}
-              </span>
-              {qData.opts[i]}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* feedback */}
-      {answered && (
-        <div style={{padding:"12px 16px",borderRadius:10,marginBottom:14,
-          background: chosen===qData.ans ? "rgba(29,184,122,0.12)" : "rgba(192,24,58,0.15)",
-          border: `1px solid ${chosen===qData.ans ? C.jade : C.crimson}60`,
-          color: chosen===qData.ans ? "#7fffd4" : "#ffaaaa",
-          fontSize:"0.88rem",lineHeight:1.55,fontFamily:"serif",
-          animation:"slideUp .3s ease"}}>
-          {chosen===-1 ? "⏰ Tempo esgotado!" : chosen===qData.ans
-            ? `✅ Correto! +${100+Math.ceil(timeLeft/30*50)} pts`
-            : `❌ Errou!`}
-          {chosen!==qData.ans && chosen!==-1 && <> A resposta era: <strong>{qData.opts[qData.ans]}</strong></>}
-          {chosen===-1 && <> A resposta era: <strong>{qData.opts[qData.ans]}</strong></>}
-          <br/><small style={{opacity:0.7,fontSize:"0.76rem"}}>💡 {qData.tip}</small>
-        </div>
-      )}
-
-      {answered && (
-        <div style={{textAlign:"center"}}>
-          <button style={S.btnGold} onClick={next}>
-            {qIdx+1 >= phaseData.questions.length ? "Ver Resultado da Fase →" : "Próxima →"}
-          </button>
-        </div>
-      )}
+    <div class="mb16 a3">
+      <label class="lbl">⚔ Seu nome de guerreiro</label>
+      <input class="inp" id="pname" placeholder="Ex: Tanjiro Kamado…" maxlength="20" onkeydown="if(event.key==='Enter')startGame()">
     </div>
-  )}
-
-  {/* ── PHASE CLEAR ── */}
-  {screen==="phaseclear" && (
-    <div style={{...S.card,maxWidth:480,textAlign:"center"}}>
-      <div style={S.cardAccent}/>
-      <div style={{fontSize:"4.5rem",marginBottom:12}}>{phaseData?.emoji}</div>
-      <div style={S.line}/>
-      <h2 style={{...S.title,fontSize:"1.8rem",marginBottom:10}}>⚔️ Fase Superada!</h2>
-      <p style={{color:C.muted,fontFamily:"serif",marginBottom:18,lineHeight:1.6}}>
-        {ch?.name} completou <strong style={{color:C.gold}}>{phaseData?.title}</strong><br/>
-        Acertos: {correct}/{phaseData?.questions.length} · Score: <strong style={{color:C.gold}}>{score}</strong>
-      </p>
-      <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap",marginBottom:22}}>
-        {["⭐ "+score+" pts","✅ "+correct+" acertos","🏅 "+phaseData?.title].map((c,i)=>(
-          <span key={i} style={{padding:"5px 14px",borderRadius:20,fontSize:"0.75rem",fontFamily:"serif",
-            border:"1px solid rgba(245,200,66,0.3)",background:"rgba(245,200,66,0.08)",color:C.gold}}>
-            {c}
-          </span>
-        ))}
-      </div>
-      <button style={{...S.btnPrimary,marginBottom:10}} onClick={advPhase}>
-        ▶ Próxima Fase
-      </button>
-      <button style={{...S.btnOutline,padding:"8px 20px",fontSize:"0.78rem"}} onClick={()=>setScreen("ranking")}>
-        🏆 Ver Ranking
-      </button>
+    <div class="a4">
+      <label class="lbl">🗡 Escolha seu personagem</label>
+      <div class="char-grid" id="cgrid"></div>
     </div>
-  )}
-
-  {/* ── GAME OVER ── */}
-  {screen==="gameover" && (
-    <div style={{...S.card,maxWidth:420,textAlign:"center"}}>
-      <div style={S.cardAccent}/>
-      <div style={{fontSize:"4rem",marginBottom:12}}>💀</div>
-      <h2 style={{fontFamily:"Georgia,serif",fontSize:"1.8rem",color:C.crimson,marginBottom:12}}>
-        Missão Falhou!
-      </h2>
-      <p style={{color:C.muted,fontFamily:"serif",lineHeight:1.6,marginBottom:22}}>
-        Você acertou {correct}/{phaseData?.questions.length} na fase <strong>{phaseData?.title}</strong>.<br/>
-        Mínimo necessário: {phaseData?.minCorrect} acertos.
-      </p>
-      <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-        <button style={S.btnPrimary} onClick={retry}>🔄 Tentar Novamente</button>
-        <button style={S.btnOutline} onClick={restart}>🏠 Início</button>
-      </div>
+    <div class="mt24 a5">
+      <button class="btn btn-red" onclick="startGame()">⚔️ &nbsp;COMEÇAR MISSÃO</button>
+      <p style="text-align:center;color:var(--muted);font-size:.72rem;margin-top:8px">Mínimo de acertos para avançar · Bônus de velocidade</p>
     </div>
-  )}
-
-  {/* ── FINAL ── */}
-  {screen==="final" && (
-    <div style={{...S.card,maxWidth:500,textAlign:"center"}}>
-      <div style={S.cardAccent}/>
-      <div style={{fontSize:"4.5rem",marginBottom:8}}>☀️</div>
-      <div style={S.line}/>
-      <h2 style={{...S.title,fontSize:"1.7rem",marginBottom:8}}>Missão Completa!</h2>
-      <p style={{color:C.muted,fontFamily:"serif",marginBottom:10}}>
-        {ch?.name} completou todas as 10 fases!
-      </p>
-      <div style={{fontSize:"3.5rem",color:C.gold,fontFamily:"Georgia,serif",
-        textShadow:`0 0 30px rgba(245,200,66,0.5)`,margin:"8px 0"}}>
-        {score}
-      </div>
-      <p style={{color:C.muted,fontSize:"0.8rem",marginBottom:16}}>pontos totais</p>
-      <div style={{padding:"16px 28px",borderRadius:14,margin:"0 auto 18px",maxWidth:280,
-        background:rank.bg, border:`2px solid ${rank.color}`}}>
-        <div style={{fontSize:"0.7rem",color:rank.color,letterSpacing:4,fontFamily:"serif",marginBottom:6}}>
-          {rank.label}
-        </div>
-        <div style={{fontSize:"1.4rem",fontFamily:"Georgia,serif",color:rank.color,fontWeight:900}}>
-          {rank.name}
-        </div>
-      </div>
-      <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-        <button style={S.btnPrimary} onClick={()=>setScreen("ranking")}>🏆 Ranking</button>
-        <button style={S.btnOutline} onClick={restart}>🔄 Jogar Novamente</button>
-      </div>
-    </div>
-  )}
-
-  {/* ── RANKING ── */}
-  {screen==="ranking" && (
-    <div style={{...S.card,maxWidth:560}}>
-      <div style={S.cardAccent}/>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-        <h2 style={{fontFamily:"Georgia,serif",fontSize:"1.3rem",color:C.gold}}>🏆 Ranking de Caçadores</h2>
-        <button style={S.btnOutline} onClick={()=>setScreen(screen==="ranking" ? "home" : screen)}>← Voltar</button>
-      </div>
-      <div style={S.line}/>
-      <div style={{maxHeight:400,overflowY:"auto",paddingRight:4}}>
-        {allRanks.length===0 ? (
-          <p style={{textAlign:"center",color:C.muted,padding:24,fontFamily:"serif"}}>
-            Nenhuma pontuação ainda. Seja o primeiro!
-          </p>
-        ) : allRanks.map((r,i)=>{
-          const rk = getRank(r.score);
-          const medals = ["🥇","🥈","🥉"];
-          const topChar = CHARS.find(c=>c.id===r.charId);
-          return (
-            <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",
-              borderRadius:10,marginBottom:7,
-              background: i===0?"rgba(245,200,66,0.1)":i===1?"rgba(192,192,192,0.08)":i===2?"rgba(205,127,50,0.08)":"rgba(255,255,255,0.03)",
-              border:`1px solid ${i<3 ? rk.color+"40":"rgba(255,255,255,0.08)"}`}}>
-              <div style={{fontFamily:"serif",fontSize:"1rem",minWidth:28,textAlign:"center"}}>
-                {medals[i]||i+1}
-              </div>
-              <div style={{width:28,height:36,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                {topChar?.svg
-                  ? <svg viewBox="15 30 50 50" width="28" height="34">{topChar.svg.props.children}</svg>
-                  : <span style={{fontSize:"1.2rem"}}>⚔️</span>}
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontWeight:700,fontSize:"0.9rem",color:C.white}}>{r.name}</div>
-                <div style={{fontSize:"0.68rem",color:C.muted,marginTop:2}}>{r.charName} · {r.date}</div>
-                <span style={{display:"inline-block",padding:"2px 10px",borderRadius:20,fontSize:"0.6rem",
-                  background:rk.bg,color:rk.color,fontWeight:700,marginTop:4}}>
-                  {rk.name}
-                </span>
-              </div>
-              <div style={{fontFamily:"Georgia,serif",fontSize:"1rem",color:C.gold}}>{r.score}</div>
-            </div>
-          );
-        })}
-      </div>
-      <div style={{textAlign:"center",marginTop:12}}>
-        <button style={S.btnPrimary} onClick={restart}>⚔️ Jogar Agora</button>
-      </div>
-    </div>
-  )}
-
-  <style>{`
-    @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
-    * { box-sizing:border-box; }
-    ::-webkit-scrollbar{width:4px}
-    ::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:2px}
-    ::-webkit-scrollbar-thumb{background:rgba(245,200,66,0.3);border-radius:2px}
-  `}</style>
+  </div>
 </div>
-```
 
-);
+<!-- QUIZ -->
+
+<div class="scr" id="s-quiz">
+  <div class="card" id="qcard">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="p-badge" id="pbadge"></div>
+      <div style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold)">⭐ <span id="live-score">0</span></div>
+    </div>
+    <div class="prog-wrap">
+      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
+        <span style="font-family:'Cinzel',serif;font-size:.72rem;color:var(--gold)" id="prog-ph">Fase 1</span>
+        <span style="font-size:.72rem;color:var(--muted)" id="prog-q">Q 1/5</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="phase-dots" id="pdots"></div>
+    </div>
+    <div class="timer" id="timer">30</div>
+    <div class="ph-banner">
+      <div class="ph-num" id="ph-num">FASE 1 — NOVATO</div>
+      <div class="ph-title" id="ph-title">Primeiros Passos</div>
+    </div>
+    <p style="text-align:center;font-size:.68rem;color:var(--muted);letter-spacing:2px;margin-bottom:10px" id="q-num">Questão 1 de 5</p>
+    <p class="q-text" id="q-text"></p>
+    <div class="opts" id="q-opts"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="tc" id="next-wrap" style="display:none">
+      <button class="btn btn-gold" onclick="nextQ()">Próxima &nbsp;→</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE CLEAR -->
+
+<div class="scr" id="s-phclear">
+  <div class="card card-sm tc" id="phclear-card"></div>
+</div>
+
+<!-- GAME OVER -->
+
+<div class="scr" id="s-over">
+  <div class="card card-sm tc">
+    <span style="font-size:4rem;display:block;margin-bottom:12px">💀</span>
+    <h2 class="pc-title" style="color:var(--crimson)">Missão Falhou!</h2>
+    <p style="color:var(--muted);font-family:'Noto Serif JP',serif;line-height:1.6;margin-bottom:22px" id="over-msg"></p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-red" style="width:auto;padding:13px 24px" onclick="retry()">🔄 Tentar Novamente</button>
+      <button class="btn btn-outline" onclick="go('s-home')">🏠 Início</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL -->
+
+<div class="scr" id="s-final">
+  <div class="card card-sm tc" id="final-card"></div>
+</div>
+
+<!-- RANKING -->
+
+<div class="scr" id="s-rank">
+  <div class="card" style="max-width:560px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <h2 class="pc-title" style="font-size:1.25rem;margin:0">🏆 Ranking de Caçadores</h2>
+      <button class="btn btn-outline btn-sm" onclick="goBack()">← Voltar</button>
+    </div>
+    <div class="divl"></div>
+    <div class="scroll" id="rank-list"></div>
+    <p style="text-align:center;color:var(--muted);font-size:.72rem;margin-top:12px">Top 20 · Salvo no navegador</p>
+  </div>
+</div>
+
+<script>
+// ── CHARACTERS ──────────────────────────────────────────
+const CHARS=[
+{id:'tanjiro',name:'Tanjiro',full:'Tanjiro Kamado',color:'#3a8fdc',bg:'rgba(20,50,100,.6)',rank:'Caçador',breath:'Água · Sol',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk1" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey1" cx="35%" cy="30%"><stop offset="0%" stop-color="#4a7ab0"/><stop offset="100%" stop-color="#1a3a6a"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1e5030"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#2a7a48"/>
+<path d="M23 88 Q27 108 37 110 L37 88" fill="#1a5535" opacity=".65"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk1)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk1)"/>
+<ellipse cx="45" cy="39" rx="27" ry="17" fill="#180e06"/>
+<path d="M18 50 Q11 34 20 27 Q18 42 25 47" fill="#180e06"/>
+<path d="M72 50 Q79 34 70 27 Q72 42 65 47" fill="#180e06"/>
+<ellipse cx="35" cy="46" rx="6" ry="5" fill="#a00028" opacity=".8"/>
+<ellipse cx="35" cy="46" rx="3.5" ry="2.8" fill="#c8183a" opacity=".55"/>
+<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey1)"/>
+<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey1)"/>
+<ellipse cx="35" cy="57" rx="3" ry="4" fill="#08182a"/>
+<ellipse cx="53" cy="57" rx="3" ry="4" fill="#08182a"/>
+<circle cx="37" cy="53.5" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="53.5" r="2.2" fill="white" opacity=".92"/>
+<circle cx="34" cy="59" r="1" fill="white" opacity=".55"/>
+<circle cx="52" cy="59" r="1" fill="white" opacity=".55"/>
+<path d="M29 51 Q35 49 41 51" stroke="#100806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M49 51 Q55 49 61 51" stroke="#100806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
+<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<path d="M38 71 Q45 75 52 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<circle cx="74" cy="55" r="6" fill="#ead8a8" stroke="#c0a050" stroke-width="1.2"/>
+<circle cx="74" cy="55" r="3.5" fill="#c0182a"/>
+<circle cx="74" cy="55" r="1.4" fill="#f8c832"/>
+<rect x="60" y="76" width="7" height="24" rx="3.5" fill="#2a6040" stroke="#1a4030" stroke-width=".8"/>
+<rect x="57" y="82" width="13" height="5" rx="2.5" fill="#1a4030"/></svg>`},
+
+{id:'nezuko',name:'Nezuko',full:'Nezuko Kamado',color:'#e060a0',bg:'rgba(80,15,45,.6)',rank:'Demônio',breath:'Sangue Demoníaco',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk2" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey2" cx="35%" cy="30%"><stop offset="0%" stop-color="#e070b0"/><stop offset="100%" stop-color="#901060"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#c0183a"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e040a0" opacity=".55"/>
+<rect x="26" y="84" width="38" height="9" rx="4.5" fill="#f8c832" opacity=".65"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk2)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk2)"/>
+<ellipse cx="45" cy="37" rx="27" ry="17" fill="#100812"/>
+<path d="M17 50 Q10 36 18 27 Q16 44 24 49" fill="#100812"/>
+<path d="M57" y="35 Q67 24 76 28 Q67 35 57 35" fill="#e06090"/>
+<path d="M57 35 Q67 46 76 42 Q67 35 57 35" fill="#b03868"/>
+<circle cx="67" cy="35" r="4.5" fill="#f090b8"/>
+<circle cx="67" cy="35" r="2" fill="#f8c0d8"/>
+<rect x="30" y="62" width="30" height="11" rx="5.5" fill="#5a8a35" stroke="#3a6818" stroke-width="1.3"/>
+<line x1="38" y1="62" x2="38" y2="73" stroke="#3a6818" stroke-width="1.1"/>
+<line x1="45" y1="62" x2="45" y2="73" stroke="#3a6818" stroke-width="1.1"/>
+<line x1="52" y1="62" x2="52" y2="73" stroke="#4a7828" stroke-width=".8" opacity=".6"/>
+<ellipse cx="35" cy="53" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="53" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="54.5" rx="5.5" ry="7" fill="url(#ey2)"/>
+<ellipse cx="53" cy="54.5" rx="5.5" ry="7" fill="url(#ey2)"/>
+<ellipse cx="35" cy="55" rx="3" ry="4" fill="#180810"/>
+<ellipse cx="53" cy="55" rx="3" ry="4" fill="#180810"/>
+<circle cx="37" cy="51" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="51" r="2.2" fill="white" opacity=".92"/>
+<path d="M29 49 Q35 47 41 49" stroke="#180810" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M49 49 Q55 47 61 49" stroke="#180810" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="60" rx="5.5" ry="3.5" fill="#e87878" opacity=".38"/>
+<ellipse cx="63" cy="60" rx="5.5" ry="3.5" fill="#e87878" opacity=".38"/></svg>`},
+
+{id:'zenitsu',name:'Zenitsu',full:'Zenitsu Agatsuma',color:'#f8c832',bg:'rgba(70,50,0,.6)',rank:'Caçador',breath:'Trovão ⚡',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk3" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey3" cx="35%" cy="30%"><stop offset="0%" stop-color="#9a6828"/><stop offset="100%" stop-color="#5a3808"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1e1408"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e8b820" opacity=".85"/>
+<path d="M29 90 Q31 108 45 112 Q59 108 61 90" fill="#fcd840" opacity=".5"/>
+<polygon points="28,96 34,86 40,96" fill="#e8b820" opacity=".45"/>
+<polygon points="50,96 56,86 62,96" fill="#e8b820" opacity=".45"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk3)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk3)"/>
+<ellipse cx="45" cy="39" rx="26" ry="17" fill="#d0a010"/>
+<path d="M19 52 Q12 36 21 27 Q18 42 25 48" fill="#d0a010"/>
+<path d="M71 52 Q78 36 69 27 Q72 42 65 48" fill="#c89010"/>
+<path d="M27 33 Q24 17 33 12 Q31 26 37 31" fill="#e8c020"/>
+<path d="M43 30 Q41 14 48 10 Q47 24 52 28" fill="#d0a010"/>
+<path d="M58 33 Q62 17 56 12 Q54 26 50 30" fill="#c08010"/>
+<ellipse cx="35" cy="55" rx="7.5" ry="9" fill="white"/>
+<ellipse cx="53" cy="55" rx="7.5" ry="9" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="6" ry="7.5" fill="url(#ey3)"/>
+<ellipse cx="53" cy="56.5" rx="6" ry="7.5" fill="url(#ey3)"/>
+<ellipse cx="35" cy="57" rx="3.2" ry="4.2" fill="#080600"/>
+<ellipse cx="53" cy="57" rx="3.2" ry="4.2" fill="#080600"/>
+<circle cx="37" cy="52.5" r="2.4" fill="white" opacity=".92"/>
+<circle cx="55" cy="52.5" r="2.4" fill="white" opacity=".92"/>
+<path d="M28.5 50 Q35 48 41.5 50" stroke="#080600" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+<path d="M48.5 50 Q55 48 61.5 50" stroke="#080600" stroke-width="1.9" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".42"/>
+<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".42"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<path d="M37 71 Q45 68 53 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M77 41 L71 54 L76 54 L68 70" stroke="#f8c832" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+<path d="M77 41 L71 54 L76 54 L68 70" stroke="white" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".55"/></svg>`},
+
+{id:'inosuke',name:'Inosuke',full:'Inosuke Hashibira',color:'#5ad080',bg:'rgba(8,45,18,.6)',rank:'Feroz 🐗',breath:'Besta',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="ms1" cx="50%" cy="45%"><stop offset="0%" stop-color="#f5ede4"/><stop offset="100%" stop-color="#e8dcd0"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#182818"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#2a4828"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="#f5d8b0"/>
+<ellipse cx="13" cy="44" rx="8" ry="11" fill="url(#ms1)"/>
+<ellipse cx="77" cy="44" rx="8" ry="11" fill="url(#ms1)"/>
+<ellipse cx="13" cy="44" rx="5" ry="7.5" fill="#e09080"/>
+<ellipse cx="77" cy="44" rx="5" ry="7.5" fill="#e09080"/>
+<ellipse cx="45" cy="53" rx="29" ry="28" fill="url(#ms1)"/>
+<ellipse cx="45" cy="33" rx="24" ry="14" fill="#180a28"/>
+<ellipse cx="45" cy="55" rx="24" ry="23" fill="#eee6dc" opacity=".45"/>
+<line x1="45" y1="30" x2="45" y2="80" stroke="#c8b8a0" stroke-width="1" opacity=".45" stroke-dasharray="2,3"/>
+<ellipse cx="34" cy="50" rx="7" ry="8" fill="#182818"/>
+<ellipse cx="56" cy="50" rx="7" ry="8" fill="#182818"/>
+<ellipse cx="34" cy="50.5" rx="5.5" ry="6.5" fill="#28b050"/>
+<ellipse cx="56" cy="50.5" rx="5.5" ry="6.5" fill="#28b050"/>
+<ellipse cx="34" cy="51" rx="3" ry="3.8" fill="#081808"/>
+<ellipse cx="56" cy="51" rx="3" ry="3.8" fill="#081808"/>
+<circle cx="36" cy="47.5" r="2" fill="white" opacity=".85"/>
+<circle cx="58" cy="47.5" r="2" fill="white" opacity=".85"/>
+<ellipse cx="45" cy="65" rx="11" ry="9" fill="#ddc8b2"/>
+<ellipse cx="45" cy="65" rx="8.5" ry="6.5" fill="#cdb8a2"/>
+<circle cx="40.5" cy="66" r="3" fill="#a89080"/>
+<circle cx="49.5" cy="66" r="3" fill="#a89080"/>
+<path d="M21 70 Q14 80 17 90" stroke="#f0ede6" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+<path d="M69 70 Q76 80 73 90" stroke="#f0ede6" stroke-width="4.5" fill="none" stroke-linecap="round"/></svg>`},
+
+{id:'rengoku',name:'Rengoku',full:'Kyojuro Rengoku',color:'#e85a0a',bg:'rgba(75,18,0,.6)',rank:'Hashira 🔥',breath:'Chamas',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk5" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey5" cx="35%" cy="30%"><stop offset="0%" stop-color="#c86020"/><stop offset="100%" stop-color="#782808"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1a0800"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e85a0a" opacity=".9"/>
+<path d="M29 90 Q31 108 45 112 Q59 108 61 90" fill="#fcc018" opacity=".55"/>
+<path d="M24 89 Q27 79 30 89" fill="#fcc018" opacity=".75"/>
+<path d="M32 87 Q36 75 40 87" fill="#e85a0a" opacity=".75"/>
+<path d="M50 87 Q54 75 58 87" fill="#e85a0a" opacity=".75"/>
+<path d="M60 89 Q63 79 66 89" fill="#fcc018" opacity=".75"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk5)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk5)"/>
+<ellipse cx="45" cy="39" rx="27" ry="17" fill="#1e0c00"/>
+<path d="M27 33 Q23 17 32 11 Q30 25 36 31" fill="#e85a0a"/>
+<path d="M38 29 Q36 13 44 7 Q43 21 48 27" fill="#fcc018"/>
+<path d="M54 29 Q58 13 52 7 Q50 23 46 27" fill="#e85a0a"/>
+<path d="M63 35 Q69 21 63 13 Q60 27 56 34" fill="#c04008"/>
+<path d="M18 52 Q10 36 18 26 Q16 43 24 49" fill="#e85a0a"/>
+<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey5)"/>
+<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey5)"/>
+<ellipse cx="35" cy="57" rx="3" ry="4" fill="#100800"/>
+<ellipse cx="53" cy="57" rx="3" ry="4" fill="#100800"/>
+<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
+<path d="M29 50 Q35 48 41 50" stroke="#100800" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M49 50 Q55 48 61 50" stroke="#100800" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
+<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<path d="M37 72 Q45 76 53 72" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<ellipse cx="45" cy="35" rx="18" ry="10" fill="#e85a0a" opacity=".09"/></svg>`},
+
+{id:'giyuu',name:'Giyu',full:'Giyu Tomioka',color:'#3a8fdc',bg:'rgba(8,25,65,.6)',rank:'Hashira 💧',breath:'Água',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk6" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey6" cx="35%" cy="30%"><stop offset="0%" stop-color="#2a5898"/><stop offset="100%" stop-color="#0a1848"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#180808"/>
+<path d="M23 88 L35 88 L35 112 Q27 110 23 88" fill="#c0183a" opacity=".92"/>
+<path d="M55 88 L55 112 Q63 110 67 88 Z" fill="#2a4890" opacity=".92"/>
+<path d="M35 88 L35 112 Q40 113 45 113 Q50 113 55 112 L55 88" fill="#180808"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk6)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk6)"/>
+<ellipse cx="45" cy="39" rx="27" ry="17" fill="#10101e"/>
+<path d="M18 52 Q10 38 18 27 Q16 44 23 49" fill="#10101e"/>
+<path d="M72 52 Q80 38 72 27 Q74 44 67 49" fill="#10101e"/>
+<rect x="58" y="52" width="8" height="32" rx="4" fill="#10101e"/>
+<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey6)"/>
+<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey6)"/>
+<ellipse cx="35" cy="57" rx="3" ry="4" fill="#060c18"/>
+<ellipse cx="53" cy="57" rx="3" ry="4" fill="#060c18"/>
+<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
+<path d="M29 50 Q35 48 41 50" stroke="#060c18" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M49 50 Q55 48 61 50" stroke="#060c18" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<line x1="37" y1="72" x2="53" y2="72" stroke="#a06858" stroke-width="2" stroke-linecap="round"/>
+<ellipse cx="27" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".18"/>
+<ellipse cx="63" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".18"/></svg>`},
+
+{id:'shinobu',name:'Shinobu',full:'Shinobu Kocho',color:'#c090f8',bg:'rgba(38,8,68,.6)',rank:'Hashira 🦋',breath:'Insetos',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk7" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey7" cx="35%" cy="30%"><stop offset="0%" stop-color="#9050d0"/><stop offset="100%" stop-color="#501888"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#180828"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#c090f8" opacity=".6"/>
+<ellipse cx="30" cy="98" rx="9" ry="7" fill="#9060d0" opacity=".55"/>
+<ellipse cx="60" cy="98" rx="9" ry="7" fill="#9060d0" opacity=".55"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk7)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk7)"/>
+<ellipse cx="45" cy="39" rx="27" ry="17" fill="#100818"/>
+<path d="M17 52 Q10 38 18 27 Q16 44 23 49" fill="#100818"/>
+<path d="M58 34 Q68 23 77 27 Q68 35 58 34" fill="#c090f8"/>
+<path d="M58 34 Q68 45 77 41 Q68 35 58 34" fill="#9060c8"/>
+<circle cx="68" cy="34" r="5" fill="#e0b8ff"/>
+<circle cx="68" cy="34" r="2.5" fill="#c090f8"/>
+<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey7)"/>
+<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey7)"/>
+<ellipse cx="35" cy="57" rx="3" ry="4" fill="#100820"/>
+<ellipse cx="53" cy="57" rx="3" ry="4" fill="#100820"/>
+<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
+<path d="M29 50 Q35 48 41 50" stroke="#100820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<path d="M49 50 Q55 48 61 50" stroke="#100820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".35"/>
+<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".35"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<path d="M37 71 Q45 75 53 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`},
+
+{id:'muichiro',name:'Muichiro',full:'Muichiro Tokito',color:'#70d4c8',bg:'rgba(0,38,48,.6)',rank:'Hashira 🌫️',breath:'Névoa',
+svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk8" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey8" cx="35%" cy="30%"><stop offset="0%" stop-color="#40b8b0"/><stop offset="100%" stop-color="#187878"/></radialGradient></defs>
+<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
+<ellipse cx="45" cy="92" rx="22" ry="19" fill="#0a1820"/>
+<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#50c0b8" opacity=".55"/>
+<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk8)"/>
+<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk8)"/>
+<ellipse cx="45" cy="39" rx="27" ry="17" fill="#58a898"/>
+<path d="M18 52 Q10 38 18 27 Q16 44 23 49" fill="#58a898"/>
+<path d="M72 52 Q80 38 72 27 Q74 44 67 49" fill="#58a898"/>
+<rect x="57" y="52" width="8" height="36" rx="4" fill="#58a898"/>
+<rect x="64" y="56" width="6" height="28" rx="3" fill="#70c0b0" opacity=".75"/>
+<rect x="58" y="67" width="10" height="6" rx="3" fill="#3a8878"/>
+<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
+<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey8)"/>
+<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey8)"/>
+<ellipse cx="35" cy="57" rx="3" ry="4" fill="#081818"/>
+<ellipse cx="53" cy="57" rx="3" ry="4" fill="#081818"/>
+<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
+<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
+<path d="M29 50 Q35 48 41 50" stroke="#081818" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+<path d="M49 50 Q55 48 61 50" stroke="#081818" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
+<line x1="37" y1="72" x2="53" y2="72" stroke="#a06858" stroke-width="1.8" stroke-linecap="round"/>
+<ellipse cx="27" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".2"/>
+<ellipse cx="63" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".2"/></svg>`}
+];
+
+// ── PHASES ──────────────────────────────────────────────
+const PHASES=[
+{num:1,title:'Primeiros Passos',level:'NOVATO',emoji:'🌱',minCorrect:3,questions:[
+{q:'Qual é o nome completo do protagonista de Demon Slayer?',opts:['Tanjiro Kamado','Zenitsu Agatsuma','Inosuke Hashibira','Giyu Tomioka'],ans:0,tip:'Ele carrega a caixinha da irmã nas costas!'},
+{q:'O que aconteceu com a família de Tanjiro no início da história?',opts:['Mudaram de cidade','Foram atacados por um demônio','Viajaram para a capital','Adoeceram de gripe'],ans:1,tip:'Muzan Kibutsuji é o culpado indireto.'},
+{q:'Quem é a irmã de Tanjiro que se torna demônio?',opts:['Aoi','Kanao','Nezuko','Makomo'],ans:2,tip:'Ela viaja numa caixinha de bambu.'},
+{q:'Qual organização combate os demônios em Demon Slayer?',opts:['Anbu','Corpo de Caçadores de Demônios','Liga dos Vilões','Força Oculta'],ans:1,tip:'Em japonês: Kisatsutai.'},
+{q:'O nome japonês de Demon Slayer é "Kimetsu no ___":',opts:['Yume','Yaiba','Yasha','Yoroi'],ans:1,tip:'Significa Lâmina em japonês.'},
+]},
+{num:2,title:'Sopro Inicial',level:'APRENDIZ',emoji:'💧',minCorrect:3,questions:[
+{q:'Qual Respiração Tanjiro aprende com Sakonji Urokodaki?',opts:['Respiração do Fogo','Respiração da Água','Respiração do Trovão','Respiração do Vento'],ans:1,tip:'Flui como a água corrente!'},
+{q:'Quantas Formas tem a Respiração da Água que Tanjiro aprende?',opts:['6','8','10','12'],ans:2,tip:'Dez técnicas aquáticas diferentes.'},
+{q:'Quem treinou Tanjiro nas artes de Caçador de Demônios?',opts:['Rengoku','Giyu Tomioka','Sakonji Urokodaki','Kanae Kocho'],ans:2,tip:'Ele usa máscara de raposa tengu.'},
+{q:'Que animal Inosuke tem como máscara?',opts:['Urso','Javali','Lobo','Tigre'],ans:1,tip:'Ele foi criado por esse animal na floresta.'},
+{q:'Qual é o símbolo na testa de Tanjiro?',opts:['Lua','Sol','Cicatriz de nascença','Flor de cerejeira'],ans:2,tip:'Virou uma marca do Caçador com o tempo.'},
+]},
+{num:3,title:'Os Hashira',level:'INTERMEDIÁRIO',emoji:'⚔️',minCorrect:3,questions:[
+{q:'Quantos Hashira (Pilares) existem no Corpo de Caçadores?',opts:['7','8','9','10'],ans:2,tip:'Nove respirações, nove pilares.'},
+{q:'Giyu Tomioka é o Pilar de qual Respiração?',opts:['Fogo','Pedra','Água','Névoa'],ans:2,tip:'Ele ensinou a técnica a Tanjiro.'},
+{q:'Por que Shinobu não pode decepar cabeças de demônios?',opts:['É proibido','Falta força física','Espada curta demais','Não quer'],ans:1,tip:'Por isso ela usa veneno em vez de corte.'},
+{q:'Kyojuro Rengoku é o Pilar de qual Respiração?',opts:['Sol','Trovão','Chamas','Pedra'],ans:2,tip:'SET YOUR HEART ABLAZE!'},
+{q:'Tengen Uzui usa duas enormes katanas. Qual sua Respiração?',opts:['Dança','Som','Ritmo','Música'],ans:1,tip:'Ele é extravagante por natureza!'},
+]},
+{num:4,title:'Os Doze Luas',level:'INTERMEDIÁRIO+',emoji:'🌙',minCorrect:3,questions:[
+{q:'Como se chamam os 12 demônios mais poderosos a serviço de Muzan?',opts:['Guardiões da Noite','Doze Luas Demoníacas','Legião das Trevas','Oni Supremos'],ans:1,tip:'Em japonês: Jūnikizuki.'},
+{q:'Quem é o demônio criador de todos os outros demônios?',opts:['Kokushibo','Doma','Akaza','Muzan Kibutsuji'],ans:3,tip:'Ele existe há mais de 1000 anos.'},
+{q:'Akaza é qual número entre as Luas Superiores?',opts:['1','2','3','4'],ans:2,tip:'Ele derrotou Rengoku no Trem Infinito.'},
+{q:'O que os demônios precisam evitar para não morrer?',opts:['Fogo e água','Sal e alho','Luz do sol e decapitação','Orações e cruzes'],ans:2,tip:'A luz solar os destrói em segundos.'},
+{q:'Os Doze Luas são divididos em Luas Superiores e Luas ___:',opts:['Inferiores','Menores','Fracas','Comuns'],ans:0,tip:'Kizuki Superior e Kizuki Inferior.'},
+]},
+{num:5,title:'O Trem Infinito',level:'MÉDIO',emoji:'🚂',minCorrect:4,questions:[
+{q:'No arco do Trem Infinito, qual Hashira acompanha o grupo?',opts:['Giyu','Shinobu','Rengoku','Tengen'],ans:2,tip:'O Pilar das Chamas enfrenta Akaza.'},
+{q:'Qual é o poder de Enmu no arco do Trem Infinito?',opts:['Controlar o fogo','Criar sonhos e manipular o sono','Absorver almas','Regeneração infinita'],ans:1,tip:'Ele adormece os passageiros do trem.'},
+{q:'Qual amigo de Tanjiro fica dormindo involuntariamente no trem?',opts:['Inosuke','Zenitsu','Nezuko','Giyu'],ans:1,tip:'Ele ronca bastante!'},
+{q:'No combate final do trem, quem Rengoku enfrenta?',opts:['Muzan','Doma','Akaza','Kokushibo'],ans:2,tip:'Luna Superior Três.'},
+{q:'O que caracteriza a Marca do Caçador?',opts:['Tatuagem escolhida','Marca que surge em batalha extrema','Selo mágico de Urokodaki','Emblema do Corpo'],ans:1,tip:'Tanjiro e Rengoku apresentam sinais disso.'},
+]},
+{num:6,title:'Distrito do Entretenimento',level:'AVANÇADO',emoji:'🎭',minCorrect:4,questions:[
+{q:'Qual Hashira lidera a missão no Distrito do Entretenimento?',opts:['Mitsuri','Tengen Uzui','Sanemi','Muichiro'],ans:1,tip:'Flamboyant ninja com três esposas!'},
+{q:'Quais demônios-irmãos os heróis enfrentam no Distrito?',opts:['Gyutaro e Daki','Akaza e Doma','Rui e família','Kokushibo e Doma'],ans:0,tip:'Luas Superiores Seis, em um só par.'},
+{q:'Zenitsu domina quantas formas da Respiração do Trovão?',opts:['1','3','5','7'],ans:0,tip:'Ele usa a Primeira Forma: Trovão Furioso.'},
+{q:'Qual é o nome da Primeira Forma da Respiração do Trovão?',opts:['Raio Infinito','Trovão Furioso (Thunderclap and Flash)','Tempestade Elétrica','Descarga Divina'],ans:1,tip:'É quase instantânea como um raio.'},
+{q:'O que é único no estilo de luta de Inosuke relacionado ao seu corpo?',opts:['Usa dois estilos ao mesmo tempo','Move órgãos internos distorcendo a percepção inimiga','Luta sem ver','Copia os inimigos'],ans:1,tip:'Ele treinou os músculos do tórax para isso.'},
+]},
+{num:7,title:'Vila dos Ferreiros',level:'EXPERIENTE',emoji:'⚒️',minCorrect:4,questions:[
+{q:'Como se chama o jovem ferreiro amigo de Tanjiro na Vila dos Ferreiros?',opts:['Haganezuka','Kotetsu','Hotaru','Kanamori'],ans:1,tip:'Ele usa máscara e treina Tanjiro com o boneco.'},
+{q:'Qual Lua Superior aparece na Vila dos Ferreiros?',opts:['Hantengu','Gyokko','Doma','Akaza'],ans:1,tip:'Ele guarda criaturas dentro de potes.'},
+{q:'Muichiro desperta sua Marca do Caçador ao lutar contra quem?',opts:['Hantengu','Gyokko','Kokushibo','Akaza'],ans:1,tip:'O Pilar da Névoa com apenas 14 anos.'},
+{q:'O Boneco Yoriichi Type Zero representa qual lendário Caçador?',opts:['Urokodaki','Yoriichi Tsugikuni','Kokushibo','Um Hashira sem nome'],ans:1,tip:'O maior espadachim da história.'},
+{q:'Qual é o material das espadas que permite matar demônios?',opts:['Ouro purificado','Aço solar (Nichirin)','Prata sagrada','Pedra do trovão'],ans:1,tip:'Absorve a luz solar durante a forja.'},
+]},
+{num:8,title:'Castelo da Lua Infinita',level:'ÉLITE',emoji:'🌕',minCorrect:4,questions:[
+{q:'Quem é Yoriichi Tsugikuni?',opts:['O primeiro Hashira','O criador da Respiração Total do Sol e o mais poderoso Caçador','O irmão de Muzan','O mestre de Urokodaki'],ans:1,tip:'Ele quase matou Muzan sozinho.'},
+{q:'Qual é a relação de Kokushibo com Yoriichi?',opts:['Eram melhores amigos','São gêmeos — Kokushibo era irmão de Yoriichi','Inimigos desde crianças','Sem relação'],ans:1,tip:'Michikatsu Tsugikuni — o irmão invejoso.'},
+{q:'A Respiração Total do Sol é a origem de todas as outras?',opts:['Verdadeiro','Falso','Apenas metade','Só da Respiração de Água'],ans:0,tip:'Todas derivam da Respiração do Sol.'},
+{q:'O que é o Castelo do Labirinto Demoníaco de Muzan?',opts:['Fortaleza nas montanhas','Dimensão ilusória controlada por Nakime','Uma caverna subterrânea','Um templo amaldiçoado'],ans:1,tip:'Nakime controla o espaço com seu biwa.'},
+{q:'Qual habilidade especial Nezuko desenvolve única entre todos os demônios?',opts:['Voar','Resistência à luz solar','Telepatia','Controlar outros demônios'],ans:1,tip:'Nenhum outro demônio conseguiu isso.'},
+]},
+{num:9,title:'Batalha Final',level:'MESTRE',emoji:'💀',minCorrect:4,questions:[
+{q:'Qual é a fraqueza crucial de Muzan explorada no clímax?',opts:['Espadas de ouro','O amanhecer — ele não pode ficar no sol','Água benta','Chamas do Pilar do Fogo'],ans:1,tip:'Eles precisam mantê-lo lutando até o amanhecer.'},
+{q:'A Dança do Deus do Fogo é técnica ancestral de qual Respiração?',opts:['Respiração das Chamas','Respiração do Sol','Respiração da Água','Respiração da Lua'],ans:1,tip:'Tanjiro a usa imitando a dança do pai.'},
+{q:'O que acontece com Muzan ao ser exposto à luz do sol?',opts:['Foge para outro reino','É destruído completamente','Vira humano','Hiberna por séculos'],ans:1,tip:'Fim de mais de mil anos de existência.'},
+{q:'Qual personagem injeta veneno no corpo de Muzan?',opts:['Kanao','Shinobu (veneno guardado em seu corpo)','Aoi','Doma após ser derrotado'],ans:1,tip:'Shinobu planejou isso muito antes de morrer.'},
+{q:'Qual herói fica temporariamente transformado por Muzan?',opts:['Zenitsu','Inosuke','Tanjiro','Giyu'],ans:2,tip:'Muzan tentou fazê-lo seu sucessor.'},
+]},
+{num:10,title:'Lâmina do Caçador Supremo',level:'LENDA ☀️',emoji:'☀️',minCorrect:5,questions:[
+{q:'Como termina a história de Tanjiro Kamado?',opts:['Torna-se novo líder do Corpo','Morre heroicamente','Vira demônio e depois é curado, vivendo vida normal','Desaparece misteriosamente'],ans:2,tip:'Muzan tentou transformá-lo em seu sucessor.'},
+{q:'Em qual época se passa o epílogo de Demon Slayer?',opts:['50 anos depois','100 anos depois','Era moderna contemporânea','500 anos depois'],ans:2,tip:'Há ônibus e smartphones no epílogo.'},
+{q:'Douma, Luna Superior Dois, é derrotado por qual dupla?',opts:['Tanjiro e Giyu','Kanao e Inosuke','Zenitsu e Tengen','Sanemi e Muichiro'],ans:1,tip:'Vingança por Shinobu Kocho.'},
+{q:'Qual é a moral central que Tanjiro carrega sobre a vida?',opts:['Odeie os demônios sem piedade','Mesmo demônios um dia foram humanos e merecem alguma compaixão','A força é o que importa','Os fortes sobrevivem'],ans:1,tip:'Ele chora pelos demônios que mata, sabendo sua história.'},
+{q:'Quem é Tamayo e qual sua importância?',opts:['Uma humana que descobriu o veneno','Demônia médica que trabalhou anos num antídoto','A mãe de Tanjiro reencarnada','Uma Hashira aposentada'],ans:1,tip:'Ela e Yushiro são demônios aliados dos Caçadores.'},
+{q:'[BÔNUS] Qual é o nome das 13 Formas no ciclo contínuo de Tanjiro?',opts:['Respiração do Sol – Sequência Celestial','Hinokami Kagura – Dança Circular','Respiração Total do Sol – 13 Formas em Ciclo Contínuo','Respiração Divina do Fogo'],ans:2,tip:'A décima terceira forma conecta todas as anteriores.'},
+]},
+];
+
+function getRank(s){
+  if(s>=13000)return{name:'Respiração Total do Sol',lbl:'LENDA SUPREMA',color:'#ff8c00',bg:'rgba(255,140,0,.18)'};
+  if(s>=9500) return{name:'Hashira',lbl:'PILAR',color:'#f8c832',bg:'rgba(248,200,50,.14)'};
+  if(s>=6500) return{name:'Caçador Élite',lbl:'ÉLITE',color:'#c090f8',bg:'rgba(192,144,248,.14)'};
+  if(s>=4000) return{name:'Caçador Experiente',lbl:'EXPERIENTE',color:'#5ad080',bg:'rgba(90,208,128,.14)'};
+  if(s>=2000) return{name:'Caçador Iniciante',lbl:'INICIANTE',color:'#3a8fdc',bg:'rgba(58,143,220,.14)'};
+  return{name:'Estudante de Respiração',lbl:'NOVATO',color:'#8a7060',bg:'rgba(138,112,96,.14)'};
 }
+
+// ── STATE ────────────────────────────────────────────────
+var G={name:'',charId:null,phase:0,qIdx:0,score:0,correct:0,answered:false,timer:null,tv:30,prev:'s-home'};
+
+// ── PARTICLES ────────────────────────────────────────────
+(function(){
+  var p=document.getElementById('ptcl');
+  var em=['🌸','⚔️','🔥','💧','⭐','🌙','✨','🌺'];
+  for(var i=0;i<18;i++){var s=document.createElement('span');s.textContent=em[Math.floor(Math.random()*em.length)];s.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.7+Math.random()*0.8)+'rem;animation-duration:'+(10+Math.random()*14)+'s;animation-delay:'+Math.random()*12+'s';p.appendChild(s)}
+})();
+
+// ── CHAR GRID ────────────────────────────────────────────
+function buildGrid(){
+  var g=document.getElementById('cgrid');g.innerHTML='';
+  CHARS.forEach(function(c){
+    var d=document.createElement('div');
+    d.className='char-card'+(G.charId===c.id?' sel':'');
+    d.style.borderColor=G.charId===c.id?c.color:'rgba(255,255,255,.1)';
+    d.style.background=G.charId===c.id?c.bg:'rgba(255,255,255,.03)';
+    if(G.charId===c.id)d.style.boxShadow='0 0 20px '+c.color+'55';
+    d.innerHTML='<div class="char-svg">'+c.svg+'</div><div class="char-name">'+c.name+'</div><span class="char-rank" style="background:'+c.bg+';color:'+c.color+';border:1px solid '+c.color+'50">'+c.rank+'</span>';
+    d.onclick=function(){G.charId=c.id;buildGrid()};
+    g.appendChild(d);
+  });
+}
+buildGrid();
+
+// ── NAVIGATION ───────────────────────────────────────────
+function go(id){
+  G.prev=document.querySelector('.scr.on')?document.querySelector('.scr.on').id:'s-home';
+  document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});
+  document.getElementById(id).classList.add('on');
+  if(id==='s-rank')renderRank();
+}
+function goBack(){go(G.prev||'s-home')}
+
+// ── START ────────────────────────────────────────────────
+function startGame(){
+  var n=document.getElementById('pname').value.trim();
+  if(!n){alert('Digite seu nome de guerreiro!');return}
+  if(!G.charId){alert('Escolha um personagem!');return}
+  G.name=n;G.phase=0;G.qIdx=0;G.score=0;G.correct=0;
+  buildDots();loadQ();go('s-quiz');
+}
+
+// ── DOTS ─────────────────────────────────────────────────
+function buildDots(){
+  var w=document.getElementById('pdots');w.innerHTML='';
+  PHASES.forEach(function(_,i){var d=document.createElement('div');d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'');d.textContent=i+1;w.appendChild(d)});
+}
+function updDots(){document.querySelectorAll('.pd').forEach(function(d,i){d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'')})}
+
+// ── LOAD Q ───────────────────────────────────────────────
+function loadQ(){
+  var ph=PHASES[G.phase],qd=ph.questions[G.qIdx];G.answered=false;
+  var ch=CHARS.find(function(c){return c.id===G.charId});
+  var b=document.getElementById('pbadge');
+  b.style.background=ch.bg;b.style.border='1px solid '+ch.color+'60';b.style.color=ch.color;
+  b.innerHTML='<span class="bdot" style="background:'+ch.color+'"></span>'+ch.name+' / '+G.name;
+  document.getElementById('live-score').textContent=G.score;
+  document.getElementById('prog-ph').textContent='Fase '+ph.num+'/10';
+  document.getElementById('prog-q').textContent='Q '+(G.qIdx+1)+'/'+ph.questions.length;
+  var pct=((G.phase*5+G.qIdx)/(PHASES.length*5)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  updDots();
+  document.getElementById('ph-num').textContent='FASE '+ph.num+' — '+ph.level;
+  document.getElementById('ph-title').textContent=ph.emoji+' '+ph.title;
+  document.getElementById('q-num').textContent='Questão '+(G.qIdx+1)+' de '+ph.questions.length;
+  document.getElementById('q-text').textContent=qd.q;
+  var oc=document.getElementById('q-opts');oc.innerHTML='';
+  ['A','B','C','D'].forEach(function(l,i){
+    var btn=document.createElement('button');
+    btn.className='opt';
+    btn.innerHTML='<span class="opt-ltr">'+l+'</span>'+qd.opts[i];
+    btn.onclick=(function(ii,b){return function(){checkAns(ii,b,qd)}})(i,btn);
+    oc.appendChild(btn);
+  });
+  var fb=document.getElementById('feedback');fb.className='feedback';fb.innerHTML='';
+  document.getElementById('next-wrap').style.display='none';
+  startTimer();
+}
+
+// ── TIMER ────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(G.timer);G.tv=30;
+  var el=document.getElementById('timer');el.textContent='30';el.className='timer';
+  G.timer=setInterval(function(){
+    G.tv--;el.textContent=G.tv;
+    if(G.tv<=10)el.className='timer warn';
+    if(G.tv<=0){clearInterval(G.timer);if(!G.answered)timeOut()}
+  },1000);
+}
+function timeOut(){
+  G.answered=true;
+  var qd=PHASES[G.phase].questions[G.qIdx];
+  document.querySelectorAll('.opt').forEach(function(b,i){b.disabled=true;if(i===qd.ans)b.classList.add('correct')});
+  showFb(false,'⏰ Tempo esgotado! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);
+  document.getElementById('next-wrap').style.display='block';
+}
+
+// ── CHECK ────────────────────────────────────────────────
+function checkAns(idx,btn,qd){
+  if(G.answered)return;G.answered=true;clearInterval(G.timer);
+  document.querySelectorAll('.opt').forEach(function(b){b.disabled=true});
+  var ok=idx===qd.ans;
+  if(ok){btn.classList.add('correct');var bonus=Math.ceil(G.tv/30*50);G.score+=100+bonus;G.correct++;document.getElementById('live-score').textContent=G.score;showFb(true,'✅ Correto! +'+(100+bonus)+' pts (bônus: +'+bonus+')',qd.tip);burst(true)}
+  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[qd.ans].classList.add('correct');showFb(false,'❌ Errou! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);burst(false)}
+  document.getElementById('next-wrap').style.display='block';
+}
+function showFb(ok,msg,tip){var fb=document.getElementById('feedback');fb.className='feedback show '+(ok?'fb-ok':'fb-err');fb.innerHTML=msg+'<br><small style="opacity:.7;font-size:.76rem">💡 '+tip+'</small>'}
+
+// ── NEXT ─────────────────────────────────────────────────
+function nextQ(){
+  G.qIdx++;var ph=PHASES[G.phase];
+  if(G.qIdx>=ph.questions.length){
+    if(G.correct>=ph.minCorrect){if(G.phase===PHASES.length-1){saveScore();showFinal()}else showPhaseClear()}
+    else{document.getElementById('over-msg').innerHTML='Você acertou '+G.correct+'/'+ph.questions.length+' na fase <strong>'+ph.title+'</strong>.<br>Mínimo necessário: '+ph.minCorrect+' acertos.';go('s-over')}
+  }else loadQ();
+}
+
+// ── PHASE CLEAR ──────────────────────────────────────────
+function showPhaseClear(){
+  var ph=PHASES[G.phase];confetti();
+  document.getElementById('phclear-card').innerHTML='<span class="pc-icon">'+ph.emoji+'</span><div class="divl"></div><h2 class="pc-title">⚔️ Fase Superada!</h2><p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;line-height:1.6;margin-bottom:18px">Completou <strong style="color:var(--gold)">'+ph.title+'</strong><br>Acertos: '+G.correct+'/'+ph.questions.length+' · Score: <strong style="color:var(--gold)">'+G.score+'</strong></p><div class="chips"><span class="chip">⭐ '+G.score+' pts</span><span class="chip">✅ '+G.correct+' acertos</span><span class="chip">🏅 '+ph.title+'</span></div><button class="btn btn-red" style="margin-bottom:10px" onclick="advPhase()">▶ Próxima Fase</button><br><button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="go(\'s-rank\')">🏆 Ranking</button>';
+  go('s-phclear');
+}
+function advPhase(){G.phase++;G.qIdx=0;G.correct=0;buildDots();loadQ();go('s-quiz')}
+function retry(){G.qIdx=0;G.correct=0;loadQ();go('s-quiz')}
+
+// ── FINAL ────────────────────────────────────────────────
+function showFinal(){
+  confetti();var rk=getRank(G.score);
+  var ch=CHARS.find(function(c){return c.id===G.charId});
+  document.getElementById('final-card').innerHTML='<span class="pc-icon">☀️</span><div class="divl"></div><h2 class="pc-title">Missão Completa!</h2><p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;margin-bottom:10px">'+ch.name+' completou todas as 10 fases!</p><div class="final-score">'+G.score+'</div><p style="color:var(--muted);font-size:.8rem;margin-bottom:16px">pontos totais</p><div style="padding:16px 28px;border-radius:14px;margin:0 auto 20px;max-width:280px;background:'+rk.bg+';border:2px solid '+rk.color+'"><div style="font-size:.68rem;letter-spacing:4px;font-family:\'Cinzel\',serif;margin-bottom:6px;color:'+rk.color+'">'+rk.lbl+'</div><div style="font-family:\'Cinzel\',serif;font-size:1.5rem;font-weight:900;color:'+rk.color+'">'+rk.name+'</div></div><div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap"><button class="btn btn-red" style="width:auto;padding:13px 22px" onclick="go(\'s-rank\')">🏆 Ranking</button><button class="btn btn-outline" onclick="restartGame()">🔄 Jogar Novamente</button></div>';
+  go('s-final');
+}
+function restartGame(){G.charId=null;buildGrid();go('s-home')}
+
+// ── SCORE ────────────────────────────────────────────────
+function saveScore(){
+  var ch=CHARS.find(function(c){return c.id===G.charId});
+  var scores=[];try{scores=JSON.parse(localStorage.getItem('dsq_v4')||'[]')}catch{}
+  scores.push({name:G.name,charId:G.charId,charName:ch.full,score:G.score,date:new Date().toLocaleDateString('pt-BR')});
+  scores.sort(function(a,b){return b.score-a.score});
+  try{localStorage.setItem('dsq_v4',JSON.stringify(scores.slice(0,20)))}catch{}
+}
+function renderRank(){
+  var scores=[];try{scores=JSON.parse(localStorage.getItem('dsq_v4')||'[]')}catch{}
+  var l=document.getElementById('rank-list');
+  if(!scores.length){l.innerHTML='<p style="text-align:center;color:var(--muted);padding:24px;font-family:\'Noto Serif JP\',serif">Nenhuma pontuação ainda. Seja o primeiro!</p>';return}
+  var medals=['🥇','🥈','🥉'];
+  l.innerHTML=scores.map(function(r,i){
+    var rk=getRank(r.score);var ch=CHARS.find(function(c){return c.id===r.charId});
+    return '<div class="rank-item '+(i===0?'r1':i===1?'r2':i===2?'r3':'')+'"><div style="font-family:\'Cinzel\',serif;font-size:1rem;min-width:28px;text-align:center">'+(medals[i]||i+1)+'</div><div style="width:36px;height:44px;display:flex;align-items:center;justify-content:center">'+(ch?'<svg viewBox="10 28 70 70" width="32" height="38">'+ch.svg+'</svg>':'⚔️')+'</div><div style="flex:1"><div style="font-weight:800;font-size:.9rem;color:var(--white)">'+r.name+'</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">'+r.charName+' · '+r.date+'</div><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:.6rem;font-weight:800;margin-top:4px;background:'+rk.bg+';color:'+rk.color+'">'+rk.name+'</span></div><div style="font-family:\'Cinzel\',serif;font-size:1rem;color:var(--gold)">'+r.score+'</div></div>';
+  }).join('');
+}
+
+// ── EFFECTS ──────────────────────────────────────────────
+function burst(ok){
+  var em=ok?['⭐','✨','🌟','💫','⚔️']:['💀','🌑','👿','💔'];
+  for(var i=0;i<7;i++){
+    var s=document.createElement('span');s.textContent=em[Math.floor(Math.random()*em.length)];
+    var a=(i/7)*360,d=80+Math.random()*60;
+    s.style.cssText='position:fixed;pointer-events:none;z-index:1000;font-size:1.3rem;top:50%;left:50%;--tx:'+Math.cos(a*Math.PI/180)*d+'px;--ty:'+Math.sin(a*Math.PI/180)*d+'px;animation:bst .85s forwards';
+    document.body.appendChild(s);setTimeout(function(){s.remove()},900);
+  }
+}
+function confetti(){
+  var cv=document.getElementById('cv');var ctx=cv.getContext('2d');cv.width=window.innerWidth;cv.height=window.innerHeight;
+  var cols=['#f8c832','#c8173a','#e85a0a','#3a8fdc','#5ad080','#c090f8','#e060a0'];
+  var p=[];for(var i=0;i<110;i++)p.push({x:Math.random()*cv.width,y:-15-Math.random()*100,vx:(Math.random()-.5)*5,vy:2+Math.random()*4,c:cols[Math.floor(Math.random()*cols.length)],w:6+Math.random()*8,h:3+Math.random()*5,r:Math.random()*360,rv:(Math.random()-.5)*9});
+  var fr=0;
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);p.forEach(function(q){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.r*Math.PI/180);ctx.fillStyle=q.c+'CC';ctx.fillRect(-q.w/2,-q.h/2,q.w,q.h);ctx.restore();q.x+=q.vx;q.y+=q.vy;q.r+=q.rv});if(++fr<200)requestAnimationFrame(draw);else ctx.clearRect(0,0,cv.width,cv.height)}
+  draw();
+}
+</script>
+
+</body>
+</html>
