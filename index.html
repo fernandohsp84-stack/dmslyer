@@ -1,0 +1,938 @@
+import { useState, useEffect, useRef, useCallback } from “react”;
+
+// ─── PALETTE & THEME ──────────────────────────────────────
+const C = {
+bg:      “#0d0d1f”,
+panel:   “#16162e”,
+card:    “#1e1e3c”,
+border:  “#2e2e5a”,
+gold:    “#f5c842”,
+goldDim: “#a88a1a”,
+crimson: “#c0183a”,
+ember:   “#e84e0f”,
+jade:    “#1db87a”,
+water:   “#3a8fd4”,
+text:    “#f0e6cc”,
+muted:   “#7a7090”,
+white:   “#fffef0”,
+};
+
+// ─── CHARACTERS (chibi SVG inline art) ───────────────────
+const CHARS = [
+{ id:“tanjiro”,  name:“Tanjiro”,   full:“Tanjiro Kamado”,    color:”#3a8fd4”, bg:”#0d2a4a”,
+breath:“Água · Sol”, rank:“Caçador”,
+svg: <TanjiroSVG /> },
+{ id:“nezuko”,   name:“Nezuko”,    full:“Nezuko Kamado”,     color:”#e06fa0”, bg:”#3a0d22”,
+breath:“Sangue Demoníaco”, rank:“Demônio”,
+svg: <NezukoSVG /> },
+{ id:“zenitsu”,  name:“Zenitsu”,   full:“Zenitsu Agatsuma”,  color:”#f5c842”, bg:”#3a2e00”,
+breath:“Trovão”, rank:“Caçador”,
+svg: <ZenitsuSVG /> },
+{ id:“inosuke”,  name:“Inosuke”,   full:“Inosuke Hashibira”, color:”#6dcf7a”, bg:”#0a2a10”,
+breath:“Besta”, rank:“Feroz”,
+svg: <InosukeSVG /> },
+{ id:“rengoku”,  name:“Rengoku”,   full:“Kyojuro Rengoku”,   color:”#e84e0f”, bg:”#3a0e00”,
+breath:“Chamas”, rank:“Hashira 🔥”,
+svg: <RengokuSVG /> },
+{ id:“giyuu”,    name:“Giyu”,      full:“Giyu Tomioka”,      color:”#3a8fd4”, bg:”#0a1a2e”,
+breath:“Água”, rank:“Hashira 💧”,
+svg: <GiyuuSVG /> },
+{ id:“shinobu”,  name:“Shinobu”,   full:“Shinobu Kocho”,     color:”#c8a0f0”, bg:”#1e0a3a”,
+breath:“Insetos”, rank:“Hashira 🦋”,
+svg: <ShinobuSVG /> },
+{ id:“muichiro”, name:“Muichiro”,  full:“Muichiro Tokito”,   color:”#90d4d4”, bg:”#0a1e22”,
+breath:“Névoa”, rank:“Hashira 🌫️”,
+svg: <MuichiroSVG /> },
+];
+
+// ─── CHIBI SVG CHARACTERS ────────────────────────────────
+function ChibiBase({ skin=”#f5d5aa”, hair=”#2a1a0a”, hairColor=”#2a1a0a”, outfit=”#1a3a5a”, accent=”#f5c842”, extras=null, eyeColor=”#4a8fd4” }) {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+{/* body */}
+<ellipse cx="40" cy="82" rx="22" ry="18" fill={outfit}/>
+{/* neck */}
+<rect x="36" y="62" width="8" height="8" rx="2" fill={skin}/>
+{/* head */}
+<ellipse cx="40" cy="50" rx="26" ry="24" fill={skin}/>
+{/* hair back */}
+<ellipse cx="40" cy="40" rx="26" ry="20" fill={hairColor}/>
+{/* face details */}
+{/* eyes */}
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill={eyeColor}/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill={eyeColor}/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+{/* nose */}
+<circle cx=“40” cy=“56” r=“1.5” fill={skin} style={{filter:“brightness(0.85)”}}/>
+{/* mouth */}
+<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+{/* cheeks */}
+<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
+<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
+{extras}
+</svg>
+);
+}
+
+function TanjiroSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a5a3a"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+<ellipse cx="40" cy="38" rx="26" ry="18" fill="#2a1a0a"/>
+{/* scar */}
+<ellipse cx="32" cy="44" rx="5" ry="4" fill="#c0183a" opacity="0.7"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#3a6a9a"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#3a6a9a"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="40" cy="56" r="1.5" fill="#e8c090"/>
+<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
+<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.35"/>
+{/* hanafuda earring */}
+<circle cx="66" cy="52" r="4" fill="#e8d0a0" stroke="#c0a060" strokeWidth="1"/>
+<circle cx="66" cy="52" r="2" fill="#c0183a"/>
+{/* sword hilt */}
+<rect x="54" y="68" width="6" height="18" rx="2" fill="#2a6a4a" stroke="#1a4a2a" strokeWidth="0.5"/>
+</svg>
+);
+}
+
+function NezukoSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#c0183a"/>
+{/* kimono pattern */}
+<ellipse cx="40" cy="82" rx="16" ry="12" fill="#e8a0b8" opacity="0.4"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+<ellipse cx="40" cy="36" rx="27" ry="20" fill="#1a0a1a"/>
+{/* hair bow */}
+<path d="M52 35 Q58 28 65 32 Q58 36 52 35" fill="#e06fa0"/>
+<path d="M52 35 Q58 42 65 38 Q58 36 52 35" fill="#e06fa0"/>
+<circle cx="57" cy="35" r="3" fill="#f090b0"/>
+{/* bamboo muzzle */}
+<rect x="28" y="56" width="24" height="9" rx="4" fill="#5a8a3a" stroke="#3a6a1a" strokeWidth="1"/>
+<line x1="36" y1="56" x2="36" y2="65" stroke="#3a6a1a" strokeWidth="0.8"/>
+<line x1="44" y1="56" x2="44" y2="65" stroke="#3a6a1a" strokeWidth="0.8"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#d060a0"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#d060a0"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<ellipse cx="27" cy="54" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+<ellipse cx="53" cy="54" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+</svg>
+);
+}
+
+function ZenitsuSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#2a1a0a"/>
+{/* yellow haori */}
+<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#e8b820" opacity="0.7"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+{/* blond spiky hair */}
+<ellipse cx="40" cy="36" rx="26" ry="18" fill="#e8c020"/>
+<path d="M14 44 Q10 30 18 28 Q16 38 22 40" fill="#e8c020"/>
+<path d="M66 44 Q70 30 62 28 Q64 38 58 40" fill="#e8c020"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#7a4a20"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#7a4a20"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<path d="M36 60 Q40 63 44 60" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.5"/>
+<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.5"/>
+{/* lightning bolt */}
+<path d="M68 42 L63 52 L67 52 L62 62" stroke="#f5c842" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+</svg>
+);
+}
+
+function InosukeSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a2a1a"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+{/* boar mask */}
+<ellipse cx="40" cy="48" rx="26" ry="24" fill="#f0ece8"/>
+{/* mask details */}
+<ellipse cx="32" cy="48" rx="5" ry="6" fill="#2a1a0a"/>
+<ellipse cx="48" cy="48" rx="5" ry="6" fill="#2a1a0a"/>
+<circle cx="31" cy="48" r="2" fill="#6a9a6a"/>
+<circle cx="47" cy="48" r="2" fill="#6a9a6a"/>
+<circle cx="31" cy="47" r="0.8" fill="white" opacity="0.8"/>
+<circle cx="47" cy="47" r="0.8" fill="white" opacity="0.8"/>
+{/* snout */}
+<ellipse cx="40" cy="56" rx="8" ry="6" fill="#e0c8b8"/>
+<circle cx="37" cy="57" r="2" fill="#c0a090"/>
+<circle cx="43" cy="57" r="2" fill="#c0a090"/>
+{/* tusks */}
+<path d="M24 62 Q18 70 20 76" stroke="#f0ece8" strokeWidth="3" fill="none" strokeLinecap="round"/>
+<path d="M56 62 Q62 70 60 76" stroke="#f0ece8" strokeWidth="3" fill="none" strokeLinecap="round"/>
+{/* hair inside mask */}
+<ellipse cx="40" cy="36" rx="24" ry="14" fill="#1a0a2a"/>
+{/* ears */}
+<ellipse cx="15" cy="46" rx="5" ry="7" fill="#f0ece8"/>
+<ellipse cx="65" cy="46" rx="5" ry="7" fill="#f0ece8"/>
+<ellipse cx="15" cy="46" rx="3" ry="5" fill="#e8a090"/>
+<ellipse cx="65" cy="46" rx="3" ry="5" fill="#e8a090"/>
+</svg>
+);
+}
+
+function RengokuSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a00"/>
+{/* flame haori */}
+<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#e84e0f" opacity="0.8"/>
+<path d="M22 72 Q24 95 40 95 Q56 95 58 72" fill="#f5c842" opacity="0.5"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+{/* flame hair */}
+<ellipse cx="40" cy="36" rx="26" ry="18" fill="#2a1000"/>
+<path d="M30 28 Q28 18 35 14 Q33 24 38 26" fill="#e84e0f"/>
+<path d="M40 26 Q38 14 44 10 Q44 22 48 24" fill="#f5c842"/>
+<path d="M50 28 Q54 18 50 12 Q48 24 44 26" fill="#e84e0f"/>
+<path d="M14 44 Q10 34 16 28 Q15 40 20 42" fill="#e84e0f"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#c05820"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#c05820"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<path d="M35 61 Q40 64 45 61" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+</svg>
+);
+}
+
+function GiyuuSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a0a"/>
+{/* split haori */}
+<path d="M18 70 Q20 98 30 98 L30 70" fill="#c0183a" opacity="0.9"/>
+<path d="M50 70 L50 98 Q60 98 62 70" fill="#1a3a6a" opacity="0.9"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+<ellipse cx="40" cy="36" rx="26" ry="18" fill="#1a1a2a"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#2a5a8a"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#2a5a8a"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+{/* stoic mouth - flat */}
+<line x1="35" y1="61" x2="45" y2="61" stroke="#b07060" strokeWidth="1.5" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.25"/>
+<ellipse cx="53" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.25"/>
+</svg>
+);
+}
+
+function ShinobuSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#1a0a2a"/>
+{/* butterfly haori */}
+<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#c8a0f0" opacity="0.6"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+<ellipse cx="40" cy="36" rx="26" ry="18" fill="#1a1a1a"/>
+{/* butterfly hair ornament */}
+<path d="M52 34 Q60 26 66 30 Q60 34 52 34" fill="#c8a0f0"/>
+<path d="M52 34 Q60 42 66 38 Q60 34 52 34" fill="#9060d0"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#8050c0"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#8050c0"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<path d="M35 61 Q40 64 45 61" stroke="#c07060" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+<ellipse cx="53" cy="56" rx="4" ry="3" fill="#e88888" opacity="0.4"/>
+</svg>
+);
+}
+
+function MuichiroSVG() {
+return (
+<svg viewBox=“0 0 80 100” width=“80” height=“100” style={{filter:“drop-shadow(0 4px 8px rgba(0,0,0,0.5))”}}>
+<ellipse cx="40" cy="82" rx="22" ry="18" fill="#0a1a1a"/>
+<path d="M18 70 Q20 98 40 98 Q60 98 62 70" fill="#4ab0b0" opacity="0.5"/>
+<rect x="36" y="62" width="8" height="8" rx="2" fill="#f5d5aa"/>
+<ellipse cx="40" cy="50" rx="26" ry="24" fill="#f5d5aa"/>
+{/* long teal hair */}
+<ellipse cx="40" cy="36" rx="26" ry="18" fill="#70c0a0"/>
+<rect x="56" y="52" width="6" height="28" rx="3" fill="#70c0a0"/>
+<ellipse cx="32" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="48" cy="50" rx="5" ry="6" fill="white"/>
+<ellipse cx="32" cy="51" rx="3.5" ry="4.5" fill="#50a0a0"/>
+<ellipse cx="48" cy="51" rx="3.5" ry="4.5" fill="#50a0a0"/>
+<circle cx="31" cy="50" r="1.5" fill="#111"/>
+<circle cx="47" cy="50" r="1.5" fill="#111"/>
+<circle cx="33" cy="48" r="1" fill="white" opacity="0.8"/>
+<circle cx="49" cy="48" r="1" fill="white" opacity="0.8"/>
+<line x1="35" y1="61" x2="45" y2="61" stroke="#b07060" strokeWidth="1.5" strokeLinecap="round"/>
+<ellipse cx="27" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.2"/>
+<ellipse cx="53" cy="56" rx="3" ry="2.5" fill="#e88888" opacity="0.2"/>
+</svg>
+);
+}
+
+// ─── PHASES DATA ──────────────────────────────────────────
+const PHASES = [
+{ num:1, title:“Primeiros Passos”, level:“NOVATO”, emoji:“🌱”, minCorrect:3,
+questions:[
+{ q:“Qual é o nome completo do protagonista de Demon Slayer?”, opts:[“Tanjiro Kamado”,“Zenitsu Agatsuma”,“Inosuke Hashibira”,“Giyu Tomioka”], ans:0, tip:“Ele carrega a caixinha da irmã nas costas!” },
+{ q:“O que aconteceu com a família de Tanjiro no início da história?”, opts:[“Mudaram de cidade”,“Foram atacados por um demônio”,“Viajaram para a capital”,“Adoeceram de gripe”], ans:1, tip:“Muzan Kibutsuji é o culpado indireto.” },
+{ q:“Quem é a irmã de Tanjiro que se torna demônio?”, opts:[“Aoi”,“Kanao”,“Nezuko”,“Makomo”], ans:2, tip:“Ela viaja numa caixinha de bambu.” },
+{ q:“Qual organização combate os demônios em Demon Slayer?”, opts:[“Anbu”,“Corpo de Caçadores de Demônios”,“Liga dos Vilões”,“Força Oculta”], ans:1, tip:“Em japonês: Kisatsutai.” },
+{ q:‘O nome japonês de Demon Slayer é “Kimetsu no ___”:’, opts:[“Yume”,“Yaiba”,“Yasha”,“Yoroi”], ans:1, tip:“Significa Lâmina em japonês.” },
+]},
+{ num:2, title:“Sopro Inicial”, level:“APRENDIZ”, emoji:“💧”, minCorrect:3,
+questions:[
+{ q:“Qual Respiração Tanjiro aprende com Sakonji Urokodaki?”, opts:[“Respiração do Fogo”,“Respiração da Água”,“Respiração do Trovão”,“Respiração do Vento”], ans:1, tip:“Flui como a água corrente!” },
+{ q:“Quantas Formas tem a Respiração da Água que Tanjiro aprende?”, opts:[“6”,“8”,“10”,“12”], ans:2, tip:“Dez técnicas aquáticas diferentes.” },
+{ q:“Quem treinou Tanjiro nas artes de Caçador de Demônios?”, opts:[“Rengoku”,“Giyu Tomioka”,“Sakonji Urokodaki”,“Kanae Kocho”], ans:2, tip:“Ele usa uma máscara de raposa tengu.” },
+{ q:“Que animal Inosuke tem como máscara?”, opts:[“Urso”,“Javali”,“Lobo”,“Tigre”], ans:1, tip:“Ele foi criado por esse animal na floresta.” },
+{ q:“Qual é o símbolo na testa de Tanjiro?”, opts:[“Lua”,“Sol”,“Cicatriz de nascença”,“Flor de cerejeira”], ans:2, tip:“Virou uma marca do Caçador com o tempo.” },
+]},
+{ num:3, title:“Os Hashira”, level:“INTERMEDIÁRIO”, emoji:“⚔️”, minCorrect:3,
+questions:[
+{ q:“Quantos Hashira (Pilares) existem no Corpo de Caçadores?”, opts:[“7”,“8”,“9”,“10”], ans:2, tip:“Nove respirações, nove pilares.” },
+{ q:“Giyu Tomioka é o Pilar de qual Respiração?”, opts:[“Fogo”,“Pedra”,“Água”,“Névoa”], ans:2, tip:“Ele ensinou a técnica a Tanjiro.” },
+{ q:“Por que Shinobu não pode decepar cabeças de demônios?”, opts:[“É proibido”,“Falta força física”,“Espada curta demais”,“Não quer”], ans:1, tip:“Por isso ela usa veneno em vez de corte.” },
+{ q:“Kyojuro Rengoku é o Pilar de qual Respiração?”, opts:[“Sol”,“Trovão”,“Chamas”,“Pedra”], ans:2, tip:“SET YOUR HEART ABLAZE!” },
+{ q:“Tengen Uzui usa duas enormes katanas encurvadas. Qual sua Respiração?”, opts:[“Dança”,“Som”,“Ritmo”,“Música”], ans:1, tip:“Ele é extravagante por natureza!” },
+]},
+{ num:4, title:“Os Doze Luas”, level:“INTERMEDIÁRIO+”, emoji:“🌙”, minCorrect:3,
+questions:[
+{ q:“Como se chamam os 12 demônios mais poderosos a serviço de Muzan?”, opts:[“Guardiões da Noite”,“Doze Luas Demoníacas”,“Legião das Trevas”,“Oni Supremos”], ans:1, tip:“Em japonês: Jūnikizuki.” },
+{ q:“Quem é o demônio criador de todos os outros demônios?”, opts:[“Kokushibo”,“Doma”,“Akaza”,“Muzan Kibutsuji”], ans:3, tip:“Ele existe há mais de 1000 anos.” },
+{ q:“Akaza é qual número entre as Luas Superiores?”, opts:[“1”,“2”,“3”,“4”], ans:2, tip:“Ele derrotou Rengoku no Trem Infinito.” },
+{ q:“O que os demônios precisam evitar para não morrer?”, opts:[“Fogo e água”,“Sal e alho”,“Luz do sol e decapitação”,“Orações e cruzes”], ans:2, tip:“A luz solar os destrói em segundos.” },
+{ q:“Os Doze Luas são divididos em Luas Superiores e Luas ___:”, opts:[“Inferiores”,“Menores”,“Fracas”,“Comuns”], ans:0, tip:“Kizuki Superior e Kizuki Inferior.” },
+]},
+{ num:5, title:“O Trem Infinito”, level:“MÉDIO”, emoji:“🚂”, minCorrect:4,
+questions:[
+{ q:“No arco do Trem Infinito, qual Hashira acompanha o grupo?”, opts:[“Giyu”,“Shinobu”,“Rengoku”,“Tengen”], ans:2, tip:“O Pilar das Chamas enfrenta Akaza.” },
+{ q:“Qual é o poder de Enmu no arco do Trem Infinito?”, opts:[“Controlar o fogo”,“Criar sonhos e manipular o sono”,“Absorver almas”,“Regeneração infinita”], ans:1, tip:“Ele adormece os passageiros do trem.” },
+{ q:“Qual amigo de Tanjiro fica dormindo involuntariamente no trem?”, opts:[“Inosuke”,“Zenitsu”,“Nezuko”,“Giyu”], ans:1, tip:“Ele ronca bastante!” },
+{ q:“No combate final do trem, quem Rengoku enfrenta?”, opts:[“Muzan”,“Doma”,“Akaza”,“Kokushibo”], ans:2, tip:“Luna Superior Três.” },
+{ q:“O que caracteriza a Marca do Caçador que surge em alguns personagens?”, opts:[“Uma tatuagem escolhida”,“Marca que surge em batalha extrema”,“Selo mágico de Urokodaki”,“Um emblema do Corpo”], ans:1, tip:“Tanjiro e Rengoku apresentam sinais disso.” },
+]},
+{ num:6, title:“Distrito do Entretenimento”, level:“AVANÇADO”, emoji:“🎭”, minCorrect:4,
+questions:[
+{ q:“Qual Hashira lidera a missão no Distrito do Entretenimento?”, opts:[“Mitsuri”,“Tengen Uzui”,“Sanemi”,“Muichiro”], ans:1, tip:“Flamboyant ninja com três esposas!” },
+{ q:“Quais demônios-irmãos os heróis enfrentam no Distrito?”, opts:[“Gyutaro e Daki”,“Akaza e Doma”,“Rui e sua família”,“Kokushibo e Doma”], ans:0, tip:“Luas Superiores Seis, em um só par.” },
+{ q:“Zenitsu domina quantas formas da Respiração do Trovão?”, opts:[“1”,“3”,“5”,“7”], ans:0, tip:“Ele usa a Primeira Forma: Trovão Furioso.” },
+{ q:“Qual é o nome da Primeira Forma da Respiração do Trovão de Zenitsu?”, opts:[“Raio Infinito”,“Trovão Furioso (Thunderclap and Flash)”,“Tempestade Elétrica”,“Descarga Divina”], ans:1, tip:“É quase instantânea como um raio.” },
+{ q:“Como o estilo de luta de Inosuke é único em relação ao seu corpo?”, opts:[“Usa dois estilos ao mesmo tempo”,“Move órgãos internos e distorce a percepção inimiga”,“Luta sem ver”,“Copia os inimigos”], ans:1, tip:“Ele treinou os músculos do tórax para isso.” },
+]},
+{ num:7, title:“Vila dos Ferreiros”, level:“EXPERIENTE”, emoji:“⚒️”, minCorrect:4,
+questions:[
+{ q:“Como se chama o jovem ferreiro amigo de Tanjiro na Vila dos Ferreiros?”, opts:[“Haganezuka”,“Kotetsu”,“Hotaru”,“Kanamori”], ans:1, tip:“Ele usa máscara e treina Tanjiro com o boneco.” },
+{ q:“Qual Lua Superior aparece na Vila dos Ferreiros para roubar o Espelho do Sangue?”, opts:[“Hantengu”,“Gyokko”,“Doma”,“Akaza”], ans:1, tip:“Ele guarda criaturas dentro de potes.” },
+{ q:“Muichiro Tokito desperta sua Marca do Caçador ao lutar contra quem?”, opts:[“Hantengu”,“Gyokko”,“Kokushibo”,“Akaza”], ans:1, tip:“O Pilar da Névoa com apenas 14 anos.” },
+{ q:“O Boneco de Treinamento Yoriichi Type Zero representa qual lendário Caçador?”, opts:[“Urokodaki”,“Yoriichi Tsugikuni”,“Kokushibo”,“Um Hashira sem nome”], ans:1, tip:“O maior espadachim da história.” },
+{ q:“Qual é o material especial das espadas dos Caçadores que permite matar demônios?”, opts:[“Ouro purificado”,“Aço solar (Nichirin)”,“Prata sagrada”,“Pedra do trovão”], ans:1, tip:“Absorve a luz solar durante a forja.” },
+]},
+{ num:8, title:“Castelo da Lua Infinita”, level:“ÉLITE”, emoji:“🌕”, minCorrect:4,
+questions:[
+{ q:“Quem é Yoriichi Tsugikuni?”, opts:[“O primeiro Hashira”,“O criador da Respiração Total do Sol e o mais poderoso Caçador”,“O irmão de Muzan”,“O mestre de Urokodaki”], ans:1, tip:“Ele quase matou Muzan sozinho.” },
+{ q:“Qual é a relação de Kokushibo com Yoriichi?”, opts:[“Eram melhores amigos”,“São gêmeos — Kokushibo era o irmão de Yoriichi”,“Eram inimigos desde crianças”,“Sem relação”], ans:1, tip:“Michikatsu Tsugikuni — o irmão invejoso.” },
+{ q:“A Respiração Total do Sol é a origem de todas as outras Respirações?”, opts:[“Verdadeiro”,“Falso”,“Apenas metade das Respirações”,“Só da Respiração de Água”], ans:0, tip:“Todas derivam da Respiração do Sol.” },
+{ q:“O que é o Castelo do Labirinto Demoníaco de Muzan?”, opts:[“Fortaleza nas montanhas”,“Dimensão ilusória controlada por Nakime”,“Uma caverna subterrânea”,“Um templo amaldiçoado”], ans:1, tip:“Nakime controla o espaço com seu biwa.” },
+{ q:“Qual habilidade especial Nezuko desenvolve única entre todos os demônios?”, opts:[“Voar”,“Resistência à luz solar”,“Telepatia”,“Controlar outros demônios”], ans:1, tip:“Nenhum outro demônio conseguiu isso.” },
+]},
+{ num:9, title:“Batalha Final”, level:“MESTRE”, emoji:“💀”, minCorrect:4,
+questions:[
+{ q:“Qual é a fraqueza crucial de Muzan que os Caçadores exploram no clímax?”, opts:[“Espadas de ouro”,“O amanhecer — ele não pode ficar no sol”,“Água benta”,“Chamas do Pilar do Fogo”], ans:1, tip:“Eles precisam mantê-lo lutando até o amanhecer.” },
+{ q:“A Dança do Deus do Fogo é a técnica ancestral de qual Respiração?”, opts:[“Respiração das Chamas”,“Respiração do Sol”,“Respiração da Água”,“Respiração da Lua”], ans:1, tip:“Tanjiro a usa imitando a dança do pai.” },
+{ q:“O que acontece com Muzan ao ser exposto à luz do sol?”, opts:[“Foge para outro reino”,“É destruído completamente”,“Vira humano”,“Hiberna por séculos”], ans:1, tip:“Fim de mais de mil anos de existência.” },
+{ q:“Qual personagem injeta veneno no corpo de Muzan para diminuir sua regeneração?”, opts:[“Kanao”,“Shinobu (veneno guardado em seu corpo)”,“Aoi”,“Doma após ser derrotado”], ans:1, tip:“Shinobu planejou isso muito antes de morrer.” },
+{ q:“Qual herói fica temporariamente transformado por Muzan antes de ser curado?”, opts:[“Zenitsu”,“Inosuke”,“Tanjiro”,“Giyu”], ans:2, tip:“Muzan tentou fazê-lo seu sucessor.” },
+]},
+{ num:10, title:“Lâmina do Caçador Supremo”, level:“LENDA ☀️”, emoji:“☀️”, minCorrect:5,
+questions:[
+{ q:“Como termina a história de Tanjiro Kamado no final do mangá?”, opts:[“Torna-se novo líder do Corpo”,“Morre heroicamente”,“Vira demônio temporariamente e depois é curado, vivendo vida normal”,“Desaparece misteriosamente”], ans:2, tip:“Muzan tentou transformá-lo em seu sucessor.” },
+{ q:“O epílogo de Demon Slayer mostra os descendentes. Em qual época se passa?”, opts:[“50 anos depois”,“100 anos depois”,“Era moderna contemporânea”,“500 anos depois”], ans:2, tip:“Há ônibus e smartphones no epílogo.” },
+{ q:“Douma, Luna Superior Dois, é derrotado por qual dupla?”, opts:[“Tanjiro e Giyu”,“Kanao e Inosuke”,“Zenitsu e Tengen”,“Sanemi e Muichiro”], ans:1, tip:“Vingança por Shinobu Kocho.” },
+{ q:“Qual é a moral central que Tanjiro carrega sobre o valor da vida?”, opts:[“Odeie os demônios sem piedade”,“Mesmo demônios um dia foram humanos e merecem alguma compaixão”,“A força é o que importa”,“Os fortes sobrevivem”], ans:1, tip:“Ele chora pelos demônios que mata, sabendo sua história.” },
+{ q:“Quem é Tamayo e qual sua importância para a derrota de Muzan?”, opts:[“Uma humana que descobriu o veneno”,“Demônia médica que trabalhou anos num antídoto para reverter a demonização”,“A mãe de Tanjiro reencarnada”,“Uma Hashira aposentada”], ans:1, tip:“Ela e Yushiro são demônios aliados dos Caçadores.” },
+{ q:”[BÔNUS] Qual é o nome completo das 13 Formas de Tanjiro?”, opts:[“Respiração do Sol – Sequência Celestial”,“Respiração Hinokami Kagura – Dança Circular”,“Respiração Total do Sol – Todas as 13 Formas em Ciclo Contínuo”,“Respiração Divina do Fogo”], ans:2, tip:“A décima terceira forma conecta todas as anteriores.” },
+]},
+];
+
+function getRank(score) {
+if (score >= 13000) return { name:“Respiração Total do Sol”, label:“LENDA SUPREMA”, color:”#FF8C00”, bg:“rgba(255,140,0,0.2)” };
+if (score >= 9500)  return { name:“Hashira”, label:“PILAR”, color:”#f5c842”, bg:“rgba(245,200,66,0.15)” };
+if (score >= 6500)  return { name:“Caçador Élite”, label:“ÉLITE”, color:”#c8a0f0”, bg:“rgba(200,160,240,0.15)” };
+if (score >= 4000)  return { name:“Caçador Experiente”, label:“EXPERIENTE”, color:”#6dcf7a”, bg:“rgba(109,207,122,0.15)” };
+if (score >= 2000)  return { name:“Caçador Iniciante”, label:“INICIANTE”, color:”#3a8fd4”, bg:“rgba(58,143,212,0.15)” };
+return { name:“Estudante de Respiração”, label:“NOVATO”, color:”#8B7060”, bg:“rgba(139,112,96,0.15)” };
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────
+function useConfetti(active) {
+const ref = useRef(null);
+useEffect(() => {
+if (!active || !ref.current) return;
+const canvas = ref.current;
+const ctx = canvas.getContext(“2d”);
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
+const colors = [”#f5c842”,”#c0183a”,”#e84e0f”,”#3a8fd4”,”#6dcf7a”,”#c8a0f0”,”#e06fa0”];
+const pieces = Array.from({length:100}, () => ({
+x: Math.random()*canvas.width, y: -20-Math.random()*100,
+vx:(Math.random()-0.5)*5, vy:2+Math.random()*4,
+color:colors[Math.floor(Math.random()*colors.length)],
+w:6+Math.random()*8, h:4+Math.random()*5,
+rot:Math.random()*360, rv:(Math.random()-0.5)*8,
+}));
+let raf, frame=0;
+const draw = () => {
+ctx.clearRect(0,0,canvas.width,canvas.height);
+pieces.forEach(p => {
+ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+ctx.fillStyle=p.color+“CC”; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+ctx.restore();
+p.x+=p.vx; p.y+=p.vy; p.rot+=p.rv;
+});
+if (++frame < 200) raf = requestAnimationFrame(draw);
+else ctx.clearRect(0,0,canvas.width,canvas.height);
+};
+draw();
+return () => cancelAnimationFrame(raf);
+}, [active]);
+return ref;
+}
+
+// ─── TIMER HOOK ───────────────────────────────────────────
+function useTimer(active, seconds, onEnd) {
+const [val, setVal] = useState(seconds);
+const ref = useRef(null);
+useEffect(() => {
+if (!active) { clearInterval(ref.current); return; }
+setVal(seconds);
+ref.current = setInterval(() => {
+setVal(v => { if (v <= 1) { clearInterval(ref.current); onEnd(); return 0; } return v-1; });
+}, 1000);
+return () => clearInterval(ref.current);
+}, [active]);
+return val;
+}
+
+// ─── MAIN APP ─────────────────────────────────────────────
+export default function App() {
+const [screen, setScreen] = useState(“home”); // home | quiz | phaseclear | gameover | final | ranking
+const [playerName, setPlayerName] = useState(””);
+const [charId, setCharId] = useState(null);
+const [phase, setPhase] = useState(0);
+const [qIdx, setQIdx] = useState(0);
+const [score, setScore] = useState(0);
+const [correct, setCorrect] = useState(0);
+const [answered, setAnswered] = useState(false);
+const [chosen, setChosen] = useState(null);
+const [timerActive, setTimerActive] = useState(false);
+const [confettiOn, setConfettiOn] = useState(false);
+const [rankData] = useState(() => {
+try { return JSON.parse(localStorage.getItem(“ds_rank2025”)||”[]”); } catch { return []; }
+});
+const [allRanks, setAllRanks] = useState(rankData);
+const confRef = useConfetti(confettiOn);
+
+const ch = CHARS.find(c=>c.id===charId);
+const phaseData = PHASES[phase];
+const qData = phaseData?.questions[qIdx];
+
+const handleTimeout = useCallback(() => {
+if (answered) return;
+setAnswered(true); setChosen(-1); setTimerActive(false);
+}, [answered]);
+
+const timeLeft = useTimer(timerActive && !answered, 30, handleTimeout);
+
+function startGame() {
+if (!playerName.trim()) return alert(“Digite seu nome!”);
+if (!charId) return alert(“Escolha um personagem!”);
+setPhase(0); setQIdx(0); setScore(0); setCorrect(0);
+setAnswered(false); setChosen(null); setTimerActive(true);
+setScreen(“quiz”);
+}
+
+function pick(i) {
+if (answered) return;
+setAnswered(true); setChosen(i); setTimerActive(false);
+if (i === qData.ans) {
+const bonus = Math.ceil(timeLeft/30*50);
+setScore(s => s + 100 + bonus);
+setCorrect(c => c + 1);
+}
+}
+
+function next() {
+const nextQ = qIdx + 1;
+if (nextQ >= phaseData.questions.length) {
+const passed = (correct + (chosen === qData.ans ? 1 : 0)) >= phaseData.minCorrect;
+// recalculate correct count including this answer
+const finalCorrect = chosen === qData.ans ? correct + 1 : correct;
+if (passed || finalCorrect >= phaseData.minCorrect) {
+setConfettiOn(true); setTimeout(()=>setConfettiOn(false),3500);
+if (phase === PHASES.length-1) {
+saveScore(); setScreen(“final”);
+} else {
+setScreen(“phaseclear”);
+}
+} else {
+setScreen(“gameover”);
+}
+} else {
+setQIdx(nextQ); setAnswered(false); setChosen(null); setTimerActive(true);
+}
+}
+
+function advPhase() {
+setPhase(p=>p+1); setQIdx(0); setCorrect(0);
+setAnswered(false); setChosen(null); setTimerActive(true);
+setScreen(“quiz”);
+}
+
+function retry() {
+setQIdx(0); setCorrect(0);
+setAnswered(false); setChosen(null); setTimerActive(true);
+setScreen(“quiz”);
+}
+
+function saveScore() {
+const entry = { name:playerName, charId, score,
+charName:ch?.full, charAvatar:ch?.svg,
+date:new Date().toLocaleDateString(“pt-BR”) };
+const updated = […allRanks, entry].sort((a,b)=>b.score-a.score).slice(0,20);
+setAllRanks(updated);
+try { localStorage.setItem(“ds_rank2025”, JSON.stringify(updated)); } catch {}
+}
+
+function restart() {
+setPlayerName(””); setCharId(null); setScreen(“home”);
+}
+
+const pct = ((phase * (phaseData?.questions.length||5) + qIdx) / (PHASES.length * 5)) * 100;
+const rank = getRank(score);
+
+// ── STYLES ──
+const S = {
+root: { minHeight:“100vh”, background:`radial-gradient(ellipse at 20% 0%, #1a0a1e 0%, #0d0d1f 50%, #000814 100%)`,
+fontFamily:”‘Segoe UI’, system-ui, sans-serif”, color:C.text, display:“flex”,
+flexDirection:“column”, alignItems:“center”, justifyContent:“center”,
+padding:“16px”, position:“relative”, overflow:“hidden” },
+confCanvas: { position:“fixed”, inset:0, pointerEvents:“none”, zIndex:999, width:“100%”, height:“100%” },
+// decorative bg kanji
+bgKanji: { position:“fixed”, top:“50%”, left:“50%”, transform:“translate(-50%,-50%)”,
+fontSize:“40vw”, opacity:0.03, pointerEvents:“none”, zIndex:0,
+fontFamily:“serif”, color:”#fff”, userSelect:“none”, lineHeight:1 },
+card: { background:`linear-gradient(145deg, #1e1e3c, #16162e)`,
+border:`1px solid rgba(245,200,66,0.18)`, borderRadius:20,
+padding:“28px 24px”, maxWidth:680, width:“100%”, position:“relative”, zIndex:1,
+boxShadow:“0 20px 60px rgba(0,0,0,0.7), inset 0 1px 0 rgba(245,200,66,0.1)” },
+cardAccent: { position:“absolute”, left:0, top:0, width:4, height:“100%”,
+background:`linear-gradient(180deg, ${C.gold}, ${C.crimson}, ${C.gold})`,
+borderRadius:“20px 0 0 20px” },
+title: { fontFamily:“Georgia, serif”, fontSize:“clamp(1.6rem,5vw,2.8rem)”,
+fontWeight:900, color:C.gold, textShadow:`0 0 30px rgba(245,200,66,0.5), 0 2px 4px rgba(0,0,0,0.8)`,
+textAlign:“center”, letterSpacing:2, lineHeight:1.2 },
+sub: { textAlign:“center”, color:C.crimson, letterSpacing:8, fontSize:“0.8rem”,
+fontFamily:“serif”, marginTop:4 },
+line: { height:2, background:`linear-gradient(90deg, transparent, ${C.gold}, ${C.crimson}, ${C.gold}, transparent)`,
+margin:“12px 0” },
+label: { display:“block”, fontSize:“0.7rem”, color:C.goldDim, letterSpacing:3,
+textTransform:“uppercase”, marginBottom:8, fontFamily:“serif” },
+input: { width:“100%”, padding:“12px 16px”, background:“rgba(255,255,255,0.05)”,
+border:`1px solid rgba(245,200,66,0.3)`, borderRadius:10, color:C.white,
+fontSize:“1rem”, outline:“none”, boxSizing:“border-box” },
+btnPrimary: { padding:“14px 28px”, background:`linear-gradient(135deg, ${C.crimson}, #8a0020)`,
+color:C.gold, border:“none”, borderRadius:10, fontWeight:700, fontSize:“1rem”,
+cursor:“pointer”, width:“100%”, letterSpacing:1, fontFamily:“Georgia, serif”,
+boxShadow:`0 4px 20px rgba(192,24,58,0.4)`, transition:“all .2s” },
+btnGold: { padding:“12px 28px”, background:`linear-gradient(135deg, ${C.goldDim}, ${C.gold})`,
+color:”#1a1000”, border:“none”, borderRadius:10, fontWeight:700, fontSize:“0.95rem”,
+cursor:“pointer”, letterSpacing:1, fontFamily:“Georgia, serif” },
+btnOutline: { padding:“10px 20px”, background:“transparent”,
+color:C.gold, border:`2px solid rgba(245,200,66,0.4)`, borderRadius:10,
+fontSize:“0.8rem”, cursor:“pointer”, fontFamily:“Georgia, serif” },
+};
+
+// ── SCREENS ──
+return (
+<div style={S.root}>
+<canvas ref={confRef} style={S.confCanvas}/>
+<div style={S.bgKanji}>鬼</div>
+
+```
+  {/* ── HOME ── */}
+  {screen==="home" && (
+    <div style={S.card}>
+      <div style={S.cardAccent}/>
+      <div style={{textAlign:"center",marginBottom:16}}>
+        <div style={{fontSize:"3rem",marginBottom:8,filter:"drop-shadow(0 0 12px rgba(232,78,15,0.7))"}}>⚔️</div>
+        <div style={S.line}/>
+        <h1 style={S.title}>Demon Slayer<br/>Quiz</h1>
+        <p style={S.sub}>鬼 滅 の 刃</p>
+        <div style={S.line}/>
+        <p style={{color:C.muted,fontSize:"0.85rem",marginTop:8,lineHeight:1.6}}>
+          10 fases progressivas • Timer de 30s • Ranking de Caçadores
+        </p>
+      </div>
+
+      <div style={{marginBottom:18}}>
+        <label style={S.label}>⚔ Seu nome de guerreiro</label>
+        <input style={S.input} value={playerName}
+          onChange={e=>setPlayerName(e.target.value)} maxLength={20}
+          placeholder="Ex: Tanjiro Kamado..." onKeyDown={e=>e.key==="Enter"&&startGame()}/>
+      </div>
+
+      <div style={{marginBottom:24}}>
+        <label style={S.label}>🗡 Escolha seu personagem</label>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>
+          {CHARS.map(c=>(
+            <div key={c.id} onClick={()=>setCharId(c.id)}
+              style={{border:`2px solid ${charId===c.id ? c.color : "rgba(255,255,255,0.1)"}`,
+                borderRadius:14, padding:"10px 6px", textAlign:"center", cursor:"pointer",
+                background: charId===c.id ? c.bg : "rgba(255,255,255,0.03)",
+                boxShadow: charId===c.id ? `0 0 18px ${c.color}55` : "none",
+                transition:"all .2s", position:"relative",transform: charId===c.id ? "translateY(-4px)":"none"}}>
+              {charId===c.id && <div style={{position:"absolute",top:4,right:6,color:c.color,fontSize:"0.75rem"}}>✓</div>}
+              <div style={{display:"flex",justifyContent:"center",marginBottom:4}}>{c.svg}</div>
+              <div style={{fontSize:"0.72rem",fontWeight:700,color:C.white,lineHeight:1.2}}>{c.name}</div>
+              <div style={{fontSize:"0.58rem",color:c.color,marginTop:3,fontWeight:700}}>{c.rank}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button style={S.btnPrimary} onClick={startGame}
+        onMouseEnter={e=>e.target.style.transform="translateY(-2px)"}
+        onMouseLeave={e=>e.target.style.transform="none"}>
+        ⚔️ &nbsp;COMEÇAR MISSÃO
+      </button>
+      <div style={{textAlign:"center",marginTop:10}}>
+        <button style={{...S.btnOutline,fontSize:"0.75rem",padding:"8px 16px"}} onClick={()=>setScreen("ranking")}>
+          🏆 Ver Ranking
+        </button>
+      </div>
+    </div>
+  )}
+
+  {/* ── QUIZ ── */}
+  {screen==="quiz" && qData && (
+    <div style={{...S.card,maxWidth:680}}>
+      <div style={S.cardAccent}/>
+      {/* header */}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,
+          padding:"5px 12px",borderRadius:20,fontSize:"0.78rem",fontWeight:700,
+          background:ch?.bg, border:`1px solid ${ch?.color}60`, color:ch?.color}}>
+          <span style={{fontSize:"0.6rem",width:8,height:8,borderRadius:"50%",
+            background:ch?.color,display:"inline-block",
+            animation:"pulse 1.5s ease-in-out infinite"}}/>
+          {ch?.svg && <span style={{width:28,height:36,display:"inline-flex",alignItems:"center"}}>
+            <svg viewBox="30 35 20 25" width="20" height="24">{ch.svg.props.children}</svg>
+          </span>}
+          {playerName}
+        </div>
+        <div style={{fontFamily:"Georgia,serif",fontSize:"0.9rem",color:C.gold}}>
+          ⭐ {score}
+        </div>
+      </div>
+
+      {/* progress */}
+      <div style={{marginBottom:16}}>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+          <span style={{fontSize:"0.72rem",color:C.gold,fontFamily:"serif"}}>
+            Fase {phaseData.num}/10 — {phaseData.title}
+          </span>
+          <span style={{fontSize:"0.72rem",color:C.muted}}>Q {qIdx+1}/{phaseData.questions.length}</span>
+        </div>
+        <div style={{height:6,background:"rgba(255,255,255,0.08)",borderRadius:3,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${pct}%`,
+            background:`linear-gradient(90deg,${C.crimson},${C.gold})`,
+            borderRadius:3,transition:"width 0.4s"}}/>
+        </div>
+        <div style={{display:"flex",gap:5,marginTop:8,flexWrap:"wrap"}}>
+          {PHASES.map((_,i)=>(
+            <div key={i} style={{width:22,height:22,borderRadius:"50%",
+              display:"flex",alignItems:"center",justifyContent:"center",
+              fontSize:"0.58rem",fontFamily:"serif",
+              background: i<phase ? C.gold : i===phase ? "transparent" : "transparent",
+              color: i<phase ? "#1a0a00" : i===phase ? C.crimson : C.muted,
+              border: `2px solid ${i<phase ? C.gold : i===phase ? C.crimson : "rgba(255,255,255,0.15)"}`,
+              boxShadow: i===phase ? `0 0 10px ${C.crimson}80` : "none"
+            }}>{i+1}</div>
+          ))}
+        </div>
+      </div>
+
+      {/* timer */}
+      <div style={{display:"flex",justifyContent:"center",marginBottom:16}}>
+        <div style={{width:52,height:52,borderRadius:"50%",
+          border:`3px solid ${timeLeft<=10 ? C.crimson : "rgba(245,200,66,0.3)"}`,
+          display:"flex",alignItems:"center",justifyContent:"center",
+          fontFamily:"Georgia,serif",fontSize:"1.1rem",
+          color: timeLeft<=10 ? C.crimson : C.gold,
+          background:"rgba(0,0,0,0.4)",
+          boxShadow: timeLeft<=10 ? `0 0 16px ${C.crimson}80` : "none",
+          transition:"all 0.3s"}}>
+          {answered ? "—" : timeLeft}
+        </div>
+      </div>
+
+      {/* phase banner */}
+      <div style={{textAlign:"center",padding:"10px 12px",borderRadius:10,marginBottom:14,
+        background:"linear-gradient(135deg,rgba(192,24,58,0.2),rgba(245,200,66,0.08))",
+        border:"1px solid rgba(245,200,66,0.12)"}}>
+        <div style={{fontSize:"0.65rem",color:C.goldDim,letterSpacing:4,fontFamily:"serif"}}>
+          FASE {phaseData.num} — {phaseData.level}
+        </div>
+        <div style={{fontSize:"clamp(0.85rem,2.5vw,1.05rem)",color:C.gold,fontFamily:"serif",marginTop:3}}>
+          {phaseData.emoji} {phaseData.title}
+        </div>
+      </div>
+
+      <p style={{textAlign:"center",color:C.muted,fontSize:"0.7rem",marginBottom:10,letterSpacing:2}}>
+        Questão {qIdx+1} de {phaseData.questions.length}
+      </p>
+      <p style={{textAlign:"center",fontSize:"clamp(0.95rem,3vw,1.15rem)",
+        color:C.white,lineHeight:1.65,marginBottom:20,fontFamily:"serif",padding:"0 4px"}}>
+        {qData.q}
+      </p>
+
+      {/* options */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+        {["A","B","C","D"].map((ltr,i)=>{
+          const isAns = i===qData.ans;
+          const isChosen = i===chosen;
+          let bg = "rgba(255,255,255,0.04)";
+          let border = "rgba(255,255,255,0.12)";
+          let col = C.text;
+          if (answered) {
+            if (isAns) { bg="rgba(29,184,122,0.18)"; border=C.jade; col="#7fffd4"; }
+            else if (isChosen&&!isAns) { bg="rgba(192,24,58,0.2)"; border=C.crimson; col="#ff9090"; }
+          }
+          return (
+            <button key={i} disabled={answered} onClick={()=>pick(i)}
+              style={{padding:"13px 14px",border:`2px solid ${border}`,borderRadius:10,
+                background:bg, color:col, cursor:answered?"default":"pointer",
+                textAlign:"left",transition:"all .18s",fontSize:"0.88rem",lineHeight:1.4,
+                display:"flex",alignItems:"flex-start",gap:9}}
+              onMouseEnter={e=>{if(!answered)e.currentTarget.style.transform="translateX(3px)"}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="none"}}>
+              <span style={{width:22,height:22,borderRadius:"50%",flexShrink:0,
+                border:`1px solid rgba(245,200,66,0.35)`,background:"rgba(245,200,66,0.1)",
+                display:"inline-flex",alignItems:"center",justifyContent:"center",
+                fontSize:"0.62rem",color:C.goldDim,fontFamily:"serif",marginTop:1}}>
+                {ltr}
+              </span>
+              {qData.opts[i]}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* feedback */}
+      {answered && (
+        <div style={{padding:"12px 16px",borderRadius:10,marginBottom:14,
+          background: chosen===qData.ans ? "rgba(29,184,122,0.12)" : "rgba(192,24,58,0.15)",
+          border: `1px solid ${chosen===qData.ans ? C.jade : C.crimson}60`,
+          color: chosen===qData.ans ? "#7fffd4" : "#ffaaaa",
+          fontSize:"0.88rem",lineHeight:1.55,fontFamily:"serif",
+          animation:"slideUp .3s ease"}}>
+          {chosen===-1 ? "⏰ Tempo esgotado!" : chosen===qData.ans
+            ? `✅ Correto! +${100+Math.ceil(timeLeft/30*50)} pts`
+            : `❌ Errou!`}
+          {chosen!==qData.ans && chosen!==-1 && <> A resposta era: <strong>{qData.opts[qData.ans]}</strong></>}
+          {chosen===-1 && <> A resposta era: <strong>{qData.opts[qData.ans]}</strong></>}
+          <br/><small style={{opacity:0.7,fontSize:"0.76rem"}}>💡 {qData.tip}</small>
+        </div>
+      )}
+
+      {answered && (
+        <div style={{textAlign:"center"}}>
+          <button style={S.btnGold} onClick={next}>
+            {qIdx+1 >= phaseData.questions.length ? "Ver Resultado da Fase →" : "Próxima →"}
+          </button>
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* ── PHASE CLEAR ── */}
+  {screen==="phaseclear" && (
+    <div style={{...S.card,maxWidth:480,textAlign:"center"}}>
+      <div style={S.cardAccent}/>
+      <div style={{fontSize:"4.5rem",marginBottom:12}}>{phaseData?.emoji}</div>
+      <div style={S.line}/>
+      <h2 style={{...S.title,fontSize:"1.8rem",marginBottom:10}}>⚔️ Fase Superada!</h2>
+      <p style={{color:C.muted,fontFamily:"serif",marginBottom:18,lineHeight:1.6}}>
+        {ch?.name} completou <strong style={{color:C.gold}}>{phaseData?.title}</strong><br/>
+        Acertos: {correct}/{phaseData?.questions.length} · Score: <strong style={{color:C.gold}}>{score}</strong>
+      </p>
+      <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap",marginBottom:22}}>
+        {["⭐ "+score+" pts","✅ "+correct+" acertos","🏅 "+phaseData?.title].map((c,i)=>(
+          <span key={i} style={{padding:"5px 14px",borderRadius:20,fontSize:"0.75rem",fontFamily:"serif",
+            border:"1px solid rgba(245,200,66,0.3)",background:"rgba(245,200,66,0.08)",color:C.gold}}>
+            {c}
+          </span>
+        ))}
+      </div>
+      <button style={{...S.btnPrimary,marginBottom:10}} onClick={advPhase}>
+        ▶ Próxima Fase
+      </button>
+      <button style={{...S.btnOutline,padding:"8px 20px",fontSize:"0.78rem"}} onClick={()=>setScreen("ranking")}>
+        🏆 Ver Ranking
+      </button>
+    </div>
+  )}
+
+  {/* ── GAME OVER ── */}
+  {screen==="gameover" && (
+    <div style={{...S.card,maxWidth:420,textAlign:"center"}}>
+      <div style={S.cardAccent}/>
+      <div style={{fontSize:"4rem",marginBottom:12}}>💀</div>
+      <h2 style={{fontFamily:"Georgia,serif",fontSize:"1.8rem",color:C.crimson,marginBottom:12}}>
+        Missão Falhou!
+      </h2>
+      <p style={{color:C.muted,fontFamily:"serif",lineHeight:1.6,marginBottom:22}}>
+        Você acertou {correct}/{phaseData?.questions.length} na fase <strong>{phaseData?.title}</strong>.<br/>
+        Mínimo necessário: {phaseData?.minCorrect} acertos.
+      </p>
+      <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+        <button style={S.btnPrimary} onClick={retry}>🔄 Tentar Novamente</button>
+        <button style={S.btnOutline} onClick={restart}>🏠 Início</button>
+      </div>
+    </div>
+  )}
+
+  {/* ── FINAL ── */}
+  {screen==="final" && (
+    <div style={{...S.card,maxWidth:500,textAlign:"center"}}>
+      <div style={S.cardAccent}/>
+      <div style={{fontSize:"4.5rem",marginBottom:8}}>☀️</div>
+      <div style={S.line}/>
+      <h2 style={{...S.title,fontSize:"1.7rem",marginBottom:8}}>Missão Completa!</h2>
+      <p style={{color:C.muted,fontFamily:"serif",marginBottom:10}}>
+        {ch?.name} completou todas as 10 fases!
+      </p>
+      <div style={{fontSize:"3.5rem",color:C.gold,fontFamily:"Georgia,serif",
+        textShadow:`0 0 30px rgba(245,200,66,0.5)`,margin:"8px 0"}}>
+        {score}
+      </div>
+      <p style={{color:C.muted,fontSize:"0.8rem",marginBottom:16}}>pontos totais</p>
+      <div style={{padding:"16px 28px",borderRadius:14,margin:"0 auto 18px",maxWidth:280,
+        background:rank.bg, border:`2px solid ${rank.color}`}}>
+        <div style={{fontSize:"0.7rem",color:rank.color,letterSpacing:4,fontFamily:"serif",marginBottom:6}}>
+          {rank.label}
+        </div>
+        <div style={{fontSize:"1.4rem",fontFamily:"Georgia,serif",color:rank.color,fontWeight:900}}>
+          {rank.name}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+        <button style={S.btnPrimary} onClick={()=>setScreen("ranking")}>🏆 Ranking</button>
+        <button style={S.btnOutline} onClick={restart}>🔄 Jogar Novamente</button>
+      </div>
+    </div>
+  )}
+
+  {/* ── RANKING ── */}
+  {screen==="ranking" && (
+    <div style={{...S.card,maxWidth:560}}>
+      <div style={S.cardAccent}/>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+        <h2 style={{fontFamily:"Georgia,serif",fontSize:"1.3rem",color:C.gold}}>🏆 Ranking de Caçadores</h2>
+        <button style={S.btnOutline} onClick={()=>setScreen(screen==="ranking" ? "home" : screen)}>← Voltar</button>
+      </div>
+      <div style={S.line}/>
+      <div style={{maxHeight:400,overflowY:"auto",paddingRight:4}}>
+        {allRanks.length===0 ? (
+          <p style={{textAlign:"center",color:C.muted,padding:24,fontFamily:"serif"}}>
+            Nenhuma pontuação ainda. Seja o primeiro!
+          </p>
+        ) : allRanks.map((r,i)=>{
+          const rk = getRank(r.score);
+          const medals = ["🥇","🥈","🥉"];
+          const topChar = CHARS.find(c=>c.id===r.charId);
+          return (
+            <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 14px",
+              borderRadius:10,marginBottom:7,
+              background: i===0?"rgba(245,200,66,0.1)":i===1?"rgba(192,192,192,0.08)":i===2?"rgba(205,127,50,0.08)":"rgba(255,255,255,0.03)",
+              border:`1px solid ${i<3 ? rk.color+"40":"rgba(255,255,255,0.08)"}`}}>
+              <div style={{fontFamily:"serif",fontSize:"1rem",minWidth:28,textAlign:"center"}}>
+                {medals[i]||i+1}
+              </div>
+              <div style={{width:28,height:36,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                {topChar?.svg
+                  ? <svg viewBox="15 30 50 50" width="28" height="34">{topChar.svg.props.children}</svg>
+                  : <span style={{fontSize:"1.2rem"}}>⚔️</span>}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontWeight:700,fontSize:"0.9rem",color:C.white}}>{r.name}</div>
+                <div style={{fontSize:"0.68rem",color:C.muted,marginTop:2}}>{r.charName} · {r.date}</div>
+                <span style={{display:"inline-block",padding:"2px 10px",borderRadius:20,fontSize:"0.6rem",
+                  background:rk.bg,color:rk.color,fontWeight:700,marginTop:4}}>
+                  {rk.name}
+                </span>
+              </div>
+              <div style={{fontFamily:"Georgia,serif",fontSize:"1rem",color:C.gold}}>{r.score}</div>
+            </div>
+          );
+        })}
+      </div>
+      <div style={{textAlign:"center",marginTop:12}}>
+        <button style={S.btnPrimary} onClick={restart}>⚔️ Jogar Agora</button>
+      </div>
+    </div>
+  )}
+
+  <style>{`
+    @keyframes slideUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+    * { box-sizing:border-box; }
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:rgba(255,255,255,0.05);border-radius:2px}
+    ::-webkit-scrollbar-thumb{background:rgba(245,200,66,0.3);border-radius:2px}
+  `}</style>
+</div>
+```
+
+);
+}
