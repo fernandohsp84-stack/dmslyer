@@ -7,24 +7,25 @@
 <title>Demon Slayer Quiz · Torna-se Hashira!</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
+html,body{height:auto;min-height:100vh;overflow-y:auto}
 :root{
   --bg:#07071a;--card:#15153a;--card2:#1c1c48;
   --gold:#f5c518;--gold2:#9a7a10;--red:#c8173a;--ember:#e05808;
   --jade:#16b870;--blue:#2888d8;--text:#f0e8cc;--muted:#6a6080;--white:#fffef0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;overflow-y:auto;
   background-image:radial-gradient(ellipse 80% 55% at 15% -5%,rgba(200,23,58,.2) 0%,transparent 58%),
     radial-gradient(ellipse 55% 45% at 85% 105%,rgba(224,88,8,.13) 0%,transparent 52%)}
 #cv{position:fixed;inset:0;pointer-events:none;z-index:999;width:100%;height:100%}
 .ptcl{position:fixed;pointer-events:none;z-index:0;inset:0;overflow:hidden}
 .ptcl span{position:absolute;opacity:0;animation:floatUp linear infinite}
 @keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0}8%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-80px) rotate(540deg);opacity:0}}
-.scr{display:none;min-height:100vh;align-items:center;justify-content:center;padding:14px;position:relative;z-index:1;flex-direction:column}
-.scr.on{display:flex}
+.scr{display:none;min-height:100vh;align-items:flex-start;justify-content:center;padding:14px 14px 30px;position:relative;z-index:1;flex-direction:column;overflow-y:auto}
+.scr.on{display:flex;overflow-y:auto}
 .card{background:linear-gradient(150deg,rgba(28,28,72,.98),rgba(14,14,42,.99));
   border:1.5px solid rgba(245,197,24,.18);border-radius:22px;padding:24px 20px;
-  width:100%;max-width:660px;position:relative;overflow:hidden;
+  width:100%;max-width:660px;position:relative;overflow:visible;
   box-shadow:0 10px 50px rgba(0,0,0,.75),inset 0 1px 0 rgba(245,197,24,.1)}
 .card::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;
   background:linear-gradient(180deg,var(--gold),var(--red),var(--gold));border-radius:22px 0 0 22px}
@@ -52,7 +53,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .btn-ol:hover{border-color:var(--gold);background:rgba(245,197,24,.07)}
 .btn-sm{padding:7px 16px;font-size:.7rem}
 /* CHARACTER GRID */
-.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px}
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px;min-height:80px}
 .ccard{border:2.5px solid rgba(255,255,255,.1);border-radius:15px;padding:0;text-align:center;
   cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);
   background:rgba(255,255,255,.03);position:relative;overflow:hidden}
@@ -167,7 +168,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 <!-- HOME -->
 
-<div class="scr on" id="s-home">
+<div class="scr on" id="s-home" style="align-items:center;justify-content:flex-start;padding-top:20px">
   <div style="position:absolute;top:13px;right:13px;z-index:5">
     <button class="btn btn-ol btn-sm" onclick="go('s-rank')">🏆 Ranking</button>
   </div>
@@ -428,8 +429,19 @@ function goBack(){go(G.prev||'s-home')}
 
 function startGame(){
   var n=document.getElementById('pname').value.trim();
-  if(!n){alert('Digite seu nome de guerreiro!');return}
-  if(!G.charId){alert('Escolha um personagem!');return}
+  if(!n){
+    var inp=document.getElementById('pname');
+    inp.focus();inp.style.borderColor='var(--red)';
+    setTimeout(function(){inp.style.borderColor='';},2000);
+    return;
+  }
+  if(!G.charId){
+    var cg=document.getElementById('cgrid');
+    cg.scrollIntoView({behavior:'smooth',block:'center'});
+    cg.style.outline='2px solid var(--red)';cg.style.borderRadius='12px';
+    setTimeout(function(){cg.style.outline='';},2000);
+    return;
+  }
   G.name=n;G.phase=0;G.qIdx=0;G.score=0;G.correct=0;
   buildDots();loadQ();go('s-quiz');
 }
