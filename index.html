@@ -3,117 +3,136 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Demon Slayer Quiz · 鬼滅の刃</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Demon Slayer Quiz · Torna-se Hashira!</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#07071a;--panel:#10102a;--card:#181835;
-  --gold:#f8c832;--gold2:#a87e10;--crimson:#c8173a;--ember:#e85a0a;
-  --jade:#18c87a;--water:#2a8fdc;--text:#f0e8d0;--muted:#6a6285;--white:#fffef2;
-  --shadow:0 8px 40px rgba(0,0,0,.7);
+  --bg:#0a0a1c;--card:#15153a;--card2:#1c1c48;
+  --gold:#f5c518;--gold2:#9a7a10;--red:#c8173a;--ember:#e05808;
+  --jade:#16b870;--blue:#2888d8;--text:#f0e8cc;--muted:#6a6080;--white:#fffef0;
+  --out:2px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 20% -10%,rgba(200,23,58,.18) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 110%,rgba(232,90,10,.12) 0%,transparent 55%);
-}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse 80% 55% at 15% -5%,rgba(200,23,58,.2) 0%,transparent 58%),
+    radial-gradient(ellipse 55% 45% at 85% 105%,rgba(224,88,8,.13) 0%,transparent 52%)}
 #cv{position:fixed;inset:0;pointer-events:none;z-index:999;width:100%;height:100%}
 .ptcl{position:fixed;pointer-events:none;z-index:0;inset:0;overflow:hidden}
-.ptcl span{position:absolute;font-size:1rem;opacity:0;animation:floatUp linear infinite}
-@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0}8%{opacity:.5}90%{opacity:.35}100%{transform:translateY(-60px) rotate(540deg);opacity:0}}
-.scr{display:none;min-height:100vh;align-items:center;justify-content:center;padding:16px;position:relative;z-index:1;flex-direction:column}
+.ptcl span{position:absolute;opacity:0;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0}8%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-80px) rotate(540deg);opacity:0}}
+/* screens */
+.scr{display:none;min-height:100vh;align-items:center;justify-content:center;padding:14px;position:relative;z-index:1;flex-direction:column}
 .scr.on{display:flex}
-.card{
-  background:linear-gradient(145deg,rgba(30,30,64,.97),rgba(16,16,42,.98));
-  border:1px solid rgba(248,200,50,.16);border-radius:24px;
-  padding:28px 22px;width:100%;max-width:660px;position:relative;
-  box-shadow:var(--shadow),inset 0 1px 0 rgba(248,200,50,.12);overflow:hidden;
-}
+/* card */
+.card{background:linear-gradient(150deg,rgba(28,28,72,.98),rgba(14,14,42,.99));
+  border:1.5px solid rgba(245,197,24,.18);border-radius:22px;padding:24px 20px;
+  width:100%;max-width:660px;position:relative;overflow:hidden;
+  box-shadow:0 10px 50px rgba(0,0,0,.75),inset 0 1px 0 rgba(245,197,24,.1)}
 .card::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;
-  background:linear-gradient(180deg,var(--gold),var(--crimson),var(--gold));
-  border-radius:24px 0 0 24px;}
+  background:linear-gradient(180deg,var(--gold),var(--red),var(--gold));border-radius:22px 0 0 22px}
 .card-sm{max-width:460px}
-.logo-title{font-family:'Cinzel',serif;font-size:clamp(1.7rem,6vw,3rem);font-weight:900;color:var(--gold);line-height:1.15;letter-spacing:2px;text-align:center;text-shadow:0 0 40px rgba(248,200,50,.55),0 2px 6px rgba(0,0,0,.9)}
-.logo-jp{font-family:'Noto Serif JP',serif;font-size:.85rem;color:var(--crimson);letter-spacing:10px;text-align:center;margin-top:4px}
-.logo-icon{font-size:3.2rem;display:block;text-align:center;margin-bottom:8px;animation:sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 14px rgba(232,90,10,.7))}
-@keyframes sway{from{transform:rotate(-8deg) scale(.97)}to{transform:rotate(8deg) scale(1.04)}}
-.divl{height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--crimson),var(--gold),transparent);margin:12px 0}
+/* typography */
+.logo{font-family:'Cinzel',serif;font-size:clamp(1.6rem,5.5vw,2.9rem);font-weight:900;color:var(--gold);
+  text-shadow:0 0 35px rgba(245,197,24,.55),0 2px 6px rgba(0,0,0,.9);text-align:center;letter-spacing:2px;line-height:1.15}
+.logo-jp{font-family:'Noto Serif JP',serif;font-size:.82rem;color:var(--red);letter-spacing:10px;text-align:center;margin-top:4px}
+.sword-anim{font-size:3rem;display:block;text-align:center;margin-bottom:8px;
+  animation:sway 3s ease-in-out infinite alternate;filter:drop-shadow(0 0 12px rgba(224,88,8,.8))}
+@keyframes sway{from{transform:rotate(-8deg) scale(.97)}to{transform:rotate(8deg) scale(1.05)}}
+.divl{height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--red),var(--gold),transparent);margin:11px 0}
 .divd{width:10px;height:10px;background:var(--gold);transform:rotate(45deg);margin:-6px auto 10px}
-.lbl{display:block;font-size:.7rem;color:var(--gold2);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;font-family:'Noto Serif JP',serif}
-.inp{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1.5px solid rgba(248,200,50,.28);border-radius:12px;color:var(--white);font-family:'Nunito',sans-serif;font-size:1rem;outline:none;transition:border .2s,background .2s}
-.inp:focus{border-color:var(--gold);background:rgba(248,200,50,.07)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border:none;border-radius:12px;font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
+.lbl{display:block;font-size:.68rem;color:var(--gold2);letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;font-family:'Noto Serif JP',serif}
+.inp{width:100%;padding:12px 15px;background:rgba(255,255,255,.05);border:1.5px solid rgba(245,197,24,.28);
+  border-radius:11px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.98rem;outline:none;transition:.2s}
+.inp:focus{border-color:var(--gold);background:rgba(245,197,24,.06)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border:none;
+  border-radius:11px;font-family:'Cinzel',serif;font-size:.87rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
 .btn:active{transform:scale(.96)}
-.btn-red{background:linear-gradient(135deg,var(--crimson) 0%,#8a0020 100%);color:var(--gold);box-shadow:0 4px 22px rgba(200,23,58,.45);width:100%}
-.btn-red:hover{box-shadow:0 6px 32px rgba(200,23,58,.7);transform:translateY(-2px)}
-.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a0e00;box-shadow:0 4px 18px rgba(248,200,50,.3)}
-.btn-gold:hover{box-shadow:0 6px 28px rgba(248,200,50,.55);transform:translateY(-2px)}
-.btn-outline{background:transparent;color:var(--gold);border:2px solid rgba(248,200,50,.35)}
-.btn-outline:hover{border-color:var(--gold);background:rgba(248,200,50,.08)}
-.btn-sm{padding:8px 18px;font-size:.72rem}
-.char-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
-@media(max-width:380px){.char-grid{grid-template-columns:repeat(4,1fr);gap:6px}}
-.char-card{border:2.5px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 6px 8px;text-align:center;cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);background:rgba(255,255,255,.03);position:relative;overflow:hidden}
-.char-card:hover{transform:translateY(-5px) scale(1.04);border-color:rgba(248,200,50,.5)}
-.char-card.sel{transform:translateY(-6px) scale(1.06)}
-.char-card.sel::after{content:'✓';position:absolute;top:5px;right:7px;font-size:.7rem;font-weight:900}
-.char-name{font-size:.65rem;font-weight:800;color:var(--white);line-height:1.2;margin-top:5px}
-.char-rank{font-size:.55rem;font-weight:700;margin-top:4px;padding:2px 6px;border-radius:20px;display:inline-block;letter-spacing:.5px}
-.char-svg{display:flex;justify-content:center;align-items:flex-end;height:72px}
-.prog-wrap{margin-bottom:18px}
-.prog-bar{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--crimson),var(--gold));border-radius:4px;transition:width .45s ease;position:relative}
-.prog-fill::after{content:'';position:absolute;right:-1px;top:-3px;width:13px;height:13px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold)}
-.phase-dots{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
-.pd{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'Cinzel',serif;transition:all .3s;border:2px solid rgba(255,255,255,.12);color:var(--muted)}
-.pd.done{background:var(--gold);border-color:var(--gold);color:#1a0a00}
-.pd.cur{border-color:var(--crimson);color:var(--crimson);box-shadow:0 0 12px rgba(200,23,58,.6);animation:pdp 1.5s infinite}
+.btn-red{background:linear-gradient(135deg,var(--red),#880018);color:var(--gold);box-shadow:0 4px 20px rgba(200,23,58,.45);width:100%}
+.btn-red:hover{box-shadow:0 6px 30px rgba(200,23,58,.7);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#18100a;box-shadow:0 4px 16px rgba(245,197,24,.3)}
+.btn-gold:hover{box-shadow:0 6px 26px rgba(245,197,24,.55);transform:translateY(-2px)}
+.btn-ol{background:transparent;color:var(--gold);border:2px solid rgba(245,197,24,.35)}
+.btn-ol:hover{border-color:var(--gold);background:rgba(245,197,24,.07)}
+.btn-sm{padding:7px 16px;font-size:.7rem}
+/* char grid */
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px}
+.ccard{border:2.5px solid rgba(255,255,255,.1);border-radius:15px;padding:9px 5px 7px;text-align:center;
+  cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);background:rgba(255,255,255,.03);position:relative}
+.ccard:hover{transform:translateY(-5px) scale(1.04);border-color:rgba(245,197,24,.5)}
+.ccard.sel{transform:translateY(-6px) scale(1.07)}
+.ccard.sel::after{content:'✓';position:absolute;top:4px;right:6px;font-size:.68rem;font-weight:900}
+.cname{font-size:.62rem;font-weight:800;color:var(--white);line-height:1.2;margin-top:4px}
+.crank{font-size:.52rem;font-weight:800;margin-top:3px;padding:2px 5px;border-radius:20px;display:inline-block}
+.csvg{display:flex;justify-content:center;align-items:flex-end;height:70px}
+/* progress */
+.pbar{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
+.pfill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:4px;transition:width .45s ease;position:relative}
+.pfill::after{content:'';position:absolute;right:-1px;top:-3px;width:13px;height:13px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold)}
+.pdots{display:flex;gap:4px;margin-top:9px;flex-wrap:wrap}
+.pd{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-family:'Cinzel',serif;transition:all .3s;border:2px solid rgba(255,255,255,.12);color:var(--muted)}
+.pd.done{background:var(--gold);border-color:var(--gold);color:#100800}
+.pd.cur{border-color:var(--red);color:var(--red);box-shadow:0 0 12px rgba(200,23,58,.6);animation:pdp 1.5s infinite}
 @keyframes pdp{0%,100%{box-shadow:0 0 8px rgba(200,23,58,.5)}50%{box-shadow:0 0 20px rgba(200,23,58,.9)}}
-.timer{width:56px;height:56px;border-radius:50%;border:3.5px solid rgba(248,200,50,.25);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);background:rgba(0,0,0,.35);margin:0 auto 16px;transition:all .3s}
-.timer.warn{border-color:var(--crimson);color:var(--crimson);box-shadow:0 0 22px rgba(200,23,58,.6);animation:tshk .5s ease}
+/* timer */
+.timer{width:54px;height:54px;border-radius:50%;border:3.5px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold);background:rgba(0,0,0,.35);margin:0 auto 14px;transition:all .3s}
+.timer.warn{border-color:var(--red);color:var(--red);box-shadow:0 0 20px rgba(200,23,58,.6);animation:tshk .45s ease}
 @keyframes tshk{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.ph-banner{text-align:center;padding:10px 12px;border-radius:12px;margin-bottom:14px;background:linear-gradient(135deg,rgba(200,23,58,.22),rgba(248,200,50,.09));border:1px solid rgba(248,200,50,.14)}
-.ph-num{font-size:.62rem;color:var(--gold2);letter-spacing:4px;font-family:'Noto Serif JP',serif}
-.ph-title{font-family:'Cinzel',serif;font-size:clamp(.85rem,2.5vw,1.1rem);color:var(--gold);margin-top:3px}
-.q-text{text-align:center;font-family:'Noto Serif JP',serif;font-size:clamp(.95rem,2.8vw,1.13rem);color:var(--white);line-height:1.65;margin-bottom:18px;padding:0 4px}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-@media(max-width:420px){.opts{grid-template-columns:1fr}}
-.opt{padding:13px 14px;border:2px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);color:var(--text);font-family:'Nunito',sans-serif;font-size:.9rem;cursor:pointer;text-align:left;transition:all .18s;line-height:1.4;display:flex;align-items:flex-start;gap:9px}
-.opt:hover:not(:disabled){border-color:rgba(248,200,50,.55);background:rgba(248,200,50,.07);transform:translateX(4px)}
+/* phase banner */
+.phbanner{text-align:center;padding:9px 12px;border-radius:11px;margin-bottom:13px;
+  background:linear-gradient(135deg,rgba(200,23,58,.2),rgba(245,197,24,.08));border:1px solid rgba(245,197,24,.14)}
+.phnum{font-size:.6rem;color:var(--gold2);letter-spacing:4px;font-family:'Noto Serif JP',serif}
+.phtitle{font-family:'Cinzel',serif;font-size:clamp(.82rem,2.3vw,1.05rem);color:var(--gold);margin-top:3px}
+/* question */
+.qtext{text-align:center;font-family:'Noto Serif JP',serif;font-size:clamp(.92rem,2.6vw,1.1rem);color:var(--white);line-height:1.65;margin-bottom:17px;padding:0 3px}
+/* options */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px}
+@media(max-width:400px){.opts{grid-template-columns:1fr}}
+.opt{padding:12px 13px;border:2px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(255,255,255,.04);
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;cursor:pointer;text-align:left;
+  transition:all .17s;line-height:1.4;display:flex;align-items:flex-start;gap:8px}
+.opt:hover:not(:disabled){border-color:rgba(245,197,24,.55);background:rgba(245,197,24,.07);transform:translateX(4px)}
 .opt:disabled{cursor:default}
-.opt.correct{border-color:var(--jade)!important;background:rgba(24,200,122,.18)!important;color:#7fffd4!important}
-.opt.wrong{border-color:var(--crimson)!important;background:rgba(200,23,58,.2)!important;color:#ff9090!important}
-.opt-ltr{width:24px;height:24px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(248,200,50,.3);background:rgba(248,200,50,.1);display:inline-flex;align-items:center;justify-content:center;font-size:.62rem;color:var(--gold2);font-family:'Cinzel',serif;margin-top:1px}
-.feedback{padding:12px 16px;border-radius:12px;margin-bottom:14px;font-family:'Noto Serif JP',serif;font-size:.88rem;line-height:1.55;display:none;animation:slu .3s ease}
-.feedback.show{display:block}
-.fb-ok{background:rgba(24,200,122,.12);border:1px solid rgba(24,200,122,.4);color:#7fffd4}
-.fb-err{background:rgba(200,23,58,.15);border:1px solid rgba(200,23,58,.4);color:#ffaaaa}
-@keyframes slu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.p-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:20px;font-size:.75rem;font-weight:800}
+.opt.correct{border-color:var(--jade)!important;background:rgba(22,184,112,.17)!important;color:#7fffd4!important}
+.opt.wrong{border-color:var(--red)!important;background:rgba(200,23,58,.18)!important;color:#ff9898!important}
+.oltr{width:23px;height:23px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(245,197,24,.3);
+  background:rgba(245,197,24,.1);display:inline-flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:var(--gold2);font-family:'Cinzel',serif;margin-top:1px}
+/* feedback */
+.fb{padding:11px 15px;border-radius:11px;margin-bottom:13px;font-family:'Noto Serif JP',serif;
+  font-size:.86rem;line-height:1.55;display:none;animation:slu .3s ease}
+.fb.on{display:block}
+.fb.ok{background:rgba(22,184,112,.12);border:1px solid rgba(22,184,112,.4);color:#7fffd4}
+.fb.err{background:rgba(200,23,58,.14);border:1px solid rgba(200,23,58,.4);color:#ffaaaa}
+@keyframes slu{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+/* badge */
+.pbadge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.73rem;font-weight:800}
 .bdot{width:7px;height:7px;border-radius:50%;animation:pdp 1.5s infinite}
-.pc-icon{font-size:5rem;margin-bottom:10px;display:block;text-align:center}
-.pc-title{font-family:'Cinzel',serif;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--gold);text-shadow:0 0 28px rgba(248,200,50,.5);margin-bottom:10px;text-align:center}
-.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-.chip{padding:5px 14px;border-radius:20px;font-size:.72rem;font-family:'Noto Serif JP',serif;border:1px solid rgba(248,200,50,.3);background:rgba(248,200,50,.08);color:var(--gold)}
-.rank-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;margin-bottom:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
-.rank-item.r1{background:rgba(248,200,50,.1);border-color:rgba(248,200,50,.35)}
-.rank-item.r2{background:rgba(192,192,192,.08);border-color:rgba(192,192,192,.25)}
-.rank-item.r3{background:rgba(205,127,50,.08);border-color:rgba(205,127,50,.25)}
-.scroll{max-height:360px;overflow-y:auto;padding-right:4px}
+/* phase clear / titles */
+.pcicon{font-size:4.5rem;margin-bottom:8px;display:block;text-align:center}
+.pctitle{font-family:'Cinzel',serif;font-size:clamp(1.25rem,3.8vw,1.8rem);color:var(--gold);
+  text-shadow:0 0 25px rgba(245,197,24,.5);margin-bottom:9px;text-align:center}
+.chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.chip{padding:5px 13px;border-radius:20px;font-size:.7rem;font-family:'Noto Serif JP',serif;
+  border:1px solid rgba(245,197,24,.3);background:rgba(245,197,24,.08);color:var(--gold)}
+/* rank */
+.ritem{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;margin-bottom:7px;
+  border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+.ritem.r1{background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.35)}
+.ritem.r2{background:rgba(192,192,192,.08);border-color:rgba(192,192,192,.25)}
+.ritem.r3{background:rgba(205,127,50,.08);border-color:rgba(205,127,50,.25)}
+.scroll{max-height:350px;overflow-y:auto;padding-right:3px}
 .scroll::-webkit-scrollbar{width:4px}
-.scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:2px}
-.scroll::-webkit-scrollbar-thumb{background:rgba(248,200,50,.3);border-radius:2px}
-.final-score{font-family:'Cinzel',serif;font-size:3.2rem;color:var(--gold);text-shadow:0 0 30px rgba(248,200,50,.5);line-height:1;margin:10px 0}
-.a1{animation:fdu .5s ease .08s both}.a2{animation:fdu .5s ease .18s both}.a3{animation:fdu .5s ease .3s both}.a4{animation:fdu .5s ease .44s both}.a5{animation:fdu .5s ease .58s both}
-@keyframes fdu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.bst span{position:fixed;pointer-events:none;z-index:1000;font-size:1.4rem;animation:bst .85s forwards}
-@keyframes bst{0%{opacity:1;transform:translate(-50%,-50%) scale(.1)}60%{opacity:1;transform:translate(var(--tx),var(--ty)) scale(1.2)}100%{opacity:0;transform:translate(calc(var(--tx)*1.8),calc(var(--ty)*1.8)) scale(.4)}}
-.tc{text-align:center}.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb8{margin-bottom:8px}.mb16{margin-bottom:16px}
+.scroll::-webkit-scrollbar-thumb{background:rgba(245,197,24,.3);border-radius:2px}
+.fscore{font-family:'Cinzel',serif;font-size:3rem;color:var(--gold);text-shadow:0 0 28px rgba(245,197,24,.5);line-height:1;margin:8px 0}
+/* anims */
+.a1{animation:fdu .5s ease .07s both}.a2{animation:fdu .5s ease .16s both}
+.a3{animation:fdu .5s ease .28s both}.a4{animation:fdu .5s ease .42s both}.a5{animation:fdu .5s ease .56s both}
+@keyframes fdu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.bst span{position:fixed;pointer-events:none;z-index:1000;font-size:1.3rem;animation:bst .85s forwards}
+@keyframes bst{0%{opacity:1;transform:translate(-50%,-50%) scale(.1)}60%{opacity:1;transform:translate(var(--tx),var(--ty)) scale(1.2)}100%{opacity:0;transform:translate(calc(var(--tx)*1.9),calc(var(--ty)*1.9)) scale(.3)}}
+.tc{text-align:center}.mt8{margin-top:8px}.mt16{margin-top:16px}.mt24{margin-top:24px}.mb16{margin-bottom:16px}
 </style>
 </head>
 <body>
@@ -123,31 +142,35 @@ body{
 <!-- HOME -->
 
 <div class="scr on" id="s-home">
-  <div style="position:absolute;top:14px;right:14px;z-index:5">
-    <button class="btn btn-outline btn-sm" onclick="go('s-rank')">🏆 Ranking</button>
+  <div style="position:absolute;top:13px;right:13px;z-index:5">
+    <button class="btn btn-ol btn-sm" onclick="go('s-rank')">🏆 Ranking</button>
   </div>
   <div class="card a1">
-    <div style="position:absolute;bottom:-40px;right:-20px;font-family:'Noto Serif JP',serif;font-size:16rem;opacity:.03;color:#fff;pointer-events:none;line-height:1;user-select:none">鬼</div>
-    <div class="a2" style="text-align:center;margin-bottom:20px">
-      <span class="logo-icon">⚔️</span>
+    <div style="position:absolute;bottom:-30px;right:-15px;font-family:'Noto Serif JP',serif;font-size:15rem;opacity:.03;color:#fff;pointer-events:none;line-height:1;user-select:none">鬼</div>
+    <div class="a2 tc mb16">
+      <span class="sword-anim">⚔️</span>
       <div class="divl"></div>
-      <h1 class="logo-title">Demon Slayer<br>Quiz</h1>
+      <h1 class="logo">Demon Slayer<br>Quiz</h1>
       <p class="logo-jp">鬼 滅 の 刃</p>
-      <div class="divl"></div>
-      <div class="divd"></div>
-      <p style="color:var(--muted);font-size:.82rem;margin-top:6px;line-height:1.6">10 fases · Timer de 30s · Ranking de Caçadores</p>
+      <div class="divl"></div><div class="divd"></div>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:5px;line-height:1.7">
+        Treine · Lute · Torne-se <strong style="color:var(--gold)">Hashira</strong><br>
+        10 fases · Timer 30s · Enfrente Muzan
+      </p>
     </div>
     <div class="mb16 a3">
-      <label class="lbl">⚔ Seu nome de guerreiro</label>
+      <label class="lbl">⚔ Nome do guerreiro</label>
       <input class="inp" id="pname" placeholder="Ex: Tanjiro Kamado…" maxlength="20" onkeydown="if(event.key==='Enter')startGame()">
     </div>
     <div class="a4">
       <label class="lbl">🗡 Escolha seu personagem</label>
-      <div class="char-grid" id="cgrid"></div>
+      <div class="cgrid" id="cgrid"></div>
     </div>
     <div class="mt24 a5">
-      <button class="btn btn-red" onclick="startGame()">⚔️ &nbsp;COMEÇAR MISSÃO</button>
-      <p style="text-align:center;color:var(--muted);font-size:.72rem;margin-top:8px">Mínimo de acertos para avançar · Bônus de velocidade</p>
+      <button class="btn btn-red" onclick="startGame()">⚔️ &nbsp;INICIAR TREINAMENTO</button>
+      <p style="text-align:center;color:var(--muted);font-size:.7rem;margin-top:7px">
+        Derrote as Luas · Enfrente Muzan · Torne-se Hashira
+      </p>
     </div>
   </div>
 </div>
@@ -156,28 +179,28 @@ body{
 
 <div class="scr" id="s-quiz">
   <div class="card" id="qcard">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div class="p-badge" id="pbadge"></div>
-      <div style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold)">⭐ <span id="live-score">0</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
+      <div class="pbadge" id="pbadge"></div>
+      <div style="font-family:'Cinzel',serif;font-size:.88rem;color:var(--gold)">⭐ <span id="lscore">0</span></div>
     </div>
-    <div class="prog-wrap">
-      <div style="display:flex;justify-content:space-between;margin-bottom:7px">
-        <span style="font-family:'Cinzel',serif;font-size:.72rem;color:var(--gold)" id="prog-ph">Fase 1</span>
-        <span style="font-size:.72rem;color:var(--muted)" id="prog-q">Q 1/5</span>
+    <div style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold)" id="pph">Fase 1</span>
+        <span style="font-size:.7rem;color:var(--muted)" id="pq">Q 1/5</span>
       </div>
-      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-      <div class="phase-dots" id="pdots"></div>
+      <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+      <div class="pdots" id="pdots"></div>
     </div>
     <div class="timer" id="timer">30</div>
-    <div class="ph-banner">
-      <div class="ph-num" id="ph-num">FASE 1 — NOVATO</div>
-      <div class="ph-title" id="ph-title">Primeiros Passos</div>
+    <div class="phbanner">
+      <div class="phnum" id="phnum">FASE 1 — INICIANTE</div>
+      <div class="phtitle" id="phtitle">🌱 Primeiros Passos</div>
     </div>
-    <p style="text-align:center;font-size:.68rem;color:var(--muted);letter-spacing:2px;margin-bottom:10px" id="q-num">Questão 1 de 5</p>
-    <p class="q-text" id="q-text"></p>
-    <div class="opts" id="q-opts"></div>
-    <div class="feedback" id="feedback"></div>
-    <div class="tc" id="next-wrap" style="display:none">
+    <p style="text-align:center;font-size:.67rem;color:var(--muted);letter-spacing:2px;margin-bottom:9px" id="qnum">Questão 1 de 5</p>
+    <p class="qtext" id="qtext"></p>
+    <div class="opts" id="qopts"></div>
+    <div class="fb" id="fb"></div>
+    <div class="tc" id="nwrap" style="display:none">
       <button class="btn btn-gold" onclick="nextQ()">Próxima &nbsp;→</button>
     </div>
   </div>
@@ -186,19 +209,19 @@ body{
 <!-- PHASE CLEAR -->
 
 <div class="scr" id="s-phclear">
-  <div class="card card-sm tc" id="phclear-card"></div>
+  <div class="card card-sm tc" id="phclear"></div>
 </div>
 
 <!-- GAME OVER -->
 
 <div class="scr" id="s-over">
   <div class="card card-sm tc">
-    <span style="font-size:4rem;display:block;margin-bottom:12px">💀</span>
-    <h2 class="pc-title" style="color:var(--crimson)">Missão Falhou!</h2>
-    <p style="color:var(--muted);font-family:'Noto Serif JP',serif;line-height:1.6;margin-bottom:22px" id="over-msg"></p>
+    <span style="font-size:3.8rem;display:block;margin-bottom:11px">💀</span>
+    <h2 class="pctitle" style="color:var(--red)">Missão Falhou!</h2>
+    <p style="color:var(--muted);font-family:'Noto Serif JP',serif;line-height:1.6;margin-bottom:20px" id="overmsg"></p>
     <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-red" style="width:auto;padding:13px 24px" onclick="retry()">🔄 Tentar Novamente</button>
-      <button class="btn btn-outline" onclick="go('s-home')">🏠 Início</button>
+      <button class="btn btn-red" style="width:auto;padding:12px 22px" onclick="retry()">🔄 Tentar Novamente</button>
+      <button class="btn btn-ol" onclick="go('s-home')">🏠 Início</button>
     </div>
   </div>
 </div>
@@ -206,386 +229,693 @@ body{
 <!-- FINAL -->
 
 <div class="scr" id="s-final">
-  <div class="card card-sm tc" id="final-card"></div>
+  <div class="card card-sm tc" id="finalcard"></div>
 </div>
 
 <!-- RANKING -->
 
 <div class="scr" id="s-rank">
-  <div class="card" style="max-width:560px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-      <h2 class="pc-title" style="font-size:1.25rem;margin:0">🏆 Ranking de Caçadores</h2>
-      <button class="btn btn-outline btn-sm" onclick="goBack()">← Voltar</button>
+  <div class="card" style="max-width:550px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px">
+      <h2 class="pctitle" style="font-size:1.2rem;margin:0">🏆 Ranking de Caçadores</h2>
+      <button class="btn btn-ol btn-sm" onclick="goBack()">← Voltar</button>
     </div>
     <div class="divl"></div>
-    <div class="scroll" id="rank-list"></div>
-    <p style="text-align:center;color:var(--muted);font-size:.72rem;margin-top:12px">Top 20 · Salvo no navegador</p>
+    <div class="scroll" id="rlist"></div>
+    <p style="text-align:center;color:var(--muted);font-size:.7rem;margin-top:11px">Top 20 · Salvo no navegador</p>
   </div>
 </div>
 
 <script>
-// ── CHARACTERS ──────────────────────────────────────────
-const CHARS=[
-{id:'tanjiro',name:'Tanjiro',full:'Tanjiro Kamado',color:'#3a8fdc',bg:'rgba(20,50,100,.6)',rank:'Caçador',breath:'Água · Sol',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk1" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey1" cx="35%" cy="30%"><stop offset="0%" stop-color="#4a7ab0"/><stop offset="100%" stop-color="#1a3a6a"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1e5030"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#2a7a48"/>
-<path d="M23 88 Q27 108 37 110 L37 88" fill="#1a5535" opacity=".65"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk1)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk1)"/>
-<ellipse cx="45" cy="39" rx="27" ry="17" fill="#180e06"/>
-<path d="M18 50 Q11 34 20 27 Q18 42 25 47" fill="#180e06"/>
-<path d="M72 50 Q79 34 70 27 Q72 42 65 47" fill="#180e06"/>
-<ellipse cx="35" cy="46" rx="6" ry="5" fill="#a00028" opacity=".8"/>
-<ellipse cx="35" cy="46" rx="3.5" ry="2.8" fill="#c8183a" opacity=".55"/>
-<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey1)"/>
-<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey1)"/>
-<ellipse cx="35" cy="57" rx="3" ry="4" fill="#08182a"/>
-<ellipse cx="53" cy="57" rx="3" ry="4" fill="#08182a"/>
-<circle cx="37" cy="53.5" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="53.5" r="2.2" fill="white" opacity=".92"/>
-<circle cx="34" cy="59" r="1" fill="white" opacity=".55"/>
-<circle cx="52" cy="59" r="1" fill="white" opacity=".55"/>
-<path d="M29 51 Q35 49 41 51" stroke="#100806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<path d="M49 51 Q55 49 61 51" stroke="#100806" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
-<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<path d="M38 71 Q45 75 52 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<circle cx="74" cy="55" r="6" fill="#ead8a8" stroke="#c0a050" stroke-width="1.2"/>
-<circle cx="74" cy="55" r="3.5" fill="#c0182a"/>
-<circle cx="74" cy="55" r="1.4" fill="#f8c832"/>
-<rect x="60" y="76" width="7" height="24" rx="3.5" fill="#2a6040" stroke="#1a4030" stroke-width=".8"/>
-<rect x="57" y="82" width="13" height="5" rx="2.5" fill="#1a4030"/></svg>`},
+/* ════════════════════════════════════
+   CHIBI SVG CHARACTERS
+   Estilo: flat 2D, outline preto, cabeça grande, proporções chibi
+════════════════════════════════════ */
+function mk(content){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" width="54" height="72">'+content+'</svg>'}
 
-{id:'nezuko',name:'Nezuko',full:'Nezuko Kamado',color:'#e060a0',bg:'rgba(80,15,45,.6)',rank:'Demônio',breath:'Sangue Demoníaco',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk2" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey2" cx="35%" cy="30%"><stop offset="0%" stop-color="#e070b0"/><stop offset="100%" stop-color="#901060"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#c0183a"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e040a0" opacity=".55"/>
-<rect x="26" y="84" width="38" height="9" rx="4.5" fill="#f8c832" opacity=".65"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk2)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk2)"/>
-<ellipse cx="45" cy="37" rx="27" ry="17" fill="#100812"/>
-<path d="M17 50 Q10 36 18 27 Q16 44 24 49" fill="#100812"/>
-<path d="M57" y="35 Q67 24 76 28 Q67 35 57 35" fill="#e06090"/>
-<path d="M57 35 Q67 46 76 42 Q67 35 57 35" fill="#b03868"/>
-<circle cx="67" cy="35" r="4.5" fill="#f090b8"/>
-<circle cx="67" cy="35" r="2" fill="#f8c0d8"/>
-<rect x="30" y="62" width="30" height="11" rx="5.5" fill="#5a8a35" stroke="#3a6818" stroke-width="1.3"/>
-<line x1="38" y1="62" x2="38" y2="73" stroke="#3a6818" stroke-width="1.1"/>
-<line x1="45" y1="62" x2="45" y2="73" stroke="#3a6818" stroke-width="1.1"/>
-<line x1="52" y1="62" x2="52" y2="73" stroke="#4a7828" stroke-width=".8" opacity=".6"/>
-<ellipse cx="35" cy="53" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="53" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="54.5" rx="5.5" ry="7" fill="url(#ey2)"/>
-<ellipse cx="53" cy="54.5" rx="5.5" ry="7" fill="url(#ey2)"/>
-<ellipse cx="35" cy="55" rx="3" ry="4" fill="#180810"/>
-<ellipse cx="53" cy="55" rx="3" ry="4" fill="#180810"/>
-<circle cx="37" cy="51" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="51" r="2.2" fill="white" opacity=".92"/>
-<path d="M29 49 Q35 47 41 49" stroke="#180810" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<path d="M49 49 Q55 47 61 49" stroke="#180810" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<ellipse cx="27" cy="60" rx="5.5" ry="3.5" fill="#e87878" opacity=".38"/>
-<ellipse cx="63" cy="60" rx="5.5" ry="3.5" fill="#e87878" opacity=".38"/></svg>`},
+// outline stroke helper
+var ol='stroke="#111" stroke-width="1.2"';
+var ol2='stroke="#111" stroke-width="1"';
 
-{id:'zenitsu',name:'Zenitsu',full:'Zenitsu Agatsuma',color:'#f8c832',bg:'rgba(70,50,0,.6)',rank:'Caçador',breath:'Trovão ⚡',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk3" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey3" cx="35%" cy="30%"><stop offset="0%" stop-color="#9a6828"/><stop offset="100%" stop-color="#5a3808"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1e1408"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e8b820" opacity=".85"/>
-<path d="M29 90 Q31 108 45 112 Q59 108 61 90" fill="#fcd840" opacity=".5"/>
-<polygon points="28,96 34,86 40,96" fill="#e8b820" opacity=".45"/>
-<polygon points="50,96 56,86 62,96" fill="#e8b820" opacity=".45"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk3)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk3)"/>
-<ellipse cx="45" cy="39" rx="26" ry="17" fill="#d0a010"/>
-<path d="M19 52 Q12 36 21 27 Q18 42 25 48" fill="#d0a010"/>
-<path d="M71 52 Q78 36 69 27 Q72 42 65 48" fill="#c89010"/>
-<path d="M27 33 Q24 17 33 12 Q31 26 37 31" fill="#e8c020"/>
-<path d="M43 30 Q41 14 48 10 Q47 24 52 28" fill="#d0a010"/>
-<path d="M58 33 Q62 17 56 12 Q54 26 50 30" fill="#c08010"/>
-<ellipse cx="35" cy="55" rx="7.5" ry="9" fill="white"/>
-<ellipse cx="53" cy="55" rx="7.5" ry="9" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="6" ry="7.5" fill="url(#ey3)"/>
-<ellipse cx="53" cy="56.5" rx="6" ry="7.5" fill="url(#ey3)"/>
-<ellipse cx="35" cy="57" rx="3.2" ry="4.2" fill="#080600"/>
-<ellipse cx="53" cy="57" rx="3.2" ry="4.2" fill="#080600"/>
-<circle cx="37" cy="52.5" r="2.4" fill="white" opacity=".92"/>
-<circle cx="55" cy="52.5" r="2.4" fill="white" opacity=".92"/>
-<path d="M28.5 50 Q35 48 41.5 50" stroke="#080600" stroke-width="1.9" fill="none" stroke-linecap="round"/>
-<path d="M48.5 50 Q55 48 61.5 50" stroke="#080600" stroke-width="1.9" fill="none" stroke-linecap="round"/>
-<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".42"/>
-<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".42"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<path d="M37 71 Q45 68 53 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<path d="M77 41 L71 54 L76 54 L68 70" stroke="#f8c832" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
-<path d="M77 41 L71 54 L76 54 L68 70" stroke="white" stroke-width="1.1" fill="none" stroke-linecap="round" opacity=".55"/></svg>`},
+var CHARS=[
+/* 0 TANJIRO */
+{id:'tanjiro',name:'Tanjiro',full:'Tanjiro Kamado',color:'#2a80c8',bg:'rgba(20,50,100,.55)',rank:'Caçador',
+svg:mk(
+// body - kimono verde
+'<rect x="18" y="52" width="24" height="22" rx="3" fill="#2d7a4a" '+ol+'/>'+
+'<rect x="18" y="52" width="24" height="8" rx="0" fill="#c8f0a0" opacity=".4"/>'+
+// sash
+'<rect x="18" y="58" width="24" height="4" fill="#f5c518" '+ol2+'/>'+
+// legs
+'<rect x="20" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
+'<rect x="32" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
+'<rect x="21" y="77" width="6" height="3" rx="1" fill="#222"/>'+
+'<rect x="33" y="77" width="6" height="3" rx="1" fill="#222"/>'+
+// neck
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+// HEAD - big chibi
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// hair - dark auburn
+'<ellipse cx="30" cy="22" rx="20" ry="12" fill="#3a1a08" '+ol+'/>'+
+'<path d="M10 30 Q8 22 14 18 Q12 28 16 32" fill="#3a1a08" '+ol2+'/>'+
+'<path d="M50 30 Q52 22 46 18 Q48 28 44 32" fill="#3a1a08" '+ol2+'/>'+
+// scar on forehead
+'<ellipse cx="24" cy="26" rx="4" ry="3.5" fill="#b01028" opacity=".8"/>'+
+// hanafuda earring
+'<circle cx="50" cy="36" r="3.5" fill="#e8d090" '+ol2+'/>'+
+'<circle cx="50" cy="36" r="1.8" fill="#c8182a"/>'+
+// eyes
+'<ellipse cx="24" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="36" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="24" cy="37" rx="3" ry="3.8" fill="#2a5888"/>'+
+'<ellipse cx="36" cy="37" rx="3" ry="3.8" fill="#2a5888"/>'+
+'<circle cx="24" cy="36" r="1.5" fill="#0a1828"/>'+
+'<circle cx="36" cy="36" r="1.5" fill="#0a1828"/>'+
+'<circle cx="25" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="37" cy="34.5" r="1.1" fill="white"/>'+
+// eyebrows
+'<path d="M20.5 31.5 Q24 30 27.5 31.5" stroke="#2a1a08" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+'<path d="M32.5 31.5 Q36 30 39.5 31.5" stroke="#2a1a08" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+// nose
+'<circle cx="30" cy="40.5" r="1.2" fill="#e0b888" opacity=".8"/>'+
+// mouth smile
+'<path d="M26 44 Q30 47 34 44" stroke="#b06050" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+// cheeks
+'<ellipse cx="19" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
+'<ellipse cx="41" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
+// sword
+'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#7a9a60" '+ol2+'/>'+
+'<rect x="7" y="48" width="6" height="4" rx="1" fill="#8a7040"/>'+
+'<rect x="9" y="30" width="2" height="16" rx="1" fill="#d0d0c0" '+ol2+'/>'+
+'<ellipse cx="10" cy="30" rx="3" ry="2" fill="#aaa"/>'+
+// shadow
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
 
-{id:'inosuke',name:'Inosuke',full:'Inosuke Hashibira',color:'#5ad080',bg:'rgba(8,45,18,.6)',rank:'Feroz 🐗',breath:'Besta',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="ms1" cx="50%" cy="45%"><stop offset="0%" stop-color="#f5ede4"/><stop offset="100%" stop-color="#e8dcd0"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#182818"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#2a4828"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="#f5d8b0"/>
-<ellipse cx="13" cy="44" rx="8" ry="11" fill="url(#ms1)"/>
-<ellipse cx="77" cy="44" rx="8" ry="11" fill="url(#ms1)"/>
-<ellipse cx="13" cy="44" rx="5" ry="7.5" fill="#e09080"/>
-<ellipse cx="77" cy="44" rx="5" ry="7.5" fill="#e09080"/>
-<ellipse cx="45" cy="53" rx="29" ry="28" fill="url(#ms1)"/>
-<ellipse cx="45" cy="33" rx="24" ry="14" fill="#180a28"/>
-<ellipse cx="45" cy="55" rx="24" ry="23" fill="#eee6dc" opacity=".45"/>
-<line x1="45" y1="30" x2="45" y2="80" stroke="#c8b8a0" stroke-width="1" opacity=".45" stroke-dasharray="2,3"/>
-<ellipse cx="34" cy="50" rx="7" ry="8" fill="#182818"/>
-<ellipse cx="56" cy="50" rx="7" ry="8" fill="#182818"/>
-<ellipse cx="34" cy="50.5" rx="5.5" ry="6.5" fill="#28b050"/>
-<ellipse cx="56" cy="50.5" rx="5.5" ry="6.5" fill="#28b050"/>
-<ellipse cx="34" cy="51" rx="3" ry="3.8" fill="#081808"/>
-<ellipse cx="56" cy="51" rx="3" ry="3.8" fill="#081808"/>
-<circle cx="36" cy="47.5" r="2" fill="white" opacity=".85"/>
-<circle cx="58" cy="47.5" r="2" fill="white" opacity=".85"/>
-<ellipse cx="45" cy="65" rx="11" ry="9" fill="#ddc8b2"/>
-<ellipse cx="45" cy="65" rx="8.5" ry="6.5" fill="#cdb8a2"/>
-<circle cx="40.5" cy="66" r="3" fill="#a89080"/>
-<circle cx="49.5" cy="66" r="3" fill="#a89080"/>
-<path d="M21 70 Q14 80 17 90" stroke="#f0ede6" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-<path d="M69 70 Q76 80 73 90" stroke="#f0ede6" stroke-width="4.5" fill="none" stroke-linecap="round"/></svg>`},
+/* 1 NEZUKO */
+{id:'nezuko',name:'Nezuko',full:'Nezuko Kamado',color:'#d84898',bg:'rgba(80,15,50,.55)',rank:'Demônio',
+svg:mk(
+// body - kimono rosa/vermelho
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#c8183a" '+ol+'/>'+
+'<rect x="17" y="52" width="26" height="8" fill="#f8a0c0" opacity=".5"/>'+
+'<rect x="17" y="58" width="26" height="4" fill="#f8f080" '+ol2+'/>'+
+// legs
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#222"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#222"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// hair - long black with bow
+'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#100818" '+ol+'/>'+
+'<path d="M10 30 Q8 20 14 16 Q12 27 16 31" fill="#100818" '+ol2+'/>'+
+// hair bow
+'<path d="M40 22 Q48 16 52 20 Q48 24 40 22" fill="#d84898" '+ol2+'/>'+
+'<path d="M40 22 Q48 28 52 24 Q48 24 40 22" fill="#a82878" '+ol2+'/>'+
+'<circle cx="46" cy="22" r="2.5" fill="#f0a0c8" '+ol2+'/>'+
+// bamboo muzzle - very characteristic of Nezuko
+'<rect x="20" y="40" width="20" height="8" rx="4" fill="#5a8830" '+ol+'/>'+
+'<line x1="26" y1="40" x2="26" y2="48" stroke="#3a6818" stroke-width="1"/>'+
+'<line x1="31" y1="40" x2="31" y2="48" stroke="#3a6818" stroke-width="1"/>'+
+'<line x1="36" y1="40" x2="36" y2="48" stroke="#4a7828" stroke-width=".8" opacity=".6"/>'+
+// eyes - big purple
+'<ellipse cx="24" cy="34" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="36" cy="34" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="24" cy="35" rx="3" ry="3.8" fill="#c84098"/>'+
+'<ellipse cx="36" cy="35" rx="3" ry="3.8" fill="#c84098"/>'+
+'<circle cx="24" cy="34" r="1.5" fill="#180a20"/>'+
+'<circle cx="36" cy="34" r="1.5" fill="#180a20"/>'+
+'<circle cx="25" cy="32.5" r="1.1" fill="white"/>'+
+'<circle cx="37" cy="32.5" r="1.1" fill="white"/>'+
+'<path d="M20.5 29.5 Q24 28 27.5 29.5" stroke="#100818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
+'<path d="M32.5 29.5 Q36 28 39.5 29.5" stroke="#100818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="19" cy="38" rx="3.5" ry="2.5" fill="#f08080" opacity=".38"/>'+
+'<ellipse cx="41" cy="38" rx="3.5" ry="2.5" fill="#f08080" opacity=".38"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
 
-{id:'rengoku',name:'Rengoku',full:'Kyojuro Rengoku',color:'#e85a0a',bg:'rgba(75,18,0,.6)',rank:'Hashira 🔥',breath:'Chamas',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk5" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey5" cx="35%" cy="30%"><stop offset="0%" stop-color="#c86020"/><stop offset="100%" stop-color="#782808"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#1a0800"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#e85a0a" opacity=".9"/>
-<path d="M29 90 Q31 108 45 112 Q59 108 61 90" fill="#fcc018" opacity=".55"/>
-<path d="M24 89 Q27 79 30 89" fill="#fcc018" opacity=".75"/>
-<path d="M32 87 Q36 75 40 87" fill="#e85a0a" opacity=".75"/>
-<path d="M50 87 Q54 75 58 87" fill="#e85a0a" opacity=".75"/>
-<path d="M60 89 Q63 79 66 89" fill="#fcc018" opacity=".75"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk5)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk5)"/>
-<ellipse cx="45" cy="39" rx="27" ry="17" fill="#1e0c00"/>
-<path d="M27 33 Q23 17 32 11 Q30 25 36 31" fill="#e85a0a"/>
-<path d="M38 29 Q36 13 44 7 Q43 21 48 27" fill="#fcc018"/>
-<path d="M54 29 Q58 13 52 7 Q50 23 46 27" fill="#e85a0a"/>
-<path d="M63 35 Q69 21 63 13 Q60 27 56 34" fill="#c04008"/>
-<path d="M18 52 Q10 36 18 26 Q16 43 24 49" fill="#e85a0a"/>
-<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey5)"/>
-<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey5)"/>
-<ellipse cx="35" cy="57" rx="3" ry="4" fill="#100800"/>
-<ellipse cx="53" cy="57" rx="3" ry="4" fill="#100800"/>
-<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
-<path d="M29 50 Q35 48 41 50" stroke="#100800" stroke-width="2" fill="none" stroke-linecap="round"/>
-<path d="M49 50 Q55 48 61 50" stroke="#100800" stroke-width="2" fill="none" stroke-linecap="round"/>
-<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
-<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".3"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<path d="M37 72 Q45 76 53 72" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<ellipse cx="45" cy="35" rx="18" ry="10" fill="#e85a0a" opacity=".09"/></svg>`},
+/* 2 ZENITSU */
+{id:'zenitsu',name:'Zenitsu',full:'Zenitsu Agatsuma',color:'#e8c010',bg:'rgba(70,55,0,.55)',rank:'Caçador',
+svg:mk(
+// body - haori amarelo com triângulos
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a1408" '+ol+'/>'+
+'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#e8b818" '+ol+'/>'+
+'<polygon points="19,68 24,58 29,68" fill="#c89010" opacity=".6"/>'+
+'<polygon points="31,68 36,58 41,68" fill="#c89010" opacity=".6"/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#1a1408" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#2a2418" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#2a2418" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// spiky blond hair
+'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#d0a010" '+ol+'/>'+
+'<path d="M12 28 Q8 18 16 13 Q14 24 18 29" fill="#d0a010" '+ol2+'/>'+
+'<path d="M48 28 Q52 18 44 13 Q46 24 42 29" fill="#c09008" '+ol2+'/>'+
+'<path d="M24 18 Q22 10 28 7 Q26 16 29 19" fill="#e8c020"/>'+
+'<path d="M36 18 Q38 10 32 7 Q34 16 31 19" fill="#d0a818"/>'+
+// scared wide eyes (zenitsu expression)
+'<ellipse cx="23" cy="36" rx="5" ry="6" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="5" ry="6" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="37" rx="3.5" ry="4.5" fill="#8a5020"/>'+
+'<ellipse cx="37" cy="37" rx="3.5" ry="4.5" fill="#8a5020"/>'+
+'<circle cx="23" cy="36" r="1.8" fill="#080600"/>'+
+'<circle cx="37" cy="36" r="1.8" fill="#080600"/>'+
+'<circle cx="24.5" cy="34" r="1.2" fill="white"/>'+
+'<circle cx="38.5" cy="34" r="1.2" fill="white"/>'+
+'<path d="M19 31 Q23 29.5 27 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<path d="M33 31 Q37 29.5 41 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41.5" r="1.2" fill="#d8a878" opacity=".8"/>'+
+'<path d="M25 45 Q30 42.5 35 45" stroke="#b06858" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".42"/>'+
+'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".42"/>'+
+// lightning
+'<path d="M53 22 L49 31 L52 31 L47 42" stroke="#f5c518" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
 
-{id:'giyuu',name:'Giyu',full:'Giyu Tomioka',color:'#3a8fdc',bg:'rgba(8,25,65,.6)',rank:'Hashira 💧',breath:'Água',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk6" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey6" cx="35%" cy="30%"><stop offset="0%" stop-color="#2a5898"/><stop offset="100%" stop-color="#0a1848"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#180808"/>
-<path d="M23 88 L35 88 L35 112 Q27 110 23 88" fill="#c0183a" opacity=".92"/>
-<path d="M55 88 L55 112 Q63 110 67 88 Z" fill="#2a4890" opacity=".92"/>
-<path d="M35 88 L35 112 Q40 113 45 113 Q50 113 55 112 L55 88" fill="#180808"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk6)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk6)"/>
-<ellipse cx="45" cy="39" rx="27" ry="17" fill="#10101e"/>
-<path d="M18 52 Q10 38 18 27 Q16 44 23 49" fill="#10101e"/>
-<path d="M72 52 Q80 38 72 27 Q74 44 67 49" fill="#10101e"/>
-<rect x="58" y="52" width="8" height="32" rx="4" fill="#10101e"/>
-<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey6)"/>
-<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey6)"/>
-<ellipse cx="35" cy="57" rx="3" ry="4" fill="#060c18"/>
-<ellipse cx="53" cy="57" rx="3" ry="4" fill="#060c18"/>
-<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
-<path d="M29 50 Q35 48 41 50" stroke="#060c18" stroke-width="2" fill="none" stroke-linecap="round"/>
-<path d="M49 50 Q55 48 61 50" stroke="#060c18" stroke-width="2" fill="none" stroke-linecap="round"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<line x1="37" y1="72" x2="53" y2="72" stroke="#a06858" stroke-width="2" stroke-linecap="round"/>
-<ellipse cx="27" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".18"/>
-<ellipse cx="63" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".18"/></svg>`},
+/* 3 INOSUKE */
+{id:'inosuke',name:'Inosuke',full:'Inosuke Hashibira',color:'#48c868',bg:'rgba(8,45,18,.55)',rank:'Feroz 🐗',
+svg:mk(
+// body - shirtless, tattered pants
+'<rect x="19" y="55" width="22" height="19" rx="3" fill="#8a7858" '+ol+'/>'+
+// abs detail
+'<line x1="30" y1="58" x2="30" y2="73" stroke="#6a5838" stroke-width=".8"/>'+
+'<line x1="22" y1="62" x2="38" y2="62" stroke="#6a5838" stroke-width=".8"/>'+
+'<line x1="22" y1="67" x2="38" y2="67" stroke="#6a5838" stroke-width=".8"/>'+
+'<rect x="20" y="72" width="8" height="7" rx="2" fill="#5a4a28" '+ol2+'/>'+
+'<rect x="32" y="72" width="8" height="7" rx="2" fill="#5a4a28" '+ol2+'/>'+
+'<rect x="21" y="77" width="6" height="3" rx="1" fill="#3a2a10"/>'+
+'<rect x="33" y="77" width="6" height="3" rx="1" fill="#3a2a10"/>'+
+'<rect x="27" y="51" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+// BIG boar head (very characteristic)
+'<ellipse cx="10" cy="36" rx="6" ry="8" fill="#f0ece5" '+ol+'/>'+
+'<ellipse cx="50" cy="36" rx="6" ry="8" fill="#f0ece5" '+ol+'/>'+
+'<ellipse cx="10" cy="36" rx="3.5" ry="5.5" fill="#e09080"/>'+
+'<ellipse cx="50" cy="36" rx="3.5" ry="5.5" fill="#e09080"/>'+
+'<ellipse cx="30" cy="35" rx="21" ry="21" fill="#f0ece5" '+ol+'/>'+
+// mask texture / stitching
+'<ellipse cx="30" cy="37" rx="17" ry="17" fill="#e8e0d5" opacity=".5"/>'+
+'<line x1="30" y1="16" x2="30" y2="55" stroke="#c8b8a0" stroke-width=".9" opacity=".5" stroke-dasharray="2,2.5"/>'+
+// hair peeking above mask
+'<ellipse cx="30" cy="19" rx="19" ry="10" fill="#180a28" '+ol2+'/>'+
+// boar mask eyes
+'<ellipse cx="22" cy="33" rx="5.5" ry="6" fill="#1a2818" '+ol2+'/>'+
+'<ellipse cx="38" cy="33" rx="5.5" ry="6" fill="#1a2818" '+ol2+'/>'+
+'<ellipse cx="22" cy="33.5" rx="4" ry="5" fill="#28a048"/>'+
+'<ellipse cx="38" cy="33.5" rx="4" ry="5" fill="#28a048"/>'+
+'<circle cx="22" cy="33" r="2" fill="#081808"/>'+
+'<circle cx="38" cy="33" r="2" fill="#081808"/>'+
+'<circle cx="23.2" cy="31.5" r="1.2" fill="white" opacity=".85"/>'+
+'<circle cx="39.2" cy="31.5" r="1.2" fill="white" opacity=".85"/>'+
+// snout
+'<ellipse cx="30" cy="44" rx="9" ry="7" fill="#ddc8b0" '+ol+'/>'+
+'<circle cx="26.5" cy="45" r="2.5" fill="#a89080"/>'+
+'<circle cx="33.5" cy="45" r="2.5" fill="#a89080"/>'+
+// tusks
+'<path d="M18 52 Q13 60 16 67" stroke="#f0ece5" stroke-width="3.5" fill="none" stroke-linecap="round"/>'+
+'<path d="M42 52 Q47 60 44 67" stroke="#f0ece5" stroke-width="3.5" fill="none" stroke-linecap="round"/>'+
+// dual swords
+'<rect x="2" y="38" width="3" height="24" rx="1" fill="#8a9a60" '+ol2+'/>'+
+'<rect x="1.5" y="44" width="4" height="3" rx="1" fill="#6a7040"/>'+
+'<rect x="55" y="38" width="3" height="24" rx="1" fill="#8a9a60" '+ol2+'/>'+
+'<rect x="54.5" y="44" width="4" height="3" rx="1" fill="#6a7040"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
 
-{id:'shinobu',name:'Shinobu',full:'Shinobu Kocho',color:'#c090f8',bg:'rgba(38,8,68,.6)',rank:'Hashira 🦋',breath:'Insetos',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk7" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey7" cx="35%" cy="30%"><stop offset="0%" stop-color="#9050d0"/><stop offset="100%" stop-color="#501888"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#180828"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#c090f8" opacity=".6"/>
-<ellipse cx="30" cy="98" rx="9" ry="7" fill="#9060d0" opacity=".55"/>
-<ellipse cx="60" cy="98" rx="9" ry="7" fill="#9060d0" opacity=".55"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk7)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk7)"/>
-<ellipse cx="45" cy="39" rx="27" ry="17" fill="#100818"/>
-<path d="M17 52 Q10 38 18 27 Q16 44 23 49" fill="#100818"/>
-<path d="M58 34 Q68 23 77 27 Q68 35 58 34" fill="#c090f8"/>
-<path d="M58 34 Q68 45 77 41 Q68 35 58 34" fill="#9060c8"/>
-<circle cx="68" cy="34" r="5" fill="#e0b8ff"/>
-<circle cx="68" cy="34" r="2.5" fill="#c090f8"/>
-<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey7)"/>
-<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey7)"/>
-<ellipse cx="35" cy="57" rx="3" ry="4" fill="#100820"/>
-<ellipse cx="53" cy="57" rx="3" ry="4" fill="#100820"/>
-<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
-<path d="M29 50 Q35 48 41 50" stroke="#100820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<path d="M49 50 Q55 48 61 50" stroke="#100820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-<ellipse cx="27" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".35"/>
-<ellipse cx="63" cy="63" rx="5.5" ry="3.5" fill="#e87878" opacity=".35"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<path d="M37 71 Q45 75 53 71" stroke="#b06858" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`},
+/* 4 RENGOKU */
+{id:'rengoku',name:'Rengoku',full:'Kyojuro Rengoku',color:'#e05808',bg:'rgba(75,18,0,.55)',rank:'Hashira 🔥',
+svg:mk(
+// body - flame haori
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a0808" '+ol+'/>'+
+'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#e05808" '+ol+'/>'+
+// flame tips on haori
+'<path d="M19 52 Q21 44 23 52" fill="#f8c018"/>'+
+'<path d="M25 52 Q28 42 31 52" fill="#e05808"/>'+
+'<path d="M33 52 Q36 42 39 52" fill="#e05808"/>'+
+'<path d="M39 52 Q41 44 43 52" fill="#f8c018"/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#1a0808" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#2a1408" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#2a1408" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// flame hair - most distinctive
+'<ellipse cx="30" cy="21" rx="19" ry="12" fill="#1e0c00" '+ol+'/>'+
+'<path d="M22 20 Q18 10 24 6 Q22 17 26 20" fill="#e05808"/>'+
+'<path d="M30 18 Q28 7 33 3 Q32 14 35 18" fill="#f8c018"/>'+
+'<path d="M38 20 Q42 10 38 6 Q36 17 34 20" fill="#e05808"/>'+
+'<path d="M14 28 Q10 18 16 13 Q14 25 18 29" fill="#e05808"/>'+
+'<path d="M46 28 Q50 18 44 13 Q46 25 42 29" fill="#c04010"/>'+
+// eyes - fierce amber
+'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#b05018"/>'+
+'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#b05018"/>'+
+'<circle cx="23" cy="36" r="1.5" fill="#100800"/>'+
+'<circle cx="37" cy="36" r="1.5" fill="#100800"/>'+
+'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
+'<path d="M19.5 31 Q23 29.5 26.5 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 31 Q37 29.5 40.5 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
+// big smile
+'<path d="M24 45 Q30 49.5 36 45" stroke="#b06858" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+// sword
+'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#c06020" '+ol2+'/>'+
+'<rect x="7" y="50" width="6" height="4" rx="1" fill="#8a4010"/>'+
+'<rect x="9" y="28" width="2" height="18" rx="1" fill="#d8d0c0" '+ol2+'/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
 
-{id:'muichiro',name:'Muichiro',full:'Muichiro Tokito',color:'#70d4c8',bg:'rgba(0,38,48,.6)',rank:'Hashira 🌫️',breath:'Névoa',
-svg:`<svg viewBox="0 0 90 115" width="66" height="82"><defs><radialGradient id="sk8" cx="50%" cy="40%"><stop offset="0%" stop-color="#fce0b8"/><stop offset="100%" stop-color="#f0c090"/></radialGradient><radialGradient id="ey8" cx="35%" cy="30%"><stop offset="0%" stop-color="#40b8b0"/><stop offset="100%" stop-color="#187878"/></radialGradient></defs>
-<ellipse cx="45" cy="110" rx="20" ry="5" fill="rgba(0,0,0,.35)"/>
-<ellipse cx="45" cy="92" rx="22" ry="19" fill="#0a1820"/>
-<path d="M23 88 Q25 110 45 112 Q65 110 67 88" fill="#50c0b8" opacity=".55"/>
-<rect x="40" y="67" width="10" height="10" rx="4" fill="url(#sk8)"/>
-<ellipse cx="45" cy="53" rx="27" ry="25" fill="url(#sk8)"/>
-<ellipse cx="45" cy="39" rx="27" ry="17" fill="#58a898"/>
-<path d="M18 52 Q10 38 18 27 Q16 44 23 49" fill="#58a898"/>
-<path d="M72 52 Q80 38 72 27 Q74 44 67 49" fill="#58a898"/>
-<rect x="57" y="52" width="8" height="36" rx="4" fill="#58a898"/>
-<rect x="64" y="56" width="6" height="28" rx="3" fill="#70c0b0" opacity=".75"/>
-<rect x="58" y="67" width="10" height="6" rx="3" fill="#3a8878"/>
-<ellipse cx="35" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="53" cy="55" rx="7" ry="8.5" fill="white"/>
-<ellipse cx="35" cy="56.5" rx="5.5" ry="7" fill="url(#ey8)"/>
-<ellipse cx="53" cy="56.5" rx="5.5" ry="7" fill="url(#ey8)"/>
-<ellipse cx="35" cy="57" rx="3" ry="4" fill="#081818"/>
-<ellipse cx="53" cy="57" rx="3" ry="4" fill="#081818"/>
-<circle cx="37" cy="53" r="2.2" fill="white" opacity=".92"/>
-<circle cx="55" cy="53" r="2.2" fill="white" opacity=".92"/>
-<path d="M29 50 Q35 48 41 50" stroke="#081818" stroke-width="1.7" fill="none" stroke-linecap="round"/>
-<path d="M49 50 Q55 48 61 50" stroke="#081818" stroke-width="1.7" fill="none" stroke-linecap="round"/>
-<ellipse cx="45" cy="65" rx="2.2" ry="1.8" fill="#d0a880" opacity=".7"/>
-<line x1="37" y1="72" x2="53" y2="72" stroke="#a06858" stroke-width="1.8" stroke-linecap="round"/>
-<ellipse cx="27" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".2"/>
-<ellipse cx="63" cy="62" rx="4.5" ry="3" fill="#e87878" opacity=".2"/></svg>`}
+/* 5 GIYU */
+{id:'giyuu',name:'Giyu',full:'Giyu Tomioka',color:'#2880d8',bg:'rgba(8,25,65,.55)',rank:'Hashira 💧',
+svg:mk(
+// split haori - half crimson half blue
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#180808" '+ol+'/>'+
+'<path d="M17 52 L29 52 L29 74 Q20 72 17 52" fill="#c0183a" '+ol2+'/>'+
+'<path d="M31 52 L43 52 Q40 72 31 74 L31 52" fill="#2848a8" '+ol2+'/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#180808" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#180808" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#180808" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// dark hair - straight, stoic
+'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#101018" '+ol+'/>'+
+'<path d="M10 28 Q8 20 14 15 Q12 26 16 31" fill="#101018" '+ol2+'/>'+
+'<path d="M50 28 Q52 20 46 15 Q48 26 44 31" fill="#101018" '+ol2+'/>'+
+// long hanging hair strand
+'<rect x="46" y="34" width="5" height="24" rx="2.5" fill="#101018" '+ol2+'/>'+
+// stoic eyes - deep blue
+'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#1848a0"/>'+
+'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#1848a0"/>'+
+'<circle cx="23" cy="36" r="1.5" fill="#060c18"/>'+
+'<circle cx="37" cy="36" r="1.5" fill="#060c18"/>'+
+'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
+'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#060c18" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#060c18" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
+// flat stoic mouth
+'<line x1="25" y1="45.5" x2="35" y2="45.5" stroke="#b06858" stroke-width="1.6" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="41" rx="3" ry="2" fill="#f08080" opacity=".18"/>'+
+'<ellipse cx="42" cy="41" rx="3" ry="2" fill="#f08080" opacity=".18"/>'+
+// sword
+'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#7890a8" '+ol2+'/>'+
+'<rect x="7" y="50" width="6" height="4" rx="1" fill="#5870a0"/>'+
+'<rect x="9" y="28" width="2" height="18" rx="1" fill="#e8e0d0" '+ol2+'/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 6 SHINOBU */
+{id:'shinobu',name:'Shinobu',full:'Shinobu Kocho',color:'#c090f8',bg:'rgba(38,8,68,.55)',rank:'Hashira 🦋',
+svg:mk(
+// butterfly haori
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#180828" '+ol+'/>'+
+'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#c090f8" opacity=".65" '+ol+'/>'+
+'<ellipse cx="22" cy="67" rx="7" ry="5.5" fill="#9060d0" opacity=".55"/>'+
+'<ellipse cx="38" cy="67" rx="7" ry="5.5" fill="#9060d0" opacity=".55"/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#180828" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#180828" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#180828" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// black hair - tied up
+'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#100818" '+ol+'/>'+
+// butterfly ornament
+'<path d="M42 22 Q50 15 56 19 Q50 24 42 22" fill="#c090f8" '+ol2+'/>'+
+'<path d="M42 22 Q50 29 56 25 Q50 24 42 22" fill="#9060c8" '+ol2+'/>'+
+'<circle cx="49" cy="22" r="3" fill="#e0b0ff" '+ol2+'/>'+
+'<circle cx="49" cy="22" r="1.5" fill="#c090f8"/>'+
+// purple knowing eyes
+'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#7030c8"/>'+
+'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#7030c8"/>'+
+'<circle cx="23" cy="36" r="1.5" fill="#100820"/>'+
+'<circle cx="37" cy="36" r="1.5" fill="#100820"/>'+
+'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
+'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#100820" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#100820" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
+'<path d="M25 44.5 Q30 48 35 44.5" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
+'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
+// butterfly sword
+'<rect x="8" y="44" width="3" height="26" rx="1.5" fill="#d0a8f8" '+ol2+'/>'+
+'<rect x="7" y="50" width="5" height="3.5" rx="1" fill="#9060c8"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 7 MUICHIRO */
+{id:'muichiro',name:'Muichiro',full:'Muichiro Tokito',color:'#60d0c0',bg:'rgba(0,38,48,.55)',rank:'Hashira 🌫️',
+svg:mk(
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#0a1820" '+ol+'/>'+
+'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#50c0b8" opacity=".55" '+ol+'/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#0a1820" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#0a1820" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#0a1820" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// long teal/mint hair
+'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#58a898" '+ol+'/>'+
+'<path d="M10 28 Q8 20 14 15 Q12 26 16 31" fill="#58a898" '+ol2+'/>'+
+// very long hair going down
+'<rect x="45" y="30" width="6" height="34" rx="3" fill="#58a898" '+ol2+'/>'+
+'<rect x="50" y="34" width="4.5" height="28" rx="2.3" fill="#70c0b0" opacity=".8"/>'+
+// hair tie
+'<rect x="46" y="46" width="8" height="5" rx="2.5" fill="#2a8878" '+ol2+'/>'+
+// blank/vacant eyes
+'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#30a0a0"/>'+
+'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#30a0a0"/>'+
+'<circle cx="23" cy="36" r="1.5" fill="#081818"/>'+
+'<circle cx="37" cy="36" r="1.5" fill="#081818"/>'+
+'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
+'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#081818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#081818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
+'<line x1="25" y1="45.5" x2="35" y2="45.5" stroke="#b06858" stroke-width="1.5" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="41" rx="3" ry="2" fill="#f08080" opacity=".2"/>'+
+'<ellipse cx="42" cy="41" rx="3" ry="2" fill="#f08080" opacity=".2"/>'+
+'<rect x="8" y="44" width="3" height="26" rx="1.5" fill="#90d8d0" '+ol2+'/>'+
+'<rect x="7" y="50" width="5" height="3.5" rx="1" fill="#50a898"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 8 MITSURI */
+{id:'mitsuri',name:'Mitsuri',full:'Mitsuri Kanroji',color:'#f080a8',bg:'rgba(70,10,35,.55)',rank:'Hashira 💕',
+svg:mk(
+// green haori with pink accents
+'<rect x="15" y="52" width="30" height="22" rx="3" fill="#285030" '+ol+'/>'+
+'<path d="M15 52 Q15 74 30 74 Q45 74 45 52" fill="#f080a8" opacity=".55" '+ol+'/>'+
+'<rect x="15" y="58" width="30" height="3.5" fill="#f8c8d8" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="33" rx="20" ry="20" fill="#f8d8a8" '+ol+'/>'+
+// pink/salmon long twintail hair
+'<ellipse cx="30" cy="20" rx="19" ry="12" fill="#e87898" '+ol+'/>'+
+'<path d="M8 30 Q4 18 10 12 Q9 25 13 30" fill="#e87898" '+ol2+'/>'+
+'<path d="M52 30 Q56 18 50 12 Q51 25 47 30" fill="#e87898" '+ol2+'/>'+
+// long twintails going down body
+'<path d="M10 30 Q4 48 8 72" stroke="#e87898" stroke-width="6" fill="none" stroke-linecap="round" '+ol2+'/>'+
+'<path d="M50 30 Q56 48 52 72" stroke="#d06878" stroke-width="6" fill="none" stroke-linecap="round" '+ol2+'/>'+
+// eyes - soft love
+'<ellipse cx="23" cy="35" rx="4.5" ry="5.5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="35" rx="4.5" ry="5.5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="36" rx="3.2" ry="4.2" fill="#c84880"/>'+
+'<ellipse cx="37" cy="36" rx="3.2" ry="4.2" fill="#c84880"/>'+
+'<circle cx="23" cy="35" r="1.6" fill="#180818"/>'+
+'<circle cx="37" cy="35" r="1.6" fill="#180818"/>'+
+'<circle cx="24.3" cy="33.5" r="1.2" fill="white"/>'+
+'<circle cx="38.3" cy="33.5" r="1.2" fill="white"/>'+
+'<path d="M19.5 30.5 Q23 29 26.5 30.5" stroke="#180818" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 30.5 Q37 29 40.5 30.5" stroke="#180818" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="40" r="1.2" fill="#d8a878" opacity=".8"/>'+
+'<path d="M24.5 43.5 Q30 47.5 35.5 43.5" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".45"/>'+
+'<ellipse cx="42" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".45"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 9 TENGEN */
+{id:'tengen',name:'Tengen',full:'Tengen Uzui',color:'#c090f8',bg:'rgba(40,0,60,.55)',rank:'Hashira 🎶',
+svg:mk(
+// extravagant white/silver outfit
+'<rect x="16" y="52" width="28" height="22" rx="3" fill="#282840" '+ol+'/>'+
+'<path d="M16 52 Q16 74 30 74 Q44 74 44 52" fill="#d0d0f8" opacity=".6" '+ol+'/>'+
+// gems/jewels pattern
+'<circle cx="25" cy="60" r="2.5" fill="#f8c518" '+ol2+'/>'+
+'<circle cx="35" cy="60" r="2.5" fill="#f870a0" '+ol2+'/>'+
+'<circle cx="30" cy="65" r="2.5" fill="#80c0f8" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#282840" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#282840" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// white hair
+'<ellipse cx="30" cy="21" rx="19" ry="12" fill="#e8e8f8" '+ol+'/>'+
+'<path d="M11 28 Q9 20 15 15 Q13 26 17 31" fill="#e8e8f8" '+ol2+'/>'+
+'<path d="M49 28 Q51 20 45 15 Q47 26 43 31" fill="#d8d8f0" '+ol2+'/>'+
+// headband
+'<rect x="12" y="27" width="36" height="6" rx="3" fill="#f8c518" '+ol+'/>'+
+'<circle cx="30" cy="30" r="3" fill="#f870a0" '+ol2+'/>'+
+// diamond mark on forehead (characteristic Tengen tattoo)
+'<path d="M22 24 L30 19 L38 24 L30 29 Z" fill="#c850f0" opacity=".6" '+ol2+'/>'+
+// eyes - dramatic
+'<ellipse cx="23" cy="37" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="37" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="38" rx="3" ry="3.8" fill="#8040b8"/>'+
+'<ellipse cx="37" cy="38" rx="3" ry="3.8" fill="#8040b8"/>'+
+'<circle cx="23" cy="37" r="1.5" fill="#100820"/>'+
+'<circle cx="37" cy="37" r="1.5" fill="#100820"/>'+
+'<circle cx="24.3" cy="35.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="35.5" r="1.1" fill="white"/>'+
+'<path d="M19.5 33 Q23 31.5 26.5 33" stroke="#100820" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<path d="M33.5 33 Q37 31.5 40.5 33" stroke="#100820" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="42.5" r="1.2" fill="#d8a878" opacity=".8"/>'+
+'<path d="M24 46 Q30 50 36 46" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+'<ellipse cx="18" cy="42" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+'<ellipse cx="42" cy="42" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 10 SANEMI */
+{id:'sanemi',name:'Sanemi',full:'Sanemi Shinazugawa',color:'#80d858',bg:'rgba(15,45,8,.55)',rank:'Hashira 💨',
+svg:mk(
+'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a2818" '+ol+'/>'+
+'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#80d858" opacity=".6" '+ol+'/>'+
+'<rect x="17" y="57" width="26" height="3" fill="#1a2818" '+ol2+'/>'+
+'<rect x="19" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
+'<rect x="33" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
+'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
+// spiky white hair
+'<ellipse cx="30" cy="21" rx="19" ry="11" fill="#f0f0f8" '+ol+'/>'+
+'<path d="M22 18 Q18 8 25 4 Q23 16 27 19" fill="#f0f0f8"/>'+
+'<path d="M38 18 Q42 8 35 4 Q37 16 33 19" fill="#e0e0f0"/>'+
+'<path d="M14 26 Q10 16 16 11 Q14 23 18 27" fill="#f0f0f8"/>'+
+// scars on face - Sanemi is covered in scars
+'<line x1="20" y1="32" x2="26" y2="28" stroke="#c09080" stroke-width="1.2"/>'+
+'<line x1="34" y1="30" x2="40" y2="34" stroke="#c09080" stroke-width="1.2"/>'+
+'<line x1="26" y1="42" x2="32" y2="38" stroke="#c09080" stroke-width="1"/>'+
+// eyes - angry
+'<ellipse cx="23" cy="36" rx="4.5" ry="4.5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="4.5" ry="4.5" fill="#fff" '+ol2+'/>'+
+'<ellipse cx="23" cy="36.5" rx="3" ry="3.3" fill="#506830"/>'+
+'<ellipse cx="37" cy="36.5" rx="3" ry="3.3" fill="#506830"/>'+
+'<circle cx="23" cy="36" r="1.5" fill="#080e00"/>'+
+'<circle cx="37" cy="36" r="1.5" fill="#080e00"/>'+
+'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
+'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
+// angry brows
+'<path d="M20 31 Q23 28.5 26 31" stroke="#0a0a18" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
+'<path d="M34 31 Q37 28.5 40 31" stroke="#0a0a18" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
+'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
+// gritted teeth
+'<path d="M24 45 L36 45" stroke="#b06858" stroke-width="1.6" stroke-linecap="round"/>'+
+'<line x1="26" y1="44" x2="26" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
+'<line x1="30" y1="44" x2="30" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
+'<line x1="34" y1="44" x2="34" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
+'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
+'<rect x="8" y="44" width="3.5" height="26" rx="1.5" fill="#c0d8a0" '+ol2+'/>'+
+'<rect x="7.5" y="50" width="5.5" height="4" rx="1" fill="#809070"/>'+
+'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
+)},
+
+/* 11 GYOMEI */
+{id:'gyomei',name:'Gyomei',full:'Gyomei Himejima',color:'#a07858',bg:'rgba(40,28,15,.55)',rank:'Hashira 🪨',
+svg:mk(
+// large muscular body
+'<rect x="12" y="50" width="36" height="26" rx="4" fill="#1a1408" '+ol+'/>'+
+'<path d="M12 50 Q12 76 30 76 Q48 76 48 50" fill="#6a5838" opacity=".7" '+ol+'/>'+
+'<rect x="12" y="57" width="36" height="4" fill="#1a1408" '+ol2+'/>'+
+'<rect x="15" y="74" width="10" height="6" rx="2" fill="#1a1408" '+ol2+'/>'+
+'<rect x="35" y="74" width="10" height="6" rx="2" fill="#1a1408" '+ol2+'/>'+
+'<rect x="16" y="78" width="8" height="3" rx="1" fill="#111"/>'+
+'<rect x="36" y="78" width="8" height="3" rx="1" fill="#111"/>'+
+'<rect x="27" y="46" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
+// big head
+'<ellipse cx="30" cy="32" rx="21" ry="22" fill="#f8d8a8" '+ol+'/>'+
+// bald head with white cloth
+'<ellipse cx="30" cy="20" rx="20" ry="13" fill="#f8d8a8" '+ol2+'/>'+
+'<rect x="12" y="25" width="36" height="8" rx="4" fill="#e8e0d0" '+ol+'/>'+
+// rosary/beads (characteristic Gyomei)
+'<path d="M10 46 Q8 35 15 28 Q12 38 16 44" stroke="#8a6840" stroke-width="2.5" fill="none" stroke-linecap="round"/>'+
+// big closed eyes (Gyomei always crying)
+'<ellipse cx="23" cy="36" rx="5" ry="3.5" fill="#eee" '+ol2+'/>'+
+'<ellipse cx="37" cy="36" rx="5" ry="3.5" fill="#eee" '+ol2+'/>'+
+'<path d="M18 36 Q23 39.5 28 36" stroke="#101010" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
+'<path d="M32 36 Q37 39.5 42 36" stroke="#101010" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
+// tear drops
+'<ellipse cx="20" cy="40" rx="1.5" ry="2" fill="#b0d8f8" opacity=".8"/>'+
+'<ellipse cx="40" cy="40" rx="1.5" ry="2" fill="#b0d8f8" opacity=".8"/>'+
+'<path d="M22.5 32 Q23 30.5 23.5 32" stroke="#101010" stroke-width="1.3" fill="none"/>'+
+'<path d="M36.5 32 Q37 30.5 37.5 32" stroke="#101010" stroke-width="1.3" fill="none"/>'+
+// big chain weapon
+'<path d="M50 40 Q58 50 55 62" stroke="#a08060" stroke-width="3" fill="none" stroke-linecap="round"/>'+
+'<circle cx="55" cy="63" r="4" fill="#c0a070" '+ol+'/>'+
+'<circle cx="50" cy="40" r="3" fill="#c0a070" '+ol+'/>'+
+'<ellipse cx="30" cy="79" rx="18" ry="4" fill="rgba(0,0,0,.3)"/>'
+)},
 ];
 
-// ── PHASES ──────────────────────────────────────────────
+/* ════════════════════════════════════
+   PHASES — OBJETIVO: TORNAR-SE HASHIRA
+════════════════════════════════════ */
 const PHASES=[
-{num:1,title:'Primeiros Passos',level:'NOVATO',emoji:'🌱',minCorrect:3,questions:[
+{num:1,title:'Treinamento Inicial',level:'INICIANTE',emoji:'🌱',minCorrect:3,
+story:'O treinamento começa! Aprenda o básico para se tornar um Caçador.',
+questions:[
 {q:'Qual é o nome completo do protagonista de Demon Slayer?',opts:['Tanjiro Kamado','Zenitsu Agatsuma','Inosuke Hashibira','Giyu Tomioka'],ans:0,tip:'Ele carrega a caixinha da irmã nas costas!'},
 {q:'O que aconteceu com a família de Tanjiro no início da história?',opts:['Mudaram de cidade','Foram atacados por um demônio','Viajaram para a capital','Adoeceram de gripe'],ans:1,tip:'Muzan Kibutsuji é o culpado indireto.'},
 {q:'Quem é a irmã de Tanjiro que se torna demônio?',opts:['Aoi','Kanao','Nezuko','Makomo'],ans:2,tip:'Ela viaja numa caixinha de bambu.'},
-{q:'Qual organização combate os demônios em Demon Slayer?',opts:['Anbu','Corpo de Caçadores de Demônios','Liga dos Vilões','Força Oculta'],ans:1,tip:'Em japonês: Kisatsutai.'},
+{q:'Qual organização combate os demônios?',opts:['Anbu','Corpo de Caçadores de Demônios','Liga dos Vilões','Força Oculta'],ans:1,tip:'Em japonês: Kisatsutai.'},
 {q:'O nome japonês de Demon Slayer é "Kimetsu no ___":',opts:['Yume','Yaiba','Yasha','Yoroi'],ans:1,tip:'Significa Lâmina em japonês.'},
 ]},
-{num:2,title:'Sopro Inicial',level:'APRENDIZ',emoji:'💧',minCorrect:3,questions:[
+{num:2,title:'Respiração Básica',level:'APRENDIZ',emoji:'💧',minCorrect:3,
+story:'Domine as técnicas de Respiração para avançar no treinamento.',
+questions:[
 {q:'Qual Respiração Tanjiro aprende com Sakonji Urokodaki?',opts:['Respiração do Fogo','Respiração da Água','Respiração do Trovão','Respiração do Vento'],ans:1,tip:'Flui como a água corrente!'},
-{q:'Quantas Formas tem a Respiração da Água que Tanjiro aprende?',opts:['6','8','10','12'],ans:2,tip:'Dez técnicas aquáticas diferentes.'},
-{q:'Quem treinou Tanjiro nas artes de Caçador de Demônios?',opts:['Rengoku','Giyu Tomioka','Sakonji Urokodaki','Kanae Kocho'],ans:2,tip:'Ele usa máscara de raposa tengu.'},
+{q:'Quantas Formas tem a Respiração da Água?',opts:['6','8','10','12'],ans:2,tip:'Dez técnicas aquáticas diferentes.'},
+{q:'Quem treinou Tanjiro nas artes de Caçador?',opts:['Rengoku','Giyu Tomioka','Sakonji Urokodaki','Kanae Kocho'],ans:2,tip:'Ele usa máscara de raposa tengu.'},
 {q:'Que animal Inosuke tem como máscara?',opts:['Urso','Javali','Lobo','Tigre'],ans:1,tip:'Ele foi criado por esse animal na floresta.'},
-{q:'Qual é o símbolo na testa de Tanjiro?',opts:['Lua','Sol','Cicatriz de nascença','Flor de cerejeira'],ans:2,tip:'Virou uma marca do Caçador com o tempo.'},
+{q:'Qual é o material das espadas que mata demônios?',opts:['Ouro purificado','Aço solar (Nichirin)','Prata sagrada','Pedra do trovão'],ans:1,tip:'Absorve a luz solar durante a forja.'},
 ]},
-{num:3,title:'Os Hashira',level:'INTERMEDIÁRIO',emoji:'⚔️',minCorrect:3,questions:[
+{num:3,title:'Missões Iniciais',level:'CAÇADOR',emoji:'⚔️',minCorrect:3,
+story:'Suas primeiras missões como Caçador — prove seu valor!',
+questions:[
+{q:'Qual é a cicatriz/marca na testa de Tanjiro?',opts:['Lua','Sol','Cicatriz de nascença','Flor de cerejeira'],ans:2,tip:'Virou uma marca do Caçador com o tempo.'},
+{q:'Qual é a marca no brinco de Tanjiro?',opts:['Espiral','Hanafuda (flor)','Lua','Cobra'],ans:1,tip:'Brincos Hanafuda passados pelo pai.'},
+{q:'Qual é o poder do demônio Rui (Arco da Montanha Natagumo)?',opts:['Fios de sangue','Manipular fogo','Criar ilusões','Controlar veneno'],ans:0,tip:'Ele cria fios cortantes como navalhas.'},
+{q:'O que é o Kagura Hinokami que o pai de Tanjiro dançava?',opts:['Uma dança folclórica qualquer','A Respiração do Sol — a mais poderosa','Uma dança para afastar espíritos','Uma cerimônia de colheita'],ans:1,tip:'A origem de todas as Respirações.'},
+{q:'O que o demônio Kibutsuji Muzan precisa para não ser detectado?',opts:['Ficar na escuridão','Assumir aparência humana e variar formas','Usar capa mágica','Se tornar invisível'],ans:1,tip:'Ele pode transformar até seu DNA.'},
+]},
+{num:4,title:'Encontro com os Hashira',level:'CANDIDATO',emoji:'🏛️',minCorrect:3,
+story:'Os Pilares te julgam. Conquiste o respeito dos Hashira!',
+questions:[
 {q:'Quantos Hashira (Pilares) existem no Corpo de Caçadores?',opts:['7','8','9','10'],ans:2,tip:'Nove respirações, nove pilares.'},
 {q:'Giyu Tomioka é o Pilar de qual Respiração?',opts:['Fogo','Pedra','Água','Névoa'],ans:2,tip:'Ele ensinou a técnica a Tanjiro.'},
-{q:'Por que Shinobu não pode decepar cabeças de demônios?',opts:['É proibido','Falta força física','Espada curta demais','Não quer'],ans:1,tip:'Por isso ela usa veneno em vez de corte.'},
-{q:'Kyojuro Rengoku é o Pilar de qual Respiração?',opts:['Sol','Trovão','Chamas','Pedra'],ans:2,tip:'SET YOUR HEART ABLAZE!'},
-{q:'Tengen Uzui usa duas enormes katanas. Qual sua Respiração?',opts:['Dança','Som','Ritmo','Música'],ans:1,tip:'Ele é extravagante por natureza!'},
+{q:'Por que Shinobu não pode decepar cabeças de demônios?',opts:['É proibido','Falta força física','Espada muito curta','Não quer'],ans:1,tip:'Por isso ela usa veneno em vez de corte.'},
+{q:'Rengoku é o Pilar de qual Respiração?',opts:['Sol','Trovão','Chamas','Pedra'],ans:2,tip:'SET YOUR HEART ABLAZE!'},
+{q:'O que uma pessoa precisa fazer para se tornar Hashira?',opts:['Treinar por 10 anos','Matar 50 demônios comuns ou 1 Lua','Ser escolhido pelo Mestre','Derrotar outro Hashira'],ans:1,tip:'Ou matar uma Lua Demoníaca inferior.'},
 ]},
-{num:4,title:'Os Doze Luas',level:'INTERMEDIÁRIO+',emoji:'🌙',minCorrect:3,questions:[
-{q:'Como se chamam os 12 demônios mais poderosos a serviço de Muzan?',opts:['Guardiões da Noite','Doze Luas Demoníacas','Legião das Trevas','Oni Supremos'],ans:1,tip:'Em japonês: Jūnikizuki.'},
-{q:'Quem é o demônio criador de todos os outros demônios?',opts:['Kokushibo','Doma','Akaza','Muzan Kibutsuji'],ans:3,tip:'Ele existe há mais de 1000 anos.'},
-{q:'Akaza é qual número entre as Luas Superiores?',opts:['1','2','3','4'],ans:2,tip:'Ele derrotou Rengoku no Trem Infinito.'},
-{q:'O que os demônios precisam evitar para não morrer?',opts:['Fogo e água','Sal e alho','Luz do sol e decapitação','Orações e cruzes'],ans:2,tip:'A luz solar os destrói em segundos.'},
-{q:'Os Doze Luas são divididos em Luas Superiores e Luas ___:',opts:['Inferiores','Menores','Fracas','Comuns'],ans:0,tip:'Kizuki Superior e Kizuki Inferior.'},
+{num:5,title:'Trem Infinito',level:'VETERANO',emoji:'🚂',minCorrect:4,
+story:'A missão do Trem Infinito. Sobreviva à noite e à Lua Superior!',
+questions:[
+{q:'Qual Hashira acompanha o grupo no Trem Infinito?',opts:['Giyu','Shinobu','Rengoku','Tengen'],ans:2,tip:'O Pilar das Chamas enfrenta Akaza.'},
+{q:'Qual é o poder de Enmu no Trem Infinito?',opts:['Controlar o fogo','Criar sonhos e manipular o sono','Absorver almas','Regeneração infinita'],ans:1,tip:'Ele adormece os passageiros do trem.'},
+{q:'Qual amigo de Tanjiro fica dormindo involuntariamente?',opts:['Inosuke','Zenitsu','Nezuko','Giyu'],ans:1,tip:'Ele ronca bastante!'},
+{q:'Quem Rengoku enfrenta no confronto final?',opts:['Muzan','Doma','Akaza','Kokushibo'],ans:2,tip:'Luna Superior Três.'},
+{q:'O que é a Marca do Caçador que aparece em alguns personagens?',opts:['Tatuagem escolhida','Marca que surge em batalha extrema','Selo mágico de Urokodaki','Emblema do Corpo'],ans:1,tip:'Aumenta o poder do portador enormemente.'},
 ]},
-{num:5,title:'O Trem Infinito',level:'MÉDIO',emoji:'🚂',minCorrect:4,questions:[
-{q:'No arco do Trem Infinito, qual Hashira acompanha o grupo?',opts:['Giyu','Shinobu','Rengoku','Tengen'],ans:2,tip:'O Pilar das Chamas enfrenta Akaza.'},
-{q:'Qual é o poder de Enmu no arco do Trem Infinito?',opts:['Controlar o fogo','Criar sonhos e manipular o sono','Absorver almas','Regeneração infinita'],ans:1,tip:'Ele adormece os passageiros do trem.'},
-{q:'Qual amigo de Tanjiro fica dormindo involuntariamente no trem?',opts:['Inosuke','Zenitsu','Nezuko','Giyu'],ans:1,tip:'Ele ronca bastante!'},
-{q:'No combate final do trem, quem Rengoku enfrenta?',opts:['Muzan','Doma','Akaza','Kokushibo'],ans:2,tip:'Luna Superior Três.'},
-{q:'O que caracteriza a Marca do Caçador?',opts:['Tatuagem escolhida','Marca que surge em batalha extrema','Selo mágico de Urokodaki','Emblema do Corpo'],ans:1,tip:'Tanjiro e Rengoku apresentam sinais disso.'},
-]},
-{num:6,title:'Distrito do Entretenimento',level:'AVANÇADO',emoji:'🎭',minCorrect:4,questions:[
+// FASES 6-10: LUAS E MUZAN
+{num:6,title:'LUA INFERIOR 6',level:'LUA INFERIOR',emoji:'🌙',minCorrect:4,
+story:'Você enfrenta uma Lua Inferior! Esta é a prova para se tornar Hashira!',
+questions:[
 {q:'Qual Hashira lidera a missão no Distrito do Entretenimento?',opts:['Mitsuri','Tengen Uzui','Sanemi','Muichiro'],ans:1,tip:'Flamboyant ninja com três esposas!'},
 {q:'Quais demônios-irmãos os heróis enfrentam no Distrito?',opts:['Gyutaro e Daki','Akaza e Doma','Rui e família','Kokushibo e Doma'],ans:0,tip:'Luas Superiores Seis, em um só par.'},
 {q:'Zenitsu domina quantas formas da Respiração do Trovão?',opts:['1','3','5','7'],ans:0,tip:'Ele usa a Primeira Forma: Trovão Furioso.'},
 {q:'Qual é o nome da Primeira Forma da Respiração do Trovão?',opts:['Raio Infinito','Trovão Furioso (Thunderclap and Flash)','Tempestade Elétrica','Descarga Divina'],ans:1,tip:'É quase instantânea como um raio.'},
-{q:'O que é único no estilo de luta de Inosuke relacionado ao seu corpo?',opts:['Usa dois estilos ao mesmo tempo','Move órgãos internos distorcendo a percepção inimiga','Luta sem ver','Copia os inimigos'],ans:1,tip:'Ele treinou os músculos do tórax para isso.'},
+{q:'Inosuke tem um estilo de luta único. O que é especial no seu corpo?',opts:['Usa dois estilos','Move órgãos internos distorcendo percepção inimiga','Luta sem ver','Copia inimigos'],ans:1,tip:'Ele treinou os músculos do tórax para isso.'},
 ]},
-{num:7,title:'Vila dos Ferreiros',level:'EXPERIENTE',emoji:'⚒️',minCorrect:4,questions:[
-{q:'Como se chama o jovem ferreiro amigo de Tanjiro na Vila dos Ferreiros?',opts:['Haganezuka','Kotetsu','Hotaru','Kanamori'],ans:1,tip:'Ele usa máscara e treina Tanjiro com o boneco.'},
+{num:7,title:'LUA SUPERIOR 5',level:'LUA SUPERIOR',emoji:'🌕',minCorrect:4,
+story:'Uma Lua Superior bloqueia seu caminho para se tornar Hashira. Lute!',
+questions:[
+{q:'Quais são as duas categorias das Doze Luas Demoníacas?',opts:['Alta e Baixa','Superior e Inferior','Forte e Fraca','Maior e Menor'],ans:1,tip:'Kizuki Superior e Kizuki Inferior.'},
 {q:'Qual Lua Superior aparece na Vila dos Ferreiros?',opts:['Hantengu','Gyokko','Doma','Akaza'],ans:1,tip:'Ele guarda criaturas dentro de potes.'},
-{q:'Muichiro desperta sua Marca do Caçador ao lutar contra quem?',opts:['Hantengu','Gyokko','Kokushibo','Akaza'],ans:1,tip:'O Pilar da Névoa com apenas 14 anos.'},
+{q:'Muichiro Tokito tem quantos anos quando se torna Hashira?',opts:['12','14','16','18'],ans:1,tip:'O mais jovem Hashira a atingir o título.'},
 {q:'O Boneco Yoriichi Type Zero representa qual lendário Caçador?',opts:['Urokodaki','Yoriichi Tsugikuni','Kokushibo','Um Hashira sem nome'],ans:1,tip:'O maior espadachim da história.'},
-{q:'Qual é o material das espadas que permite matar demônios?',opts:['Ouro purificado','Aço solar (Nichirin)','Prata sagrada','Pedra do trovão'],ans:1,tip:'Absorve a luz solar durante a forja.'},
+{q:'Como Muichiro Tokito desperta sua Marca do Caçador?',opts:['Em treinamento','Lutando contra Gyokko com risco de morte','Após meditar','Por ordem do Mestre'],ans:1,tip:'A Marca surge em situações de risco extremo de vida.'},
 ]},
-{num:8,title:'Castelo da Lua Infinita',level:'ÉLITE',emoji:'🌕',minCorrect:4,questions:[
-{q:'Quem é Yoriichi Tsugikuni?',opts:['O primeiro Hashira','O criador da Respiração Total do Sol e o mais poderoso Caçador','O irmão de Muzan','O mestre de Urokodaki'],ans:1,tip:'Ele quase matou Muzan sozinho.'},
+{num:8,title:'LUA SUPERIOR 4',level:'LUA SUPERIOR',emoji:'🌑',minCorrect:4,
+story:'O combate se intensifica. Prove que merece o título de Hashira!',
+questions:[
+{q:'Quem é Yoriichi Tsugikuni?',opts:['O primeiro Hashira','Criador da Respiração Total do Sol e o mais poderoso Caçador','O irmão de Muzan','O mestre de Urokodaki'],ans:1,tip:'Ele quase matou Muzan sozinho.'},
 {q:'Qual é a relação de Kokushibo com Yoriichi?',opts:['Eram melhores amigos','São gêmeos — Kokushibo era irmão de Yoriichi','Inimigos desde crianças','Sem relação'],ans:1,tip:'Michikatsu Tsugikuni — o irmão invejoso.'},
 {q:'A Respiração Total do Sol é a origem de todas as outras?',opts:['Verdadeiro','Falso','Apenas metade','Só da Respiração de Água'],ans:0,tip:'Todas derivam da Respiração do Sol.'},
-{q:'O que é o Castelo do Labirinto Demoníaco de Muzan?',opts:['Fortaleza nas montanhas','Dimensão ilusória controlada por Nakime','Uma caverna subterrânea','Um templo amaldiçoado'],ans:1,tip:'Nakime controla o espaço com seu biwa.'},
-{q:'Qual habilidade especial Nezuko desenvolve única entre todos os demônios?',opts:['Voar','Resistência à luz solar','Telepatia','Controlar outros demônios'],ans:1,tip:'Nenhum outro demônio conseguiu isso.'},
+{q:'Qual habilidade especial Nezuko desenvolveu única entre demônios?',opts:['Voar','Resistência à luz solar','Telepatia','Controlar outros demônios'],ans:1,tip:'Nenhum outro demônio conseguiu isso.'},
+{q:'O que é o Castelo do Labirinto Demoníaco?',opts:['Fortaleza nas montanhas','Dimensão ilusória controlada por Nakime','Uma caverna','Um templo amaldiçoado'],ans:1,tip:'Nakime controla o espaço com seu biwa.'},
 ]},
-{num:9,title:'Batalha Final',level:'MESTRE',emoji:'💀',minCorrect:4,questions:[
-{q:'Qual é a fraqueza crucial de Muzan explorada no clímax?',opts:['Espadas de ouro','O amanhecer — ele não pode ficar no sol','Água benta','Chamas do Pilar do Fogo'],ans:1,tip:'Eles precisam mantê-lo lutando até o amanhecer.'},
-{q:'A Dança do Deus do Fogo é técnica ancestral de qual Respiração?',opts:['Respiração das Chamas','Respiração do Sol','Respiração da Água','Respiração da Lua'],ans:1,tip:'Tanjiro a usa imitando a dança do pai.'},
+{num:9,title:'LUA SUPERIOR 3',level:'LUA SUPERIOR',emoji:'💀',minCorrect:4,
+story:'Akaza, a Luna Superior Três, está na sua frente. A batalha decisiva!',
+questions:[
+{q:'Akaza (Lua Superior 3) mata qual Hashira na história?',opts:['Giyu','Shinobu','Rengoku','Muichiro'],ans:2,tip:'No arco do Trem Infinito.'},
+{q:'Doma, Lua Superior 2, é derrotado por qual dupla?',opts:['Tanjiro e Giyu','Kanao e Inosuke','Zenitsu e Tengen','Sanemi e Muichiro'],ans:1,tip:'Vingança por Shinobu Kocho.'},
+{q:'O que Shinobu Kocho preparou como plano contra Doma?',opts:['Uma armadilha de fogo','Acumulou veneno wisteria em seu corpo ao longo de anos','Criou uma espada especial','Usou o sol como arma'],ans:1,tip:'Ela sacrificou anos de vida por este plano.'},
+{q:'Qual é a técnica especial de Akaza que o torna tão perigoso?',opts:['Regeneração absurda e combate corpo a corpo','Manipulação de fogo','Criação de ilusões','Controle de outros demônios'],ans:0,tip:'Ele pode regenerar qualquer ferimento instantaneamente.'},
+{q:'Como Akaza é finalmente derrotado?',opts:['Decapitado por Giyu','Ele mesmo destrói sua cabeça ao relembrar sua humanidade','Exposto ao sol','Envenenado por Shinobu'],ans:1,tip:'Ele recupera memórias de sua vida humana.'},
+]},
+{num:10,title:'MUZAN KIBUTSUJI',level:'O REI DOS DEMÔNIOS',emoji:'👹',minCorrect:5,
+story:'CONFRONTO FINAL com Muzan! Derrote-o para se tornar Hashira Supremo!',
+questions:[
+{q:'Qual é a fraqueza crucial de Muzan explorada no clímax?',opts:['Espadas de ouro','O amanhecer — ele não pode sobreviver ao sol','Água benta','Chamas do Pilar do Fogo'],ans:1,tip:'Eles precisam mantê-lo lutando até o amanhecer.'},
+{q:'A Dança do Deus do Fogo (Hinokami Kagura) é qual Respiração?',opts:['Respiração das Chamas','Respiração do Sol','Respiração da Água','Respiração da Lua'],ans:1,tip:'Tanjiro a usa imitando a dança do pai.'},
 {q:'O que acontece com Muzan ao ser exposto à luz do sol?',opts:['Foge para outro reino','É destruído completamente','Vira humano','Hiberna por séculos'],ans:1,tip:'Fim de mais de mil anos de existência.'},
-{q:'Qual personagem injeta veneno no corpo de Muzan?',opts:['Kanao','Shinobu (veneno guardado em seu corpo)','Aoi','Doma após ser derrotado'],ans:1,tip:'Shinobu planejou isso muito antes de morrer.'},
-{q:'Qual herói fica temporariamente transformado por Muzan?',opts:['Zenitsu','Inosuke','Tanjiro','Giyu'],ans:2,tip:'Muzan tentou fazê-lo seu sucessor.'},
-]},
-{num:10,title:'Lâmina do Caçador Supremo',level:'LENDA ☀️',emoji:'☀️',minCorrect:5,questions:[
-{q:'Como termina a história de Tanjiro Kamado?',opts:['Torna-se novo líder do Corpo','Morre heroicamente','Vira demônio e depois é curado, vivendo vida normal','Desaparece misteriosamente'],ans:2,tip:'Muzan tentou transformá-lo em seu sucessor.'},
-{q:'Em qual época se passa o epílogo de Demon Slayer?',opts:['50 anos depois','100 anos depois','Era moderna contemporânea','500 anos depois'],ans:2,tip:'Há ônibus e smartphones no epílogo.'},
-{q:'Douma, Luna Superior Dois, é derrotado por qual dupla?',opts:['Tanjiro e Giyu','Kanao e Inosuke','Zenitsu e Tengen','Sanemi e Muichiro'],ans:1,tip:'Vingança por Shinobu Kocho.'},
-{q:'Qual é a moral central que Tanjiro carrega sobre a vida?',opts:['Odeie os demônios sem piedade','Mesmo demônios um dia foram humanos e merecem alguma compaixão','A força é o que importa','Os fortes sobrevivem'],ans:1,tip:'Ele chora pelos demônios que mata, sabendo sua história.'},
-{q:'Quem é Tamayo e qual sua importância?',opts:['Uma humana que descobriu o veneno','Demônia médica que trabalhou anos num antídoto','A mãe de Tanjiro reencarnada','Uma Hashira aposentada'],ans:1,tip:'Ela e Yushiro são demônios aliados dos Caçadores.'},
-{q:'[BÔNUS] Qual é o nome das 13 Formas no ciclo contínuo de Tanjiro?',opts:['Respiração do Sol – Sequência Celestial','Hinokami Kagura – Dança Circular','Respiração Total do Sol – 13 Formas em Ciclo Contínuo','Respiração Divina do Fogo'],ans:2,tip:'A décima terceira forma conecta todas as anteriores.'},
-]},
+{q:'Qual personagem injeta veneno no corpo de Muzan?',opts:['Kanao','Shinobu (veneno acumulado em seu corpo)','Aoi','Doma'],ans:1,tip:'Shinobu planejou isso muito antes de morrer.'},
+{q:'Como termina a história de Tanjiro?',opts:['Torna-se líder do Corpo','Morre heroicamente','Vira demônio e depois é curado, vivendo vida normal','Desaparece'],ans:2,tip:'Muzan tentou transformá-lo em seu sucessor.'},
+{q:'[BÔNUS HASHIRA] O que um caçador precisa provar para receber o título de Hashira?',opts:['Vencer em torneio','Matar 50 demônios comuns OU uma Lua Demoníaca','Treinar por 10 anos','Ser escolhido por outro Hashira'],ans:1,tip:'É o requisito oficial do Corpo de Caçadores.'},
+],
+isFinal:true},
 ];
 
 function getRank(s){
-  if(s>=13000)return{name:'Respiração Total do Sol',lbl:'LENDA SUPREMA',color:'#ff8c00',bg:'rgba(255,140,0,.18)'};
-  if(s>=9500) return{name:'Hashira',lbl:'PILAR',color:'#f8c832',bg:'rgba(248,200,50,.14)'};
-  if(s>=6500) return{name:'Caçador Élite',lbl:'ÉLITE',color:'#c090f8',bg:'rgba(192,144,248,.14)'};
-  if(s>=4000) return{name:'Caçador Experiente',lbl:'EXPERIENTE',color:'#5ad080',bg:'rgba(90,208,128,.14)'};
-  if(s>=2000) return{name:'Caçador Iniciante',lbl:'INICIANTE',color:'#3a8fdc',bg:'rgba(58,143,220,.14)'};
-  return{name:'Estudante de Respiração',lbl:'NOVATO',color:'#8a7060',bg:'rgba(138,112,96,.14)'};
+  if(s>=13000)return{name:'Hashira Supremo',lbl:'HASHIRA SUPREMO ☀️',color:'#ff8c00',bg:'rgba(255,140,0,.2)'};
+  if(s>=9500) return{name:'Hashira',lbl:'HASHIRA',color:'#f5c518',bg:'rgba(245,197,24,.15)'};
+  if(s>=6500) return{name:'Caçador Élite',lbl:'ÉLITE',color:'#c090f8',bg:'rgba(192,144,248,.15)'};
+  if(s>=4000) return{name:'Caçador Experiente',lbl:'EXPERIENTE',color:'#48c868',bg:'rgba(72,200,104,.15)'};
+  if(s>=2000) return{name:'Caçador Iniciante',lbl:'INICIANTE',color:'#2880d8',bg:'rgba(40,128,216,.15)'};
+  return{name:'Estudante',lbl:'ESTUDANTE',color:'#8a7060',bg:'rgba(138,112,96,.15)'};
 }
 
-// ── STATE ────────────────────────────────────────────────
+/* STATE */
 var G={name:'',charId:null,phase:0,qIdx:0,score:0,correct:0,answered:false,timer:null,tv:30,prev:'s-home'};
 
-// ── PARTICLES ────────────────────────────────────────────
+/* PARTICLES */
 (function(){
-  var p=document.getElementById('ptcl');
-  var em=['🌸','⚔️','🔥','💧','⭐','🌙','✨','🌺'];
-  for(var i=0;i<18;i++){var s=document.createElement('span');s.textContent=em[Math.floor(Math.random()*em.length)];s.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.7+Math.random()*0.8)+'rem;animation-duration:'+(10+Math.random()*14)+'s;animation-delay:'+Math.random()*12+'s';p.appendChild(s)}
+  var p=document.getElementById('ptcl'),em=['🌸','⚔️','🔥','💧','⭐','🌙','✨','🌺','💫','🗡️'];
+  for(var i=0;i<20;i++){var s=document.createElement('span');s.textContent=em[i%em.length];s.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.7+Math.random()*0.9)+'rem;animation-duration:'+(9+Math.random()*13)+'s;animation-delay:'+Math.random()*11+'s';p.appendChild(s)}
 })();
 
-// ── CHAR GRID ────────────────────────────────────────────
+/* CHAR GRID */
 function buildGrid(){
   var g=document.getElementById('cgrid');g.innerHTML='';
   CHARS.forEach(function(c){
     var d=document.createElement('div');
-    d.className='char-card'+(G.charId===c.id?' sel':'');
+    d.className='ccard'+(G.charId===c.id?' sel':'');
     d.style.borderColor=G.charId===c.id?c.color:'rgba(255,255,255,.1)';
     d.style.background=G.charId===c.id?c.bg:'rgba(255,255,255,.03)';
-    if(G.charId===c.id)d.style.boxShadow='0 0 20px '+c.color+'55';
-    d.innerHTML='<div class="char-svg">'+c.svg+'</div><div class="char-name">'+c.name+'</div><span class="char-rank" style="background:'+c.bg+';color:'+c.color+';border:1px solid '+c.color+'50">'+c.rank+'</span>';
+    if(G.charId===c.id)d.style.boxShadow='0 0 18px '+c.color+'55';
+    d.innerHTML='<div class="csvg">'+c.svg+'</div><div class="cname">'+c.name+'</div><span class="crank" style="background:'+c.bg+';color:'+c.color+';border:1px solid '+c.color+'50">'+c.rank+'</span>';
     d.onclick=function(){G.charId=c.id;buildGrid()};
     g.appendChild(d);
   });
 }
 buildGrid();
 
-// ── NAVIGATION ───────────────────────────────────────────
+/* NAV */
 function go(id){
   G.prev=document.querySelector('.scr.on')?document.querySelector('.scr.on').id:'s-home';
   document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});
@@ -594,7 +924,7 @@ function go(id){
 }
 function goBack(){go(G.prev||'s-home')}
 
-// ── START ────────────────────────────────────────────────
+/* START */
 function startGame(){
   var n=document.getElementById('pname').value.trim();
   if(!n){alert('Digite seu nome de guerreiro!');return}
@@ -603,44 +933,43 @@ function startGame(){
   buildDots();loadQ();go('s-quiz');
 }
 
-// ── DOTS ─────────────────────────────────────────────────
+/* DOTS */
 function buildDots(){
   var w=document.getElementById('pdots');w.innerHTML='';
   PHASES.forEach(function(_,i){var d=document.createElement('div');d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'');d.textContent=i+1;w.appendChild(d)});
 }
 function updDots(){document.querySelectorAll('.pd').forEach(function(d,i){d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'')})}
 
-// ── LOAD Q ───────────────────────────────────────────────
+/* LOAD Q */
 function loadQ(){
   var ph=PHASES[G.phase],qd=ph.questions[G.qIdx];G.answered=false;
   var ch=CHARS.find(function(c){return c.id===G.charId});
   var b=document.getElementById('pbadge');
-  b.style.background=ch.bg;b.style.border='1px solid '+ch.color+'60';b.style.color=ch.color;
-  b.innerHTML='<span class="bdot" style="background:'+ch.color+'"></span>'+ch.name+' / '+G.name;
-  document.getElementById('live-score').textContent=G.score;
-  document.getElementById('prog-ph').textContent='Fase '+ph.num+'/10';
-  document.getElementById('prog-q').textContent='Q '+(G.qIdx+1)+'/'+ph.questions.length;
+  b.style.background=ch.bg;b.style.border='1px solid '+ch.color+'55';b.style.color=ch.color;
+  b.innerHTML='<span class="bdot" style="background:'+ch.color+'"></span>'+ch.name+' · '+G.name;
+  document.getElementById('lscore').textContent=G.score;
+  document.getElementById('pph').textContent='Fase '+ph.num+'/10';
+  document.getElementById('pq').textContent='Q '+(G.qIdx+1)+'/'+ph.questions.length;
   var pct=((G.phase*5+G.qIdx)/(PHASES.length*5)*100);
-  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('pfill').style.width=pct+'%';
   updDots();
-  document.getElementById('ph-num').textContent='FASE '+ph.num+' — '+ph.level;
-  document.getElementById('ph-title').textContent=ph.emoji+' '+ph.title;
-  document.getElementById('q-num').textContent='Questão '+(G.qIdx+1)+' de '+ph.questions.length;
-  document.getElementById('q-text').textContent=qd.q;
-  var oc=document.getElementById('q-opts');oc.innerHTML='';
+  document.getElementById('phnum').textContent='FASE '+ph.num+' — '+ph.level;
+  document.getElementById('phtitle').textContent=ph.emoji+' '+ph.title;
+  document.getElementById('qnum').textContent='Questão '+(G.qIdx+1)+' de '+ph.questions.length;
+  document.getElementById('qtext').textContent=qd.q;
+  var oc=document.getElementById('qopts');oc.innerHTML='';
   ['A','B','C','D'].forEach(function(l,i){
-    var btn=document.createElement('button');
-    btn.className='opt';
-    btn.innerHTML='<span class="opt-ltr">'+l+'</span>'+qd.opts[i];
+    var btn=document.createElement('button');btn.className='opt';
+    btn.innerHTML='<span class="oltr">'+l+'</span>'+qd.opts[i];
     btn.onclick=(function(ii,b){return function(){checkAns(ii,b,qd)}})(i,btn);
     oc.appendChild(btn);
   });
-  var fb=document.getElementById('feedback');fb.className='feedback';fb.innerHTML='';
-  document.getElementById('next-wrap').style.display='none';
+  var fb=document.getElementById('fb');fb.className='fb';fb.innerHTML='';
+  document.getElementById('nwrap').style.display='none';
   startTimer();
 }
 
-// ── TIMER ────────────────────────────────────────────────
+/* TIMER */
 function startTimer(){
   clearInterval(G.timer);G.tv=30;
   var el=document.getElementById('timer');el.textContent='30';el.className='timer';
@@ -655,80 +984,110 @@ function timeOut(){
   var qd=PHASES[G.phase].questions[G.qIdx];
   document.querySelectorAll('.opt').forEach(function(b,i){b.disabled=true;if(i===qd.ans)b.classList.add('correct')});
   showFb(false,'⏰ Tempo esgotado! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);
-  document.getElementById('next-wrap').style.display='block';
+  document.getElementById('nwrap').style.display='block';
 }
 
-// ── CHECK ────────────────────────────────────────────────
+/* CHECK */
 function checkAns(idx,btn,qd){
   if(G.answered)return;G.answered=true;clearInterval(G.timer);
   document.querySelectorAll('.opt').forEach(function(b){b.disabled=true});
   var ok=idx===qd.ans;
-  if(ok){btn.classList.add('correct');var bonus=Math.ceil(G.tv/30*50);G.score+=100+bonus;G.correct++;document.getElementById('live-score').textContent=G.score;showFb(true,'✅ Correto! +'+(100+bonus)+' pts (bônus: +'+bonus+')',qd.tip);burst(true)}
+  if(ok){btn.classList.add('correct');var b=Math.ceil(G.tv/30*50);G.score+=100+b;G.correct++;document.getElementById('lscore').textContent=G.score;showFb(true,'✅ Correto! +'+(100+b)+' pts (bônus velocidade: +'+b+')',qd.tip);burst(true)}
   else{btn.classList.add('wrong');document.querySelectorAll('.opt')[qd.ans].classList.add('correct');showFb(false,'❌ Errou! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);burst(false)}
-  document.getElementById('next-wrap').style.display='block';
+  document.getElementById('nwrap').style.display='block';
 }
-function showFb(ok,msg,tip){var fb=document.getElementById('feedback');fb.className='feedback show '+(ok?'fb-ok':'fb-err');fb.innerHTML=msg+'<br><small style="opacity:.7;font-size:.76rem">💡 '+tip+'</small>'}
+function showFb(ok,msg,tip){var fb=document.getElementById('fb');fb.className='fb on '+(ok?'ok':'err');fb.innerHTML=msg+'<br><small style="opacity:.7;font-size:.74rem">💡 '+tip+'</small>'}
 
-// ── NEXT ─────────────────────────────────────────────────
+/* NEXT */
 function nextQ(){
   G.qIdx++;var ph=PHASES[G.phase];
   if(G.qIdx>=ph.questions.length){
     if(G.correct>=ph.minCorrect){if(G.phase===PHASES.length-1){saveScore();showFinal()}else showPhaseClear()}
-    else{document.getElementById('over-msg').innerHTML='Você acertou '+G.correct+'/'+ph.questions.length+' na fase <strong>'+ph.title+'</strong>.<br>Mínimo necessário: '+ph.minCorrect+' acertos.';go('s-over')}
+    else{document.getElementById('overmsg').innerHTML='Você acertou '+G.correct+'/'+ph.questions.length+' na fase <strong style="color:var(--gold)">'+ph.title+'</strong>.<br>Mínimo necessário: '+ph.minCorrect+' acertos.<br><small style="opacity:.7">Um Hashira nunca desiste!</small>';go('s-over')}
   }else loadQ();
 }
 
-// ── PHASE CLEAR ──────────────────────────────────────────
+/* PHASE CLEAR */
 function showPhaseClear(){
   var ph=PHASES[G.phase];confetti();
-  document.getElementById('phclear-card').innerHTML='<span class="pc-icon">'+ph.emoji+'</span><div class="divl"></div><h2 class="pc-title">⚔️ Fase Superada!</h2><p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;line-height:1.6;margin-bottom:18px">Completou <strong style="color:var(--gold)">'+ph.title+'</strong><br>Acertos: '+G.correct+'/'+ph.questions.length+' · Score: <strong style="color:var(--gold)">'+G.score+'</strong></p><div class="chips"><span class="chip">⭐ '+G.score+' pts</span><span class="chip">✅ '+G.correct+' acertos</span><span class="chip">🏅 '+ph.title+'</span></div><button class="btn btn-red" style="margin-bottom:10px" onclick="advPhase()">▶ Próxima Fase</button><br><button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="go(\'s-rank\')">🏆 Ranking</button>';
+  var isLua=ph.num>=6;
+  var nextPh=PHASES[G.phase+1];
+  var msg=isLua?'🌑 Luna derrotada! Continue rumo ao título de <strong style="color:var(--gold)">Hashira</strong>!':'⚔️ Fase superada! O caminho para Hashira continua!';
+  document.getElementById('phclear').innerHTML=
+    '<span class="pcicon">'+ph.emoji+'</span>'+
+    '<div class="divl"></div>'+
+    '<h2 class="pctitle">'+(isLua?'🌑 '+ph.title+' Derrotada!':'⚔️ Fase Superada!')+'</h2>'+
+    '<p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;line-height:1.6;margin-bottom:16px">'+msg+'<br>Acertos: '+G.correct+'/'+ph.questions.length+' · Score: <strong style="color:var(--gold)">'+G.score+'</strong></p>'+
+    '<div class="chips"><span class="chip">⭐ '+G.score+' pts</span><span class="chip">✅ '+G.correct+' acertos</span>'+(isLua?'<span class="chip" style="color:#ff9898;border-color:#ff9898aa">🌙 '+ph.title+'</span>':'<span class="chip">🏅 '+ph.title+'</span>')+'</div>'+
+    (nextPh?'<p style="color:var(--gold);font-family:\'Cinzel\',serif;font-size:.72rem;margin-bottom:14px;letter-spacing:1px">PRÓXIMO: '+nextPh.emoji+' '+nextPh.title+'</p>':'')+
+    '<button class="btn btn-red" style="margin-bottom:10px" onclick="advPhase()">▶ '+(G.phase===PHASES.length-2?'ENFRENTAR MUZAN!':'Próxima Fase')+'</button>'+
+    '<br><button class="btn btn-ol btn-sm" style="margin-top:8px" onclick="go(\'s-rank\')">🏆 Ranking</button>';
   go('s-phclear');
 }
 function advPhase(){G.phase++;G.qIdx=0;G.correct=0;buildDots();loadQ();go('s-quiz')}
 function retry(){G.qIdx=0;G.correct=0;loadQ();go('s-quiz')}
 
-// ── FINAL ────────────────────────────────────────────────
+/* FINAL */
 function showFinal(){
   confetti();var rk=getRank(G.score);
   var ch=CHARS.find(function(c){return c.id===G.charId});
-  document.getElementById('final-card').innerHTML='<span class="pc-icon">☀️</span><div class="divl"></div><h2 class="pc-title">Missão Completa!</h2><p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;margin-bottom:10px">'+ch.name+' completou todas as 10 fases!</p><div class="final-score">'+G.score+'</div><p style="color:var(--muted);font-size:.8rem;margin-bottom:16px">pontos totais</p><div style="padding:16px 28px;border-radius:14px;margin:0 auto 20px;max-width:280px;background:'+rk.bg+';border:2px solid '+rk.color+'"><div style="font-size:.68rem;letter-spacing:4px;font-family:\'Cinzel\',serif;margin-bottom:6px;color:'+rk.color+'">'+rk.lbl+'</div><div style="font-family:\'Cinzel\',serif;font-size:1.5rem;font-weight:900;color:'+rk.color+'">'+rk.name+'</div></div><div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap"><button class="btn btn-red" style="width:auto;padding:13px 22px" onclick="go(\'s-rank\')">🏆 Ranking</button><button class="btn btn-outline" onclick="restartGame()">🔄 Jogar Novamente</button></div>';
+  document.getElementById('finalcard').innerHTML=
+    '<span class="pcicon">🏆</span>'+
+    '<div class="divl"></div>'+
+    '<h2 class="pctitle" style="font-size:clamp(1.2rem,4vw,1.7rem);color:var(--gold)">HASHIRA — '+G.name+'!</h2>'+
+    '<div style="display:flex;justify-content:center;margin:10px 0">'+ch.svg+'</div>'+
+    '<p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;margin-bottom:6px;font-size:.85rem">'+ch.full+' derrota Muzan e recebe o título!</p>'+
+    '<div class="fscore">'+G.score+'</div>'+
+    '<p style="color:var(--muted);font-size:.78rem;margin-bottom:14px">pontos totais</p>'+
+    '<div style="padding:15px 26px;border-radius:13px;margin:0 auto 18px;max-width:280px;background:'+rk.bg+';border:2px solid '+rk.color+'">'+
+    '<div style="font-size:.65rem;letter-spacing:4px;font-family:\'Cinzel\',serif;margin-bottom:5px;color:'+rk.color+'">'+rk.lbl+'</div>'+
+    '<div style="font-family:\'Cinzel\',serif;font-size:1.4rem;font-weight:900;color:'+rk.color+'">'+rk.name+'</div></div>'+
+    '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">'+
+    '<button class="btn btn-red" style="width:auto;padding:12px 20px" onclick="go(\'s-rank\')">🏆 Ranking</button>'+
+    '<button class="btn btn-ol" onclick="restartGame()">🔄 Nova Missão</button></div>';
   go('s-final');
 }
 function restartGame(){G.charId=null;buildGrid();go('s-home')}
 
-// ── SCORE ────────────────────────────────────────────────
+/* SCORE */
 function saveScore(){
   var ch=CHARS.find(function(c){return c.id===G.charId});
-  var scores=[];try{scores=JSON.parse(localStorage.getItem('dsq_v4')||'[]')}catch{}
-  scores.push({name:G.name,charId:G.charId,charName:ch.full,score:G.score,date:new Date().toLocaleDateString('pt-BR')});
-  scores.sort(function(a,b){return b.score-a.score});
-  try{localStorage.setItem('dsq_v4',JSON.stringify(scores.slice(0,20)))}catch{}
+  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v5')||'[]')}catch{}
+  sc.push({name:G.name,charId:G.charId,charName:ch.full,score:G.score,date:new Date().toLocaleDateString('pt-BR')});
+  sc.sort(function(a,b){return b.score-a.score});
+  try{localStorage.setItem('dsq_v5',JSON.stringify(sc.slice(0,20)))}catch{}
 }
 function renderRank(){
-  var scores=[];try{scores=JSON.parse(localStorage.getItem('dsq_v4')||'[]')}catch{}
-  var l=document.getElementById('rank-list');
-  if(!scores.length){l.innerHTML='<p style="text-align:center;color:var(--muted);padding:24px;font-family:\'Noto Serif JP\',serif">Nenhuma pontuação ainda. Seja o primeiro!</p>';return}
+  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v5')||'[]')}catch{}
+  var l=document.getElementById('rlist');
+  if(!sc.length){l.innerHTML='<p style="text-align:center;color:var(--muted);padding:22px;font-family:\'Noto Serif JP\',serif">Nenhum Hashira ainda. Seja o primeiro!</p>';return}
   var medals=['🥇','🥈','🥉'];
-  l.innerHTML=scores.map(function(r,i){
+  l.innerHTML=sc.map(function(r,i){
     var rk=getRank(r.score);var ch=CHARS.find(function(c){return c.id===r.charId});
-    return '<div class="rank-item '+(i===0?'r1':i===1?'r2':i===2?'r3':'')+'"><div style="font-family:\'Cinzel\',serif;font-size:1rem;min-width:28px;text-align:center">'+(medals[i]||i+1)+'</div><div style="width:36px;height:44px;display:flex;align-items:center;justify-content:center">'+(ch?'<svg viewBox="10 28 70 70" width="32" height="38">'+ch.svg+'</svg>':'⚔️')+'</div><div style="flex:1"><div style="font-weight:800;font-size:.9rem;color:var(--white)">'+r.name+'</div><div style="font-size:.68rem;color:var(--muted);margin-top:2px">'+r.charName+' · '+r.date+'</div><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:.6rem;font-weight:800;margin-top:4px;background:'+rk.bg+';color:'+rk.color+'">'+rk.name+'</span></div><div style="font-family:\'Cinzel\',serif;font-size:1rem;color:var(--gold)">'+r.score+'</div></div>';
+    return '<div class="ritem '+(i===0?'r1':i===1?'r2':i===2?'r3':'')+'">'+
+      '<div style="font-family:\'Cinzel\',serif;font-size:.95rem;min-width:26px;text-align:center">'+(medals[i]||i+1)+'</div>'+
+      '<div style="width:34px;height:42px;display:flex;align-items:center;justify-content:center">'+(ch?'<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 24 40 45" width="28" height="34">'+ch.svg+'</svg>':'⚔️')+'</div>'+
+      '<div style="flex:1"><div style="font-weight:800;font-size:.88rem;color:var(--white)">'+r.name+'</div>'+
+      '<div style="font-size:.66rem;color:var(--muted);margin-top:2px">'+r.charName+' · '+r.date+'</div>'+
+      '<span style="display:inline-block;padding:2px 9px;border-radius:20px;font-size:.58rem;font-weight:800;margin-top:3px;background:'+rk.bg+';color:'+rk.color+'">'+rk.name+'</span></div>'+
+      '<div style="font-family:\'Cinzel\',serif;font-size:.95rem;color:var(--gold)">'+r.score+'</div></div>';
   }).join('');
 }
 
-// ── EFFECTS ──────────────────────────────────────────────
+/* EFFECTS */
 function burst(ok){
   var em=ok?['⭐','✨','🌟','💫','⚔️']:['💀','🌑','👿','💔'];
   for(var i=0;i<7;i++){
     var s=document.createElement('span');s.textContent=em[Math.floor(Math.random()*em.length)];
-    var a=(i/7)*360,d=80+Math.random()*60;
+    var a=(i/7)*360,d=75+Math.random()*55;
     s.style.cssText='position:fixed;pointer-events:none;z-index:1000;font-size:1.3rem;top:50%;left:50%;--tx:'+Math.cos(a*Math.PI/180)*d+'px;--ty:'+Math.sin(a*Math.PI/180)*d+'px;animation:bst .85s forwards';
-    document.body.appendChild(s);setTimeout(function(){s.remove()},900);
+    document.body.appendChild(s);setTimeout(function(el){return function(){el.remove()}}(s),900);
   }
 }
 function confetti(){
   var cv=document.getElementById('cv');var ctx=cv.getContext('2d');cv.width=window.innerWidth;cv.height=window.innerHeight;
-  var cols=['#f8c832','#c8173a','#e85a0a','#3a8fdc','#5ad080','#c090f8','#e060a0'];
-  var p=[];for(var i=0;i<110;i++)p.push({x:Math.random()*cv.width,y:-15-Math.random()*100,vx:(Math.random()-.5)*5,vy:2+Math.random()*4,c:cols[Math.floor(Math.random()*cols.length)],w:6+Math.random()*8,h:3+Math.random()*5,r:Math.random()*360,rv:(Math.random()-.5)*9});
+  var cols=['#f5c518','#c8173a','#e05808','#2888d8','#48c868','#c090f8','#f080a8','#60d0c0'];
+  var p=[];for(var i=0;i<120;i++)p.push({x:Math.random()*cv.width,y:-15-Math.random()*100,vx:(Math.random()-.5)*5,vy:2+Math.random()*4,c:cols[Math.floor(Math.random()*cols.length)],w:5+Math.random()*8,h:3+Math.random()*5,r:Math.random()*360,rv:(Math.random()-.5)*9});
   var fr=0;
   function draw(){ctx.clearRect(0,0,cv.width,cv.height);p.forEach(function(q){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.r*Math.PI/180);ctx.fillStyle=q.c+'CC';ctx.fillRect(-q.w/2,-q.h/2,q.w,q.h);ctx.restore();q.x+=q.vx;q.y+=q.vy;q.r+=q.rv});if(++fr<200)requestAnimationFrame(draw);else ctx.clearRect(0,0,cv.width,cv.height)}
   draw();
