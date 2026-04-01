@@ -8,10 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0a1c;--card:#15153a;--card2:#1c1c48;
+  --bg:#07071a;--card:#15153a;--card2:#1c1c48;
   --gold:#f5c518;--gold2:#9a7a10;--red:#c8173a;--ember:#e05808;
   --jade:#16b870;--blue:#2888d8;--text:#f0e8cc;--muted:#6a6080;--white:#fffef0;
-  --out:2px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;
@@ -21,10 +20,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .ptcl{position:fixed;pointer-events:none;z-index:0;inset:0;overflow:hidden}
 .ptcl span{position:absolute;opacity:0;animation:floatUp linear infinite}
 @keyframes floatUp{0%{transform:translateY(100vh) rotate(0);opacity:0}8%{opacity:.5}90%{opacity:.3}100%{transform:translateY(-80px) rotate(540deg);opacity:0}}
-/* screens */
 .scr{display:none;min-height:100vh;align-items:center;justify-content:center;padding:14px;position:relative;z-index:1;flex-direction:column}
 .scr.on{display:flex}
-/* card */
 .card{background:linear-gradient(150deg,rgba(28,28,72,.98),rgba(14,14,42,.99));
   border:1.5px solid rgba(245,197,24,.18);border-radius:22px;padding:24px 20px;
   width:100%;max-width:660px;position:relative;overflow:hidden;
@@ -32,7 +29,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .card::before{content:'';position:absolute;left:0;top:0;width:5px;height:100%;
   background:linear-gradient(180deg,var(--gold),var(--red),var(--gold));border-radius:22px 0 0 22px}
 .card-sm{max-width:460px}
-/* typography */
 .logo{font-family:'Cinzel',serif;font-size:clamp(1.6rem,5.5vw,2.9rem);font-weight:900;color:var(--gold);
   text-shadow:0 0 35px rgba(245,197,24,.55),0 2px 6px rgba(0,0,0,.9);text-align:center;letter-spacing:2px;line-height:1.15}
 .logo-jp{font-family:'Noto Serif JP',serif;font-size:.82rem;color:var(--red);letter-spacing:10px;text-align:center;margin-top:4px}
@@ -45,7 +41,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .inp{width:100%;padding:12px 15px;background:rgba(255,255,255,.05);border:1.5px solid rgba(245,197,24,.28);
   border-radius:11px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.98rem;outline:none;transition:.2s}
 .inp:focus{border-color:var(--gold);background:rgba(245,197,24,.06)}
-/* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 26px;border:none;
   border-radius:11px;font-family:'Cinzel',serif;font-size:.87rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.5px}
 .btn:active{transform:scale(.96)}
@@ -56,77 +51,108 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .btn-ol{background:transparent;color:var(--gold);border:2px solid rgba(245,197,24,.35)}
 .btn-ol:hover{border-color:var(--gold);background:rgba(245,197,24,.07)}
 .btn-sm{padding:7px 16px;font-size:.7rem}
-/* char grid */
+/* CHARACTER GRID */
 .cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px}
-.ccard{border:2.5px solid rgba(255,255,255,.1);border-radius:15px;padding:9px 5px 7px;text-align:center;
-  cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);background:rgba(255,255,255,.03);position:relative}
+.ccard{border:2.5px solid rgba(255,255,255,.1);border-radius:15px;padding:0;text-align:center;
+  cursor:pointer;transition:all .22s cubic-bezier(.34,1.56,.64,1);
+  background:rgba(255,255,255,.03);position:relative;overflow:hidden}
 .ccard:hover{transform:translateY(-5px) scale(1.04);border-color:rgba(245,197,24,.5)}
 .ccard.sel{transform:translateY(-6px) scale(1.07)}
-.ccard.sel::after{content:'✓';position:absolute;top:4px;right:6px;font-size:.68rem;font-weight:900}
-.cname{font-size:.62rem;font-weight:800;color:var(--white);line-height:1.2;margin-top:4px}
-.crank{font-size:.52rem;font-weight:800;margin-top:3px;padding:2px 5px;border-radius:20px;display:inline-block}
-.csvg{display:flex;justify-content:center;align-items:flex-end;height:70px}
-/* progress */
+.ccard.sel::after{content:'✓';position:absolute;top:5px;right:7px;
+  font-size:.75rem;font-weight:900;z-index:2;
+  background:rgba(0,0,0,.5);border-radius:50%;width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;line-height:18px}
+/* char image container - cream bg matching original sticker sheet */
+.cimg-wrap{
+  width:100%;
+  background:#f5eedc;
+  border-radius:12px 12px 0 0;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:4px 4px 0;
+  height:82px;
+}
+.cimg-wrap img{
+  width:100%;height:100%;
+  object-fit:contain;
+  object-position:bottom center;
+  display:block;
+}
+.cinfo{padding:5px 4px 7px}
+.cname{font-size:.63rem;font-weight:800;color:var(--white);line-height:1.2}
+.crank{font-size:.52rem;font-weight:800;margin-top:3px;padding:2px 5px;
+  border-radius:20px;display:inline-block;letter-spacing:.3px}
+/* PROGRESS */
 .pbar{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden}
 .pfill{height:100%;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:4px;transition:width .45s ease;position:relative}
 .pfill::after{content:'';position:absolute;right:-1px;top:-3px;width:13px;height:13px;background:var(--gold);border-radius:50%;box-shadow:0 0 8px var(--gold)}
 .pdots{display:flex;gap:4px;margin-top:9px;flex-wrap:wrap}
-.pd{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-family:'Cinzel',serif;transition:all .3s;border:2px solid rgba(255,255,255,.12);color:var(--muted)}
+.pd{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.55rem;font-family:'Cinzel',serif;transition:all .3s;
+  border:2px solid rgba(255,255,255,.12);color:var(--muted)}
 .pd.done{background:var(--gold);border-color:var(--gold);color:#100800}
 .pd.cur{border-color:var(--red);color:var(--red);box-shadow:0 0 12px rgba(200,23,58,.6);animation:pdp 1.5s infinite}
 @keyframes pdp{0%,100%{box-shadow:0 0 8px rgba(200,23,58,.5)}50%{box-shadow:0 0 20px rgba(200,23,58,.9)}}
-/* timer */
-.timer{width:54px;height:54px;border-radius:50%;border:3.5px solid rgba(245,197,24,.25);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:1.05rem;color:var(--gold);background:rgba(0,0,0,.35);margin:0 auto 14px;transition:all .3s}
+.timer{width:54px;height:54px;border-radius:50%;border:3.5px solid rgba(245,197,24,.25);
+  display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;
+  font-size:1.05rem;color:var(--gold);background:rgba(0,0,0,.35);
+  margin:0 auto 14px;transition:all .3s}
 .timer.warn{border-color:var(--red);color:var(--red);box-shadow:0 0 20px rgba(200,23,58,.6);animation:tshk .45s ease}
 @keyframes tshk{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-/* phase banner */
 .phbanner{text-align:center;padding:9px 12px;border-radius:11px;margin-bottom:13px;
-  background:linear-gradient(135deg,rgba(200,23,58,.2),rgba(245,197,24,.08));border:1px solid rgba(245,197,24,.14)}
+  background:linear-gradient(135deg,rgba(200,23,58,.2),rgba(245,197,24,.08));
+  border:1px solid rgba(245,197,24,.14)}
 .phnum{font-size:.6rem;color:var(--gold2);letter-spacing:4px;font-family:'Noto Serif JP',serif}
 .phtitle{font-family:'Cinzel',serif;font-size:clamp(.82rem,2.3vw,1.05rem);color:var(--gold);margin-top:3px}
-/* question */
-.qtext{text-align:center;font-family:'Noto Serif JP',serif;font-size:clamp(.92rem,2.6vw,1.1rem);color:var(--white);line-height:1.65;margin-bottom:17px;padding:0 3px}
-/* options */
+.qtext{text-align:center;font-family:'Noto Serif JP',serif;font-size:clamp(.92rem,2.6vw,1.1rem);
+  color:var(--white);line-height:1.65;margin-bottom:17px;padding:0 3px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px}
 @media(max-width:400px){.opts{grid-template-columns:1fr}}
-.opt{padding:12px 13px;border:2px solid rgba(255,255,255,.1);border-radius:11px;background:rgba(255,255,255,.04);
-  color:var(--text);font-family:'Nunito',sans-serif;font-size:.88rem;cursor:pointer;text-align:left;
-  transition:all .17s;line-height:1.4;display:flex;align-items:flex-start;gap:8px}
+.opt{padding:12px 13px;border:2px solid rgba(255,255,255,.1);border-radius:11px;
+  background:rgba(255,255,255,.04);color:var(--text);font-family:'Nunito',sans-serif;
+  font-size:.88rem;cursor:pointer;text-align:left;transition:all .17s;
+  line-height:1.4;display:flex;align-items:flex-start;gap:8px}
 .opt:hover:not(:disabled){border-color:rgba(245,197,24,.55);background:rgba(245,197,24,.07);transform:translateX(4px)}
 .opt:disabled{cursor:default}
 .opt.correct{border-color:var(--jade)!important;background:rgba(22,184,112,.17)!important;color:#7fffd4!important}
 .opt.wrong{border-color:var(--red)!important;background:rgba(200,23,58,.18)!important;color:#ff9898!important}
-.oltr{width:23px;height:23px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(245,197,24,.3);
-  background:rgba(245,197,24,.1);display:inline-flex;align-items:center;justify-content:center;
+.oltr{width:23px;height:23px;border-radius:50%;flex-shrink:0;
+  border:1.5px solid rgba(245,197,24,.3);background:rgba(245,197,24,.1);
+  display:inline-flex;align-items:center;justify-content:center;
   font-size:.6rem;color:var(--gold2);font-family:'Cinzel',serif;margin-top:1px}
-/* feedback */
 .fb{padding:11px 15px;border-radius:11px;margin-bottom:13px;font-family:'Noto Serif JP',serif;
   font-size:.86rem;line-height:1.55;display:none;animation:slu .3s ease}
 .fb.on{display:block}
 .fb.ok{background:rgba(22,184,112,.12);border:1px solid rgba(22,184,112,.4);color:#7fffd4}
 .fb.err{background:rgba(200,23,58,.14);border:1px solid rgba(200,23,58,.4);color:#ffaaaa}
 @keyframes slu{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-/* badge */
-.pbadge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:.73rem;font-weight:800}
-.bdot{width:7px;height:7px;border-radius:50%;animation:pdp 1.5s infinite}
-/* phase clear / titles */
+/* PLAYER BADGE in quiz */
+.pbadge{display:inline-flex;align-items:center;gap:7px;padding:4px 12px;border-radius:20px;font-size:.73rem;font-weight:800}
+.pbadge img{width:28px;height:28px;object-fit:cover;border-radius:50%;background:#f5eedc}
+.bdot{width:7px;height:7px;border-radius:50%;animation:pdp 1.5s infinite;flex-shrink:0}
+/* PHASE CLEAR */
 .pcicon{font-size:4.5rem;margin-bottom:8px;display:block;text-align:center}
 .pctitle{font-family:'Cinzel',serif;font-size:clamp(1.25rem,3.8vw,1.8rem);color:var(--gold);
   text-shadow:0 0 25px rgba(245,197,24,.5);margin-bottom:9px;text-align:center}
 .chips{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
 .chip{padding:5px 13px;border-radius:20px;font-size:.7rem;font-family:'Noto Serif JP',serif;
   border:1px solid rgba(245,197,24,.3);background:rgba(245,197,24,.08);color:var(--gold)}
-/* rank */
-.ritem{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;margin-bottom:7px;
-  border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+/* RANK */
+.ritem{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;
+  margin-bottom:7px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
 .ritem.r1{background:rgba(245,197,24,.1);border-color:rgba(245,197,24,.35)}
 .ritem.r2{background:rgba(192,192,192,.08);border-color:rgba(192,192,192,.25)}
 .ritem.r3{background:rgba(205,127,50,.08);border-color:rgba(205,127,50,.25)}
+.ritem img{width:36px;height:36px;object-fit:cover;border-radius:50%;background:#f5eedc;flex-shrink:0}
 .scroll{max-height:350px;overflow-y:auto;padding-right:3px}
 .scroll::-webkit-scrollbar{width:4px}
 .scroll::-webkit-scrollbar-thumb{background:rgba(245,197,24,.3);border-radius:2px}
-.fscore{font-family:'Cinzel',serif;font-size:3rem;color:var(--gold);text-shadow:0 0 28px rgba(245,197,24,.5);line-height:1;margin:8px 0}
-/* anims */
+.fscore{font-family:'Cinzel',serif;font-size:3rem;color:var(--gold);
+  text-shadow:0 0 28px rgba(245,197,24,.5);line-height:1;margin:8px 0}
+/* FINAL char showcase */
+.final-char{width:90px;height:120px;object-fit:contain;background:#f5eedc;
+  border-radius:12px;margin:8px auto;display:block;
+  box-shadow:0 4px 20px rgba(0,0,0,.5),0 0 30px rgba(245,197,24,.3)}
 .a1{animation:fdu .5s ease .07s both}.a2{animation:fdu .5s ease .16s both}
 .a3{animation:fdu .5s ease .28s both}.a4{animation:fdu .5s ease .42s both}.a5{animation:fdu .5s ease .56s both}
 @keyframes fdu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
@@ -160,7 +186,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
     <div class="mb16 a3">
       <label class="lbl">⚔ Nome do guerreiro</label>
-      <input class="inp" id="pname" placeholder="Ex: Tanjiro Kamado…" maxlength="20" onkeydown="if(event.key==='Enter')startGame()">
+      <input class="inp" id="pname" placeholder="Ex: Tanjiro Kamado…" maxlength="20"
+        onkeydown="if(event.key==='Enter')startGame()">
     </div>
     <div class="a4">
       <label class="lbl">🗡 Escolha seu personagem</label>
@@ -247,638 +274,109 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 
 <script>
-/* ════════════════════════════════════
-   CHIBI SVG CHARACTERS
-   Estilo: flat 2D, outline preto, cabeça grande, proporções chibi
-════════════════════════════════════ */
-function mk(content){return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" width="54" height="72">'+content+'</svg>'}
+const CIMGS={
+  "tanjiro":"data:image/jpeg;base64,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",
+  "nezuko":"data:image/jpeg;base64,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",
+  "zenitsu":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCACEAFgDASIAAhEBAxEB/8QAHAAAAgIDAQEAAAAAAAAAAAAAAAYEBQEDBwII/8QANRAAAgEDAgQFAwIEBwEAAAAAAQIDAAQRBSEGEjFBIjJRYYETcZEUUhVCYqEHFiNyscHRQ//EABkBAAMBAQEAAAAAAAAAAAAAAAECAwAEBf/EACERAAMBAAICAgMBAAAAAAAAAAABAhEDIRIxBEETNFFC/9oADAMBAAIRAxEAPwDth6hB81g7nkH5oHhXJ8xoGy5PmNRGAj+UdqDvhfzRnlX+o0Z5VyetYwEnygUHso+aqrrXLeGUwWyvd3QzmOHfl/3HoKhi+1mZWlhFlDgDEbc0mfu22PxSVyRPthxsYm3wo+aweyjp3NUEGu3jKS2i3QcbOFkQgH23qfY6xaXL/S5mhnP/AMpl5W+M9fjNFXL9MGFgd/AOnc0HoFXoKz5FJ6k14fKRHGeY+lM+vZj02+FX5oqLbPMCwdTnOM5oqc2qW4FrCV5jk9ulAPNknt0oO5AHSsMOq5wuNzVAdCDBq2pSahMq6nMD+odOTlQqoDEDtnpVxe2t5cW0q3epzyLg4SNRHnbuRvVNYWYn1K8WB2MMV5IzPgY3bOAe/wD1TQGGRnoNs15vNzWqaTOlzGLCNZwW9qkMdrGkUJjJAQYz0/NbbIFLdQfN1rVbDKxpkH6Lsm3Yb4/tipWAAfYb4rmp6+zLDWI45SHIIJHVWIz+Kg6lHEU+jeo0sDn/AE5VBLxN9xuPY1IFyIrETKCyogc8u/h7mt5aGeIjmV42Xr2oy3L0DRDtuIE06VbfVLqKSA7R3PMAV9pB2+/SmOGWOdBNG6vGwyjKcgj2rn2syutykUcwlGyIRvgns3vVg8k+hzRLpMweFgee1mOUyP2n+Q/29q7+L5CzGK+F9YOigbsR9qKgaNqiatZR3Ecbx5J5kfGRg47UV1rH6ItPeydnC4HU0mcU6hftqEmnFmgtwgYBMgzqevi7AHYgb06KMnmO2OlLPHVu89nbTLBIwhmDPNEMvEuN8DuD0NLyJuXg/G15dkbRpQNOXlChIzyxquwJ6CtOu3rW8kNpDIQ2Odgu7HPoPzVfpF5DHcxv4nhVCQEOR6D8b1uu4YtRuxqgW3FtFIee4kcKQF2K4PbIzXmzxurenVWTW/RL0R57V5Xvg0cMxBRnI2Ybb/cY/FWM+q2iB8SgnlOOUZqlmvNN1KPk0+8s7pwc/TtZh/pn15Ru1Q1sb4rIgtJ+ZSQMrjIPoT1p74XqeAnxrWz1HBd20ERT6jRlASkTcxX25RvWiCWVz+jRpeZM5jKkDI26+p9KsU4gstPla0Z3DxjBgtLd5+T/AHBfL+a9aDdWV/eXKWd9FKkm8kPKVdW6glTuDVfw1/BVypEK2tLi8cpBCSBkGRtlX/3/AKqXrtm1vYRiKQzXv0+XmY45/f7jt61Nt9ZTCwyDxh+TnyMdcZqs1d7ibUjBCoa4d+VEJ8IH7j/T3NcuPcKa6esauFjb/wAIgFm3MgUKM9Rjrn3zmitugaYumWeFPMxJZm7ux6sfvRXo8eKVvRx12yz3L47CssOY4BwBWTsAB1PWg7DA6nrVRRD4r0p9Oe71OJIBZtgyKh5XU7DYdDk/O9Uegafb6qskl+8s9pEklyLFj4JZgceL1GMbdK6BxRocevaYbJp2gbmDq6jOGHTI7ikTSNH1Th3Xkj1RR+imVokuIzledscpP7fLjfvSqUq0qq8p8WKNrc8QycSfRvrW2kSNg0tnEqL9CM43RgMggehrtgQCIL1GMb77feq+209FmBIXwnpy7n7mrIsMcoYZHbNCq00rDkP+INvrsGpJBpEkljpkTiGFbVmVpHIBLMV3JJPf0pm4f0u7vdCWXXYGbXbCV445on5HmQAY5iOo3xv6U1Xtu8hEkcgjbG/h6/3FVupaxZ8PWbTXBZ5T5Yk8zf8Ag9zRd9Yw+D+iHYWF3b6pAJo4woyzAnOxGDn4qJZXczavbyW2ZrtfAYwNmg5j1PbGxBqu1bjSS8tGs9Ps5bWWXwl2YPIw9FC569M0/wDDWn2ttp8bQWpt3dQzo+7Akdz3Nc7halI9cn9LiI86A4wOtFe+mFHzRXSliOYWrXiZrfW59O1YRxc8zR20o2DbZCtnoxG49aZVPhL9c9KoOKeHYNatpMqC5XBUnAcdevYjqG7VQaFxLLocq6Zr7yG2V/pw3Unmj9Fl9z2boaLMPw2HOeta7i3hurd47mMSRyDDK3evaMsqh1IKEZBHQiq3WtVFkqxQKJLuXIijzt/ub0Ud6DpJazJaUeoT3egPHDARqKM3ggY4mRB/V0IHqcfNVT8caUNQjtnsJResoZecoCeuBn19qsII2idpJGMs0xP1ZT5pBjb7D0Fcs4tme74unIjaTllSNUQ4YgADAPr1rnjl87aXoq00tY36v/iQV1GLTbC1QTPIEd2JYx59B0J+agScPapclr29nUJK3+q7qXkC+vL3HtStpl3ptlc3M19p9zNIHzAqygfTI/d6npXSLziO0tLC21O8Lfp54UYBd8McZFHn8pa8RoGfhbh3S9KsontBHM5QE3IHik987/gbUwqABnGPSkbgnXrW6u5ILWZWtZQZIVz5TnxD++cfenkeI+wqnG0+yVbpS6/rFzpE1tKLZZrV+f6xBw64GRyjufairDUrGLUrd4Jx4eqsOqsOhHvRV08RN6SnHh5B361UcQaHbatGVZUE3LyhioIYftYdx/xVuvhXJ8xo6Lk+Y0iYxznTr7U+DZzaXsUk2lIpIRn55IVz5lP864PTqKrNZ4it/wDMJuY5J/012q/TnmQoo/pB/aevtXQeJ9Nn1PTBDbGITCRWBlzjY+o3FJ2u6TJ/DpLPUbST6ioSkoUyREnq2RuPX1pblUsGhpPSZp93HPN9dSwSNAW5um//AJiuc3/DmvPqEl7JYXDRy3POZbciTALZyCD1pjt8afwzeyBpSqLJyfUbmJ25Rv6E7/NIFtfXlpym2up4ttgshwPjpXP8aVNMvy60i0HC+uTSyfp9LvCvOQryJjOehO+1O9twjDqehafZTTlDBGXeNJOZhJ0I9xkk/iubzalqFzgz31w575lI/wCKYOANUubS+ktIJQhly4LgnfG49ff4rpppdskk/o2cP6Z/Dri55Z25o7kgTQ9FK/zD067iur8La8dTiNvdFFu4wOblOzjsw9j/AGNUnD+kaPqDT2l7ZRyPBISpyVLK24JwRk9aYtO4W0rS7r9XZwvHLy8g8ZIAJzgVCG23cse2kvFrsuv6R80UE8gz3NFXZzh5mye1Z8256DpQf2r171g7+FfmiEB4t26ComqwXF5p11DaTGGZoyIpAcYbG1SzvhV+aPRR80dAfP8Ar+sPbw3uh3UYjnhf6ZKPkHDZyfvSwJE9QK7vx/w5o15ZNqV3YwvPAVLufCWTIBBPfakG24b0O9nNqttEJZbwxoyEhggAY439Ad6i/HjbLpukIqSLg+JepqVpmox6ffJdOQwjDZAbBORiun8Q8DcO6ZFZ38enRpCziKZHc8ni2U49c4Gfeqnh/RNGubu0j/Q2jMbmVirKQ3KmSu3p0+/WtVy12hZ32hp4OjklvkuZpQoltUeFU3DIdySfUHb5p8G4y3QUu6doU1tfiWOZFt41IhiUEFQxBIPbGc/mmI5Ow6Ctxyp9ehap09YLu3N2FFBOSFX5oqutehTI2XJ8xrA2XP8AMaC2Dzt0ArEbrIPqDynpQ1bhjPlXmPmNA8I36mgbks3TtQNyWb4omFTj3TtU1K1tbfTXeOP6nPK0cYckjHKCCenX8ClvRuFr+y121uLe2eKBZC8ytFjmPKR5iTgZOwFdP65ZvisDuzfFClqwKeC7xnYX1/ocUGnbTCZHY8gcgA58p656GkN+F9UgkjTTEu7QxuJvDbFuaQduYtsnovauvr3Zvigd2PxRzrAaRdOec2aG6QJPgcw98b/3qV5E/qNA7s3xQvdm+KC1LDB5VwPNRQO7N8UUTEfUVBi+1a7FfACWY+xOwoorjf7A/wDkmNuwHah+oXtRRXayYNuwXtQ3mC9qKKAQO7Be1DbsF7UUVjAd2C9qDu4XtRRWMDbsF7UUUUtGP//Z",
+  "inosuke":"data:image/jpeg;base64,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",
+  "rengoku":"data:image/jpeg;base64,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",
+  "giyuu":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCACEAFgDASIAAhEBAxEB/8QAHAAAAQQDAQAAAAAAAAAAAAAAAAEFBgcCAwQI/8QANRAAAQIEBQIFAgQGAwAAAAAAAQIDAAQFEQYSITFBIlEHE2FxgTJCFBWxwRYjUmJyoSQz0f/EABgBAAMBAQAAAAAAAAAAAAAAAAECAwAE/8QAIxEAAgICAgEEAwAAAAAAAAAAAAECEQMSITFBBCIyURMzYf/aAAwDAQACEQMRAD8AuZ5SwCtABtwY4pZ10vFKSBmOY3hxcSHUlH28mNf4dvpCRbLtHBkxSlJNMqpKqNiTfVXH+4yGpzK+IQ6qCYFdRsNhHSuFQgDVWZQtbaAanMeNohGOvESSw4fwkohM5UL6tBXS2O6j+0ceGfFelVVbctVUinzB1zrP8pXsePmGUW1YLLDGpzK4hU3+pW/EVrX/ABfpcm4pmkyq55Q08wqyIv6d434Q8UZGuPtSU+wqTm1qskg3bV2sYOjZrLCG+Y8QJ16j8QE5j07cwtgSANhCUEQC5zKG20EBJKrDYQRqswfQmw3MJ9KQPuMLzmV8Qd1q+IyMBOXTmKj8R/Eedk6lMUehKQ2Gul6Z3Vm5Ce1u8T3GuIG8OUCYn1EF/LkYQfuWRpHmd11x9xbrqipxaitajuSdTFccbdsWTEccW4ta1rWpazdSlG5Ue5MYqsdLAxipQSnPe4hGblsqO51tFhDZAlS21pcaUpLiCFJKTYgxqdXbIBuTGebKpKd7wQlsYM8WnGQiTxMjOg2CZ1tOo/zH7iLakp+VnpVExIzDb7S9ltm4jydqnnp7RafghWPJqD9NcX/LdSShBOgUNdPcRN47TaNtTLoOlgNzzBCAWuo7naCOYoF8x7JERvE+NqJQGVCam0uPgdMs0cy1Hj2+Yka0goKCAUkWI7xBK54UYeqTqnpXzpF5WpLCrpJ9Qb/6tDqn2AqHF+K5/FM+H5v+Ww3oxLpN0tj9z6xHX1WQTfqOgiYY/wAFowguWCKiJpT9yG/KylKRyTeI/SaDN1lmbmmG1FqVRmGUauK/pEXTUULVsbWpZ+emmpGUbLjqtkiM02KBY6Wi2sDYUYoLCnKs263UppBSCWypDdxoMw2+YqgSzxdRIsozzClZAlPfmAp22FxpHIkKfmCpCSUN6qNtBG5pp6ZmylhCl+U2XF24SNzE9mMPtUbAE6puXmHH1qbLswUZEXzDpTfVQ7WGsP2D8DqksI1CZncv46dllK8u2rabXCTAeTgLjyVRa8OuFKr+R12VnlFXltuJKgkX0G/+jDK24FlI5KQYyNs1s1jFLEas9YUqqyVYlG5unzLbzChcKSf17QR598OJ9mQrAS7XH6UV2ssJCmXD2WDoPeCIyxqwqR6OToMxjG4QkrUbAcxkepX9ojXMMIm5d1h25acQUKANjYi28SHPNXiTXF1/Es9NsgqYYuw0rjKk/udfmJVh+SnG8DJXSqi7KuNyxfsy2FLdUq/Tc8XBh58RsDrmJWQpuGqb5bSblboNkMoTra26ion3NowwNQ6lRmJan1hrIw+24Jck2Ve4NiOOT33izqkxY/RBaDj2uNz6G6q4Z5m4SpSkgOoHoob+xi0MGYMkaSl6sOONTc7NBTiHyOhtCtRlB9NzGcjgOnMVMTymmS7e6zkPUb9r2ETIZQkJAAA2FoTLOL+A8YyXZRmOcU1iUfEvLsKab6Vh59vMXNSUlIOgTobX1MdGBK/Xquqpv1GqEtS0otRC2ElKrgjLcWIMWbiagSlbbyTUuy4CAOokHTbUQxTNIpGF6BNLm5hmTklpyKsCbgnUDcqJh1LFpXkDjO7ZRtDpU9V3XG6e0XHWWfMKeSBwPWNZaLzqBmCFBWVQP2xKcNYkk8P0irmmpK6nPuqQ2rLZMszc2N+b32EcstgfEk5Jtz8rIicZcGjrDqSq/IKb3vDp88iP+Epw14RTFSlWJ2aqbIl3UhQDYKiR7QRKvCiYqlNS7SazT6gwkquwpxolsd9ePmCBkm06TBGKa5JZKYskV1BVPnP+HMF5TTaXDo5Y7iJBf7Uj3MQfH+DE1lozsqCJhBz2T9QUB9SfX9YasD47dlZhFCxOry3/AKZebVoh0bWJ7wmia4CpNPks5VtEgxD8fUaq1uco7FKeVKtyzyph2YT9SSBYADkm5iYJISnNuYasR1yVoFOcnJtV1Ws20k9Sz2EIrsdK+hg/iCYoVKln8WsIYU5YFbCs+vqne/e1xCsY0ocw+fw1RLoA/wCpDRUr3ta8VZWqtO12dM5UF3UrRLQPQ2Ow/wDYYmCW6oy4wVoX5wQFNJusX0OUcn0hvxLstOMscE2XBXPESmSLiZeWaW/MrNgFkICf8uRFPYynK5Wp1c3UQ8ths3Q35eVLIPpx7w4U9FKemJqZq8++y+HLpyy+ZSz3Vbb2iSVWYcmKclqSfZXKgJbWt9QSVAjTeJTvHJarhkU9u2QfCqaAp9TeI25htgoIS/LnrQrvbmLv8NqNL05hxyj1s1CnPWV5biMqmzx82ijKxKPUCsIbaCXgUhaCE3B7ptyLxdvhviidqMu3LTGHVSabaPy6QGvnt8R1OW0LRJKpE/IF7AD1ggHSm/JgjmbKiWK7km0RDGWCpSvMrdbbSl++YgdOY9weD688xMDrZIgWArpteCnq+ANWVNhjFdSwtMik4lDr9PQciJxQ6mBwlY/eGPHVYTU8SOeVUWJyXCR5HlKulA5B9biLKx/R5moUg/lMol6oBSUpXmCSE3130Pse8Qmr0CnpoIk1ISxOSiDZDgDa8/fNsRe+sV2Vj4vY7IXcqcNrkpGoHeOMSr7NSl2ZmWdQsvpzIWFIvrtmt0+8K064uSW6tRzG4BtbbaHOXxjiBhCUfmK3kJOYIeSFi8UfRb1U71GhTTi5hxtplxSysgIQlSudgbaxK6fhxWJKe7ISSlJVI5S844OhxZFwg9rGGx7GeIHQMtQ8m9tGGwnbbvDjgjFE/Iz00ysKmA42p1Slrsf7vc8/ESyKlf0ckaI/JUp+Ymnaa8pLT0us+X5huEq2Kbxdnh/iKXqMp+WPNiXn5FAbcZJ+oD7geREFwNTZWp1ufp0zMvoUlRdaXpdeutwR6xLZPw6XKVtqpy9deS62QQkS6R09ib6iAtk6l0xVVWiebm6hpBAerpGw3ghUVA9I/uMB6bf1GAb5lfEKNypXxCmEIy2HJjmnJKWmGVNvy7TxUkgBxAUNfeOnnMr4g5zK+I10Y8y1ZpyRdfp74SJhpwpWG/puDraG+2l4uPHPh7S56ZTVGzMMLemEJmQ0vQhRtmsdiCRf0iC4rwQ1QZMvJfmF5lhtCvMSoFR2vyI6YSukLkk5csiqNo6ZBbSJrNMvLaa8tYUttN1DTYCHynYGU6iRXNKmVieQpTCGlgFNjrcnvvHRivBMlQZGUWHZkzUw9kCVPhacoFzxvBa29onSsMGTKp7FsiqjJUgN2BDygC6Bvf4i/rZRYbmKXpPh/WaNUZWfkwXPLfbKbH7DbU+2t4uhI+4xOaSSQYdsD0iw3MEHJWYIiigK6lBPEBOZWXgRqad8xGZI0Ox7xtPSAPuMBS2VowHqUE8DWBXUoJ4EB6QB9xgPSLfcYJiDeKz1Tdp0vTqUUtF5wLW8pZTbKQQkEA6k/pFW1RvEgl20Vee/ENeZbykO+YQbHWwTpHos9ICQdTGtTLd9UJKjzlEVhk1ElGyv8XSk63gqiooanGZtHlBt1Jy5Bl1ubHfaK7qdOxM+A/U6lLvfhrqbQ5OBVjzYW3j0OelISnQ+ka1ysuVDMw0pZ1JLYv8ApGWTmzOPFDJgesu1+gMTTzRadQS24DyU8iJAdVADYbxihCGgENpCb8JFoyPT0j6jCSaYUqFPUqw2G8EIenpH1GCF7GNMoAW0m2w0jcnVRJ4ggiWD9cRp/IE6qJPECdVEncQQRXyICdSSd4E6kk7iCCMEE6qud4Eakk7wQRgCp1JJ3gTqSTvBBBN4ERqSTvBBBCsJ/9k=",
+  "shinobu":"data:image/jpeg;base64,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",
+  "muichiro":"data:image/jpeg;base64,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",
+  "mitsuri":"data:image/jpeg;base64,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",
+  "tengen":"data:image/jpeg;base64,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",
+  "sanemi":"data:image/jpeg;base64,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",
+  "gyomei":"data:image/jpeg;base64,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",
+};
 
-// outline stroke helper
-var ol='stroke="#111" stroke-width="1.2"';
-var ol2='stroke="#111" stroke-width="1"';
 
-var CHARS=[
-/* 0 TANJIRO */
-{id:'tanjiro',name:'Tanjiro',full:'Tanjiro Kamado',color:'#2a80c8',bg:'rgba(20,50,100,.55)',rank:'Caçador',
-svg:mk(
-// body - kimono verde
-'<rect x="18" y="52" width="24" height="22" rx="3" fill="#2d7a4a" '+ol+'/>'+
-'<rect x="18" y="52" width="24" height="8" rx="0" fill="#c8f0a0" opacity=".4"/>'+
-// sash
-'<rect x="18" y="58" width="24" height="4" fill="#f5c518" '+ol2+'/>'+
-// legs
-'<rect x="20" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
-'<rect x="32" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
-'<rect x="21" y="77" width="6" height="3" rx="1" fill="#222"/>'+
-'<rect x="33" y="77" width="6" height="3" rx="1" fill="#222"/>'+
-// neck
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-// HEAD - big chibi
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// hair - dark auburn
-'<ellipse cx="30" cy="22" rx="20" ry="12" fill="#3a1a08" '+ol+'/>'+
-'<path d="M10 30 Q8 22 14 18 Q12 28 16 32" fill="#3a1a08" '+ol2+'/>'+
-'<path d="M50 30 Q52 22 46 18 Q48 28 44 32" fill="#3a1a08" '+ol2+'/>'+
-// scar on forehead
-'<ellipse cx="24" cy="26" rx="4" ry="3.5" fill="#b01028" opacity=".8"/>'+
-// hanafuda earring
-'<circle cx="50" cy="36" r="3.5" fill="#e8d090" '+ol2+'/>'+
-'<circle cx="50" cy="36" r="1.8" fill="#c8182a"/>'+
-// eyes
-'<ellipse cx="24" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="36" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="24" cy="37" rx="3" ry="3.8" fill="#2a5888"/>'+
-'<ellipse cx="36" cy="37" rx="3" ry="3.8" fill="#2a5888"/>'+
-'<circle cx="24" cy="36" r="1.5" fill="#0a1828"/>'+
-'<circle cx="36" cy="36" r="1.5" fill="#0a1828"/>'+
-'<circle cx="25" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="37" cy="34.5" r="1.1" fill="white"/>'+
-// eyebrows
-'<path d="M20.5 31.5 Q24 30 27.5 31.5" stroke="#2a1a08" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-'<path d="M32.5 31.5 Q36 30 39.5 31.5" stroke="#2a1a08" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-// nose
-'<circle cx="30" cy="40.5" r="1.2" fill="#e0b888" opacity=".8"/>'+
-// mouth smile
-'<path d="M26 44 Q30 47 34 44" stroke="#b06050" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
-// cheeks
-'<ellipse cx="19" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
-'<ellipse cx="41" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
-// sword
-'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#7a9a60" '+ol2+'/>'+
-'<rect x="7" y="48" width="6" height="4" rx="1" fill="#8a7040"/>'+
-'<rect x="9" y="30" width="2" height="16" rx="1" fill="#d0d0c0" '+ol2+'/>'+
-'<ellipse cx="10" cy="30" rx="3" ry="2" fill="#aaa"/>'+
-// shadow
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 1 NEZUKO */
-{id:'nezuko',name:'Nezuko',full:'Nezuko Kamado',color:'#d84898',bg:'rgba(80,15,50,.55)',rank:'Demônio',
-svg:mk(
-// body - kimono rosa/vermelho
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#c8183a" '+ol+'/>'+
-'<rect x="17" y="52" width="26" height="8" fill="#f8a0c0" opacity=".5"/>'+
-'<rect x="17" y="58" width="26" height="4" fill="#f8f080" '+ol2+'/>'+
-// legs
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#3a3a5a" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#222"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#222"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// hair - long black with bow
-'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#100818" '+ol+'/>'+
-'<path d="M10 30 Q8 20 14 16 Q12 27 16 31" fill="#100818" '+ol2+'/>'+
-// hair bow
-'<path d="M40 22 Q48 16 52 20 Q48 24 40 22" fill="#d84898" '+ol2+'/>'+
-'<path d="M40 22 Q48 28 52 24 Q48 24 40 22" fill="#a82878" '+ol2+'/>'+
-'<circle cx="46" cy="22" r="2.5" fill="#f0a0c8" '+ol2+'/>'+
-// bamboo muzzle - very characteristic of Nezuko
-'<rect x="20" y="40" width="20" height="8" rx="4" fill="#5a8830" '+ol+'/>'+
-'<line x1="26" y1="40" x2="26" y2="48" stroke="#3a6818" stroke-width="1"/>'+
-'<line x1="31" y1="40" x2="31" y2="48" stroke="#3a6818" stroke-width="1"/>'+
-'<line x1="36" y1="40" x2="36" y2="48" stroke="#4a7828" stroke-width=".8" opacity=".6"/>'+
-// eyes - big purple
-'<ellipse cx="24" cy="34" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="36" cy="34" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="24" cy="35" rx="3" ry="3.8" fill="#c84098"/>'+
-'<ellipse cx="36" cy="35" rx="3" ry="3.8" fill="#c84098"/>'+
-'<circle cx="24" cy="34" r="1.5" fill="#180a20"/>'+
-'<circle cx="36" cy="34" r="1.5" fill="#180a20"/>'+
-'<circle cx="25" cy="32.5" r="1.1" fill="white"/>'+
-'<circle cx="37" cy="32.5" r="1.1" fill="white"/>'+
-'<path d="M20.5 29.5 Q24 28 27.5 29.5" stroke="#100818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
-'<path d="M32.5 29.5 Q36 28 39.5 29.5" stroke="#100818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="19" cy="38" rx="3.5" ry="2.5" fill="#f08080" opacity=".38"/>'+
-'<ellipse cx="41" cy="38" rx="3.5" ry="2.5" fill="#f08080" opacity=".38"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 2 ZENITSU */
-{id:'zenitsu',name:'Zenitsu',full:'Zenitsu Agatsuma',color:'#e8c010',bg:'rgba(70,55,0,.55)',rank:'Caçador',
-svg:mk(
-// body - haori amarelo com triângulos
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a1408" '+ol+'/>'+
-'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#e8b818" '+ol+'/>'+
-'<polygon points="19,68 24,58 29,68" fill="#c89010" opacity=".6"/>'+
-'<polygon points="31,68 36,58 41,68" fill="#c89010" opacity=".6"/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#1a1408" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#2a2418" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#2a2418" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// spiky blond hair
-'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#d0a010" '+ol+'/>'+
-'<path d="M12 28 Q8 18 16 13 Q14 24 18 29" fill="#d0a010" '+ol2+'/>'+
-'<path d="M48 28 Q52 18 44 13 Q46 24 42 29" fill="#c09008" '+ol2+'/>'+
-'<path d="M24 18 Q22 10 28 7 Q26 16 29 19" fill="#e8c020"/>'+
-'<path d="M36 18 Q38 10 32 7 Q34 16 31 19" fill="#d0a818"/>'+
-// scared wide eyes (zenitsu expression)
-'<ellipse cx="23" cy="36" rx="5" ry="6" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="5" ry="6" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="37" rx="3.5" ry="4.5" fill="#8a5020"/>'+
-'<ellipse cx="37" cy="37" rx="3.5" ry="4.5" fill="#8a5020"/>'+
-'<circle cx="23" cy="36" r="1.8" fill="#080600"/>'+
-'<circle cx="37" cy="36" r="1.8" fill="#080600"/>'+
-'<circle cx="24.5" cy="34" r="1.2" fill="white"/>'+
-'<circle cx="38.5" cy="34" r="1.2" fill="white"/>'+
-'<path d="M19 31 Q23 29.5 27 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<path d="M33 31 Q37 29.5 41 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41.5" r="1.2" fill="#d8a878" opacity=".8"/>'+
-'<path d="M25 45 Q30 42.5 35 45" stroke="#b06858" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".42"/>'+
-'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".42"/>'+
-// lightning
-'<path d="M53 22 L49 31 L52 31 L47 42" stroke="#f5c518" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 3 INOSUKE */
-{id:'inosuke',name:'Inosuke',full:'Inosuke Hashibira',color:'#48c868',bg:'rgba(8,45,18,.55)',rank:'Feroz 🐗',
-svg:mk(
-// body - shirtless, tattered pants
-'<rect x="19" y="55" width="22" height="19" rx="3" fill="#8a7858" '+ol+'/>'+
-// abs detail
-'<line x1="30" y1="58" x2="30" y2="73" stroke="#6a5838" stroke-width=".8"/>'+
-'<line x1="22" y1="62" x2="38" y2="62" stroke="#6a5838" stroke-width=".8"/>'+
-'<line x1="22" y1="67" x2="38" y2="67" stroke="#6a5838" stroke-width=".8"/>'+
-'<rect x="20" y="72" width="8" height="7" rx="2" fill="#5a4a28" '+ol2+'/>'+
-'<rect x="32" y="72" width="8" height="7" rx="2" fill="#5a4a28" '+ol2+'/>'+
-'<rect x="21" y="77" width="6" height="3" rx="1" fill="#3a2a10"/>'+
-'<rect x="33" y="77" width="6" height="3" rx="1" fill="#3a2a10"/>'+
-'<rect x="27" y="51" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-// BIG boar head (very characteristic)
-'<ellipse cx="10" cy="36" rx="6" ry="8" fill="#f0ece5" '+ol+'/>'+
-'<ellipse cx="50" cy="36" rx="6" ry="8" fill="#f0ece5" '+ol+'/>'+
-'<ellipse cx="10" cy="36" rx="3.5" ry="5.5" fill="#e09080"/>'+
-'<ellipse cx="50" cy="36" rx="3.5" ry="5.5" fill="#e09080"/>'+
-'<ellipse cx="30" cy="35" rx="21" ry="21" fill="#f0ece5" '+ol+'/>'+
-// mask texture / stitching
-'<ellipse cx="30" cy="37" rx="17" ry="17" fill="#e8e0d5" opacity=".5"/>'+
-'<line x1="30" y1="16" x2="30" y2="55" stroke="#c8b8a0" stroke-width=".9" opacity=".5" stroke-dasharray="2,2.5"/>'+
-// hair peeking above mask
-'<ellipse cx="30" cy="19" rx="19" ry="10" fill="#180a28" '+ol2+'/>'+
-// boar mask eyes
-'<ellipse cx="22" cy="33" rx="5.5" ry="6" fill="#1a2818" '+ol2+'/>'+
-'<ellipse cx="38" cy="33" rx="5.5" ry="6" fill="#1a2818" '+ol2+'/>'+
-'<ellipse cx="22" cy="33.5" rx="4" ry="5" fill="#28a048"/>'+
-'<ellipse cx="38" cy="33.5" rx="4" ry="5" fill="#28a048"/>'+
-'<circle cx="22" cy="33" r="2" fill="#081808"/>'+
-'<circle cx="38" cy="33" r="2" fill="#081808"/>'+
-'<circle cx="23.2" cy="31.5" r="1.2" fill="white" opacity=".85"/>'+
-'<circle cx="39.2" cy="31.5" r="1.2" fill="white" opacity=".85"/>'+
-// snout
-'<ellipse cx="30" cy="44" rx="9" ry="7" fill="#ddc8b0" '+ol+'/>'+
-'<circle cx="26.5" cy="45" r="2.5" fill="#a89080"/>'+
-'<circle cx="33.5" cy="45" r="2.5" fill="#a89080"/>'+
-// tusks
-'<path d="M18 52 Q13 60 16 67" stroke="#f0ece5" stroke-width="3.5" fill="none" stroke-linecap="round"/>'+
-'<path d="M42 52 Q47 60 44 67" stroke="#f0ece5" stroke-width="3.5" fill="none" stroke-linecap="round"/>'+
-// dual swords
-'<rect x="2" y="38" width="3" height="24" rx="1" fill="#8a9a60" '+ol2+'/>'+
-'<rect x="1.5" y="44" width="4" height="3" rx="1" fill="#6a7040"/>'+
-'<rect x="55" y="38" width="3" height="24" rx="1" fill="#8a9a60" '+ol2+'/>'+
-'<rect x="54.5" y="44" width="4" height="3" rx="1" fill="#6a7040"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 4 RENGOKU */
-{id:'rengoku',name:'Rengoku',full:'Kyojuro Rengoku',color:'#e05808',bg:'rgba(75,18,0,.55)',rank:'Hashira 🔥',
-svg:mk(
-// body - flame haori
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a0808" '+ol+'/>'+
-'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#e05808" '+ol+'/>'+
-// flame tips on haori
-'<path d="M19 52 Q21 44 23 52" fill="#f8c018"/>'+
-'<path d="M25 52 Q28 42 31 52" fill="#e05808"/>'+
-'<path d="M33 52 Q36 42 39 52" fill="#e05808"/>'+
-'<path d="M39 52 Q41 44 43 52" fill="#f8c018"/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#1a0808" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#2a1408" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#2a1408" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// flame hair - most distinctive
-'<ellipse cx="30" cy="21" rx="19" ry="12" fill="#1e0c00" '+ol+'/>'+
-'<path d="M22 20 Q18 10 24 6 Q22 17 26 20" fill="#e05808"/>'+
-'<path d="M30 18 Q28 7 33 3 Q32 14 35 18" fill="#f8c018"/>'+
-'<path d="M38 20 Q42 10 38 6 Q36 17 34 20" fill="#e05808"/>'+
-'<path d="M14 28 Q10 18 16 13 Q14 25 18 29" fill="#e05808"/>'+
-'<path d="M46 28 Q50 18 44 13 Q46 25 42 29" fill="#c04010"/>'+
-// eyes - fierce amber
-'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#b05018"/>'+
-'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#b05018"/>'+
-'<circle cx="23" cy="36" r="1.5" fill="#100800"/>'+
-'<circle cx="37" cy="36" r="1.5" fill="#100800"/>'+
-'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
-'<path d="M19.5 31 Q23 29.5 26.5 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 31 Q37 29.5 40.5 31" stroke="#100800" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
-// big smile
-'<path d="M24 45 Q30 49.5 36 45" stroke="#b06858" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-// sword
-'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#c06020" '+ol2+'/>'+
-'<rect x="7" y="50" width="6" height="4" rx="1" fill="#8a4010"/>'+
-'<rect x="9" y="28" width="2" height="18" rx="1" fill="#d8d0c0" '+ol2+'/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 5 GIYU */
-{id:'giyuu',name:'Giyu',full:'Giyu Tomioka',color:'#2880d8',bg:'rgba(8,25,65,.55)',rank:'Hashira 💧',
-svg:mk(
-// split haori - half crimson half blue
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#180808" '+ol+'/>'+
-'<path d="M17 52 L29 52 L29 74 Q20 72 17 52" fill="#c0183a" '+ol2+'/>'+
-'<path d="M31 52 L43 52 Q40 72 31 74 L31 52" fill="#2848a8" '+ol2+'/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#180808" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#180808" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#180808" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// dark hair - straight, stoic
-'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#101018" '+ol+'/>'+
-'<path d="M10 28 Q8 20 14 15 Q12 26 16 31" fill="#101018" '+ol2+'/>'+
-'<path d="M50 28 Q52 20 46 15 Q48 26 44 31" fill="#101018" '+ol2+'/>'+
-// long hanging hair strand
-'<rect x="46" y="34" width="5" height="24" rx="2.5" fill="#101018" '+ol2+'/>'+
-// stoic eyes - deep blue
-'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#1848a0"/>'+
-'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#1848a0"/>'+
-'<circle cx="23" cy="36" r="1.5" fill="#060c18"/>'+
-'<circle cx="37" cy="36" r="1.5" fill="#060c18"/>'+
-'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
-'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#060c18" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#060c18" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
-// flat stoic mouth
-'<line x1="25" y1="45.5" x2="35" y2="45.5" stroke="#b06858" stroke-width="1.6" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="41" rx="3" ry="2" fill="#f08080" opacity=".18"/>'+
-'<ellipse cx="42" cy="41" rx="3" ry="2" fill="#f08080" opacity=".18"/>'+
-// sword
-'<rect x="8" y="44" width="4" height="28" rx="1.5" fill="#7890a8" '+ol2+'/>'+
-'<rect x="7" y="50" width="6" height="4" rx="1" fill="#5870a0"/>'+
-'<rect x="9" y="28" width="2" height="18" rx="1" fill="#e8e0d0" '+ol2+'/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 6 SHINOBU */
-{id:'shinobu',name:'Shinobu',full:'Shinobu Kocho',color:'#c090f8',bg:'rgba(38,8,68,.55)',rank:'Hashira 🦋',
-svg:mk(
-// butterfly haori
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#180828" '+ol+'/>'+
-'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#c090f8" opacity=".65" '+ol+'/>'+
-'<ellipse cx="22" cy="67" rx="7" ry="5.5" fill="#9060d0" opacity=".55"/>'+
-'<ellipse cx="38" cy="67" rx="7" ry="5.5" fill="#9060d0" opacity=".55"/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#180828" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#180828" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#180828" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// black hair - tied up
-'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#100818" '+ol+'/>'+
-// butterfly ornament
-'<path d="M42 22 Q50 15 56 19 Q50 24 42 22" fill="#c090f8" '+ol2+'/>'+
-'<path d="M42 22 Q50 29 56 25 Q50 24 42 22" fill="#9060c8" '+ol2+'/>'+
-'<circle cx="49" cy="22" r="3" fill="#e0b0ff" '+ol2+'/>'+
-'<circle cx="49" cy="22" r="1.5" fill="#c090f8"/>'+
-// purple knowing eyes
-'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#7030c8"/>'+
-'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#7030c8"/>'+
-'<circle cx="23" cy="36" r="1.5" fill="#100820"/>'+
-'<circle cx="37" cy="36" r="1.5" fill="#100820"/>'+
-'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
-'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#100820" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#100820" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
-'<path d="M25 44.5 Q30 48 35 44.5" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
-'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".35"/>'+
-// butterfly sword
-'<rect x="8" y="44" width="3" height="26" rx="1.5" fill="#d0a8f8" '+ol2+'/>'+
-'<rect x="7" y="50" width="5" height="3.5" rx="1" fill="#9060c8"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 7 MUICHIRO */
-{id:'muichiro',name:'Muichiro',full:'Muichiro Tokito',color:'#60d0c0',bg:'rgba(0,38,48,.55)',rank:'Hashira 🌫️',
-svg:mk(
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#0a1820" '+ol+'/>'+
-'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#50c0b8" opacity=".55" '+ol+'/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#0a1820" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#0a1820" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#0a1820" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// long teal/mint hair
-'<ellipse cx="30" cy="21" rx="20" ry="12" fill="#58a898" '+ol+'/>'+
-'<path d="M10 28 Q8 20 14 15 Q12 26 16 31" fill="#58a898" '+ol2+'/>'+
-// very long hair going down
-'<rect x="45" y="30" width="6" height="34" rx="3" fill="#58a898" '+ol2+'/>'+
-'<rect x="50" y="34" width="4.5" height="28" rx="2.3" fill="#70c0b0" opacity=".8"/>'+
-// hair tie
-'<rect x="46" y="46" width="8" height="5" rx="2.5" fill="#2a8878" '+ol2+'/>'+
-// blank/vacant eyes
-'<ellipse cx="23" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="37" rx="3" ry="3.8" fill="#30a0a0"/>'+
-'<ellipse cx="37" cy="37" rx="3" ry="3.8" fill="#30a0a0"/>'+
-'<circle cx="23" cy="36" r="1.5" fill="#081818"/>'+
-'<circle cx="37" cy="36" r="1.5" fill="#081818"/>'+
-'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
-'<path d="M19.5 31.5 Q23 30 26.5 31.5" stroke="#081818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 31.5 Q37 30 40.5 31.5" stroke="#081818" stroke-width="1.2" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
-'<line x1="25" y1="45.5" x2="35" y2="45.5" stroke="#b06858" stroke-width="1.5" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="41" rx="3" ry="2" fill="#f08080" opacity=".2"/>'+
-'<ellipse cx="42" cy="41" rx="3" ry="2" fill="#f08080" opacity=".2"/>'+
-'<rect x="8" y="44" width="3" height="26" rx="1.5" fill="#90d8d0" '+ol2+'/>'+
-'<rect x="7" y="50" width="5" height="3.5" rx="1" fill="#50a898"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 8 MITSURI */
-{id:'mitsuri',name:'Mitsuri',full:'Mitsuri Kanroji',color:'#f080a8',bg:'rgba(70,10,35,.55)',rank:'Hashira 💕',
-svg:mk(
-// green haori with pink accents
-'<rect x="15" y="52" width="30" height="22" rx="3" fill="#285030" '+ol+'/>'+
-'<path d="M15 52 Q15 74 30 74 Q45 74 45 52" fill="#f080a8" opacity=".55" '+ol+'/>'+
-'<rect x="15" y="58" width="30" height="3.5" fill="#f8c8d8" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="33" rx="20" ry="20" fill="#f8d8a8" '+ol+'/>'+
-// pink/salmon long twintail hair
-'<ellipse cx="30" cy="20" rx="19" ry="12" fill="#e87898" '+ol+'/>'+
-'<path d="M8 30 Q4 18 10 12 Q9 25 13 30" fill="#e87898" '+ol2+'/>'+
-'<path d="M52 30 Q56 18 50 12 Q51 25 47 30" fill="#e87898" '+ol2+'/>'+
-// long twintails going down body
-'<path d="M10 30 Q4 48 8 72" stroke="#e87898" stroke-width="6" fill="none" stroke-linecap="round" '+ol2+'/>'+
-'<path d="M50 30 Q56 48 52 72" stroke="#d06878" stroke-width="6" fill="none" stroke-linecap="round" '+ol2+'/>'+
-// eyes - soft love
-'<ellipse cx="23" cy="35" rx="4.5" ry="5.5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="35" rx="4.5" ry="5.5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="36" rx="3.2" ry="4.2" fill="#c84880"/>'+
-'<ellipse cx="37" cy="36" rx="3.2" ry="4.2" fill="#c84880"/>'+
-'<circle cx="23" cy="35" r="1.6" fill="#180818"/>'+
-'<circle cx="37" cy="35" r="1.6" fill="#180818"/>'+
-'<circle cx="24.3" cy="33.5" r="1.2" fill="white"/>'+
-'<circle cx="38.3" cy="33.5" r="1.2" fill="white"/>'+
-'<path d="M19.5 30.5 Q23 29 26.5 30.5" stroke="#180818" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 30.5 Q37 29 40.5 30.5" stroke="#180818" stroke-width="1.3" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="40" r="1.2" fill="#d8a878" opacity=".8"/>'+
-'<path d="M24.5 43.5 Q30 47.5 35.5 43.5" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".45"/>'+
-'<ellipse cx="42" cy="40" rx="3.5" ry="2.5" fill="#f08080" opacity=".45"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 9 TENGEN */
-{id:'tengen',name:'Tengen',full:'Tengen Uzui',color:'#c090f8',bg:'rgba(40,0,60,.55)',rank:'Hashira 🎶',
-svg:mk(
-// extravagant white/silver outfit
-'<rect x="16" y="52" width="28" height="22" rx="3" fill="#282840" '+ol+'/>'+
-'<path d="M16 52 Q16 74 30 74 Q44 74 44 52" fill="#d0d0f8" opacity=".6" '+ol+'/>'+
-// gems/jewels pattern
-'<circle cx="25" cy="60" r="2.5" fill="#f8c518" '+ol2+'/>'+
-'<circle cx="35" cy="60" r="2.5" fill="#f870a0" '+ol2+'/>'+
-'<circle cx="30" cy="65" r="2.5" fill="#80c0f8" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#282840" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#282840" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// white hair
-'<ellipse cx="30" cy="21" rx="19" ry="12" fill="#e8e8f8" '+ol+'/>'+
-'<path d="M11 28 Q9 20 15 15 Q13 26 17 31" fill="#e8e8f8" '+ol2+'/>'+
-'<path d="M49 28 Q51 20 45 15 Q47 26 43 31" fill="#d8d8f0" '+ol2+'/>'+
-// headband
-'<rect x="12" y="27" width="36" height="6" rx="3" fill="#f8c518" '+ol+'/>'+
-'<circle cx="30" cy="30" r="3" fill="#f870a0" '+ol2+'/>'+
-// diamond mark on forehead (characteristic Tengen tattoo)
-'<path d="M22 24 L30 19 L38 24 L30 29 Z" fill="#c850f0" opacity=".6" '+ol2+'/>'+
-// eyes - dramatic
-'<ellipse cx="23" cy="37" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="37" rx="4.5" ry="5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="38" rx="3" ry="3.8" fill="#8040b8"/>'+
-'<ellipse cx="37" cy="38" rx="3" ry="3.8" fill="#8040b8"/>'+
-'<circle cx="23" cy="37" r="1.5" fill="#100820"/>'+
-'<circle cx="37" cy="37" r="1.5" fill="#100820"/>'+
-'<circle cx="24.3" cy="35.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="35.5" r="1.1" fill="white"/>'+
-'<path d="M19.5 33 Q23 31.5 26.5 33" stroke="#100820" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<path d="M33.5 33 Q37 31.5 40.5 33" stroke="#100820" stroke-width="1.4" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="42.5" r="1.2" fill="#d8a878" opacity=".8"/>'+
-'<path d="M24 46 Q30 50 36 46" stroke="#b06858" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
-'<ellipse cx="18" cy="42" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-'<ellipse cx="42" cy="42" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 10 SANEMI */
-{id:'sanemi',name:'Sanemi',full:'Sanemi Shinazugawa',color:'#80d858',bg:'rgba(15,45,8,.55)',rank:'Hashira 💨',
-svg:mk(
-'<rect x="17" y="52" width="26" height="22" rx="3" fill="#1a2818" '+ol+'/>'+
-'<path d="M17 52 Q17 74 30 74 Q43 74 43 52" fill="#80d858" opacity=".6" '+ol+'/>'+
-'<rect x="17" y="57" width="26" height="3" fill="#1a2818" '+ol2+'/>'+
-'<rect x="19" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
-'<rect x="33" y="72" width="8" height="7" rx="2" fill="#1a2818" '+ol2+'/>'+
-'<rect x="20" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="34" y="77" width="6" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="48" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-'<ellipse cx="30" cy="34" rx="20" ry="19" fill="#f8d8a8" '+ol+'/>'+
-// spiky white hair
-'<ellipse cx="30" cy="21" rx="19" ry="11" fill="#f0f0f8" '+ol+'/>'+
-'<path d="M22 18 Q18 8 25 4 Q23 16 27 19" fill="#f0f0f8"/>'+
-'<path d="M38 18 Q42 8 35 4 Q37 16 33 19" fill="#e0e0f0"/>'+
-'<path d="M14 26 Q10 16 16 11 Q14 23 18 27" fill="#f0f0f8"/>'+
-// scars on face - Sanemi is covered in scars
-'<line x1="20" y1="32" x2="26" y2="28" stroke="#c09080" stroke-width="1.2"/>'+
-'<line x1="34" y1="30" x2="40" y2="34" stroke="#c09080" stroke-width="1.2"/>'+
-'<line x1="26" y1="42" x2="32" y2="38" stroke="#c09080" stroke-width="1"/>'+
-// eyes - angry
-'<ellipse cx="23" cy="36" rx="4.5" ry="4.5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="4.5" ry="4.5" fill="#fff" '+ol2+'/>'+
-'<ellipse cx="23" cy="36.5" rx="3" ry="3.3" fill="#506830"/>'+
-'<ellipse cx="37" cy="36.5" rx="3" ry="3.3" fill="#506830"/>'+
-'<circle cx="23" cy="36" r="1.5" fill="#080e00"/>'+
-'<circle cx="37" cy="36" r="1.5" fill="#080e00"/>'+
-'<circle cx="24.3" cy="34.5" r="1.1" fill="white"/>'+
-'<circle cx="38.3" cy="34.5" r="1.1" fill="white"/>'+
-// angry brows
-'<path d="M20 31 Q23 28.5 26 31" stroke="#0a0a18" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
-'<path d="M34 31 Q37 28.5 40 31" stroke="#0a0a18" stroke-width="1.6" fill="none" stroke-linecap="round"/>'+
-'<circle cx="30" cy="41" r="1.2" fill="#d8a878" opacity=".8"/>'+
-// gritted teeth
-'<path d="M24 45 L36 45" stroke="#b06858" stroke-width="1.6" stroke-linecap="round"/>'+
-'<line x1="26" y1="44" x2="26" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
-'<line x1="30" y1="44" x2="30" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
-'<line x1="34" y1="44" x2="34" y2="46" stroke="#c0a080" stroke-width=".8"/>'+
-'<ellipse cx="18" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-'<ellipse cx="42" cy="41" rx="3.5" ry="2.5" fill="#f08080" opacity=".3"/>'+
-'<rect x="8" y="44" width="3.5" height="26" rx="1.5" fill="#c0d8a0" '+ol2+'/>'+
-'<rect x="7.5" y="50" width="5.5" height="4" rx="1" fill="#809070"/>'+
-'<ellipse cx="30" cy="79" rx="14" ry="3" fill="rgba(0,0,0,.25)"/>'
-)},
-
-/* 11 GYOMEI */
-{id:'gyomei',name:'Gyomei',full:'Gyomei Himejima',color:'#a07858',bg:'rgba(40,28,15,.55)',rank:'Hashira 🪨',
-svg:mk(
-// large muscular body
-'<rect x="12" y="50" width="36" height="26" rx="4" fill="#1a1408" '+ol+'/>'+
-'<path d="M12 50 Q12 76 30 76 Q48 76 48 50" fill="#6a5838" opacity=".7" '+ol+'/>'+
-'<rect x="12" y="57" width="36" height="4" fill="#1a1408" '+ol2+'/>'+
-'<rect x="15" y="74" width="10" height="6" rx="2" fill="#1a1408" '+ol2+'/>'+
-'<rect x="35" y="74" width="10" height="6" rx="2" fill="#1a1408" '+ol2+'/>'+
-'<rect x="16" y="78" width="8" height="3" rx="1" fill="#111"/>'+
-'<rect x="36" y="78" width="8" height="3" rx="1" fill="#111"/>'+
-'<rect x="27" y="46" width="6" height="6" rx="2" fill="#f8d8a8" '+ol2+'/>'+
-// big head
-'<ellipse cx="30" cy="32" rx="21" ry="22" fill="#f8d8a8" '+ol+'/>'+
-// bald head with white cloth
-'<ellipse cx="30" cy="20" rx="20" ry="13" fill="#f8d8a8" '+ol2+'/>'+
-'<rect x="12" y="25" width="36" height="8" rx="4" fill="#e8e0d0" '+ol+'/>'+
-// rosary/beads (characteristic Gyomei)
-'<path d="M10 46 Q8 35 15 28 Q12 38 16 44" stroke="#8a6840" stroke-width="2.5" fill="none" stroke-linecap="round"/>'+
-// big closed eyes (Gyomei always crying)
-'<ellipse cx="23" cy="36" rx="5" ry="3.5" fill="#eee" '+ol2+'/>'+
-'<ellipse cx="37" cy="36" rx="5" ry="3.5" fill="#eee" '+ol2+'/>'+
-'<path d="M18 36 Q23 39.5 28 36" stroke="#101010" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
-'<path d="M32 36 Q37 39.5 42 36" stroke="#101010" stroke-width="1.8" fill="none" stroke-linecap="round"/>'+
-// tear drops
-'<ellipse cx="20" cy="40" rx="1.5" ry="2" fill="#b0d8f8" opacity=".8"/>'+
-'<ellipse cx="40" cy="40" rx="1.5" ry="2" fill="#b0d8f8" opacity=".8"/>'+
-'<path d="M22.5 32 Q23 30.5 23.5 32" stroke="#101010" stroke-width="1.3" fill="none"/>'+
-'<path d="M36.5 32 Q37 30.5 37.5 32" stroke="#101010" stroke-width="1.3" fill="none"/>'+
-// big chain weapon
-'<path d="M50 40 Q58 50 55 62" stroke="#a08060" stroke-width="3" fill="none" stroke-linecap="round"/>'+
-'<circle cx="55" cy="63" r="4" fill="#c0a070" '+ol+'/>'+
-'<circle cx="50" cy="40" r="3" fill="#c0a070" '+ol+'/>'+
-'<ellipse cx="30" cy="79" rx="18" ry="4" fill="rgba(0,0,0,.3)"/>'
-)},
+const CHARS=[
+  {id:'tanjiro', name:'Tanjiro', full:'Tanjiro Kamado',   color:'#3a88d0',bg:'rgba(20,50,100,.6)', rank:'Caçador',    breath:'Água · Sol'},
+  {id:'nezuko',  name:'Nezuko',  full:'Nezuko Kamado',    color:'#d84898',bg:'rgba(80,15,50,.6)',  rank:'Demônio',    breath:'Sangue Demoníaco'},
+  {id:'zenitsu', name:'Zenitsu', full:'Zenitsu Agatsuma', color:'#e8c010',bg:'rgba(70,55,0,.6)',   rank:'Caçador',    breath:'Trovão ⚡'},
+  {id:'inosuke', name:'Inosuke', full:'Inosuke Hashibira',color:'#48c868',bg:'rgba(8,45,18,.6)',   rank:'Feroz 🐗',   breath:'Besta'},
+  {id:'rengoku', name:'Rengoku', full:'Kyojuro Rengoku',  color:'#e05808',bg:'rgba(75,18,0,.6)',   rank:'Hashira 🔥', breath:'Chamas'},
+  {id:'giyuu',   name:'Giyu',    full:'Giyu Tomioka',     color:'#2880d8',bg:'rgba(8,25,65,.6)',   rank:'Hashira 💧', breath:'Água'},
+  {id:'shinobu', name:'Shinobu', full:'Shinobu Kocho',    color:'#c090f8',bg:'rgba(38,8,68,.6)',   rank:'Hashira 🦋', breath:'Insetos'},
+  {id:'muichiro',name:'Muichiro',full:'Muichiro Tokito',  color:'#60d0c0',bg:'rgba(0,38,48,.6)',   rank:'Hashira 🌫️', breath:'Névoa'},
+  {id:'mitsuri', name:'Mitsuri', full:'Mitsuri Kanroji',  color:'#f080a8',bg:'rgba(70,10,35,.6)',  rank:'Hashira 💕', breath:'Amor'},
+  {id:'tengen',  name:'Tengen',  full:'Tengen Uzui',      color:'#c090f8',bg:'rgba(40,0,60,.6)',   rank:'Hashira 🎶', breath:'Som'},
+  {id:'sanemi',  name:'Sanemi',  full:'Sanemi Shinazugawa',color:'#80d858',bg:'rgba(15,45,8,.6)', rank:'Hashira 💨', breath:'Vento'},
+  {id:'gyomei',  name:'Gyomei',  full:'Gyomei Himejima',  color:'#a07858',bg:'rgba(40,28,15,.6)',  rank:'Hashira 🪨', breath:'Pedra'},
 ];
 
-/* ════════════════════════════════════
-   PHASES — OBJETIVO: TORNAR-SE HASHIRA
-════════════════════════════════════ */
 const PHASES=[
-{num:1,title:'Treinamento Inicial',level:'INICIANTE',emoji:'🌱',minCorrect:3,
-story:'O treinamento começa! Aprenda o básico para se tornar um Caçador.',
-questions:[
-{q:'Qual é o nome completo do protagonista de Demon Slayer?',opts:['Tanjiro Kamado','Zenitsu Agatsuma','Inosuke Hashibira','Giyu Tomioka'],ans:0,tip:'Ele carrega a caixinha da irmã nas costas!'},
-{q:'O que aconteceu com a família de Tanjiro no início da história?',opts:['Mudaram de cidade','Foram atacados por um demônio','Viajaram para a capital','Adoeceram de gripe'],ans:1,tip:'Muzan Kibutsuji é o culpado indireto.'},
-{q:'Quem é a irmã de Tanjiro que se torna demônio?',opts:['Aoi','Kanao','Nezuko','Makomo'],ans:2,tip:'Ela viaja numa caixinha de bambu.'},
-{q:'Qual organização combate os demônios?',opts:['Anbu','Corpo de Caçadores de Demônios','Liga dos Vilões','Força Oculta'],ans:1,tip:'Em japonês: Kisatsutai.'},
-{q:'O nome japonês de Demon Slayer é "Kimetsu no ___":',opts:['Yume','Yaiba','Yasha','Yoroi'],ans:1,tip:'Significa Lâmina em japonês.'},
+{num:1,title:'Treinamento Inicial',level:'INICIANTE',emoji:'🌱',minCorrect:3,questions:[
+  {q:'Qual é o nome completo do protagonista de Demon Slayer?',opts:['Tanjiro Kamado','Zenitsu Agatsuma','Inosuke Hashibira','Giyu Tomioka'],ans:0,tip:'Ele carrega a caixinha da irmã nas costas!'},
+  {q:'O que aconteceu com a família de Tanjiro no início da história?',opts:['Mudaram de cidade','Foram atacados por um demônio','Viajaram para a capital','Adoeceram de gripe'],ans:1,tip:'Muzan Kibutsuji é o culpado indireto.'},
+  {q:'Quem é a irmã de Tanjiro que se torna demônio?',opts:['Aoi','Kanao','Nezuko','Makomo'],ans:2,tip:'Ela viaja numa caixinha de bambu.'},
+  {q:'Qual organização combate os demônios?',opts:['Anbu','Corpo de Caçadores de Demônios','Liga dos Vilões','Força Oculta'],ans:1,tip:'Em japonês: Kisatsutai.'},
+  {q:'O nome japonês de Demon Slayer é "Kimetsu no ___":',opts:['Yume','Yaiba','Yasha','Yoroi'],ans:1,tip:'Significa Lâmina em japonês.'},
 ]},
-{num:2,title:'Respiração Básica',level:'APRENDIZ',emoji:'💧',minCorrect:3,
-story:'Domine as técnicas de Respiração para avançar no treinamento.',
-questions:[
-{q:'Qual Respiração Tanjiro aprende com Sakonji Urokodaki?',opts:['Respiração do Fogo','Respiração da Água','Respiração do Trovão','Respiração do Vento'],ans:1,tip:'Flui como a água corrente!'},
-{q:'Quantas Formas tem a Respiração da Água?',opts:['6','8','10','12'],ans:2,tip:'Dez técnicas aquáticas diferentes.'},
-{q:'Quem treinou Tanjiro nas artes de Caçador?',opts:['Rengoku','Giyu Tomioka','Sakonji Urokodaki','Kanae Kocho'],ans:2,tip:'Ele usa máscara de raposa tengu.'},
-{q:'Que animal Inosuke tem como máscara?',opts:['Urso','Javali','Lobo','Tigre'],ans:1,tip:'Ele foi criado por esse animal na floresta.'},
-{q:'Qual é o material das espadas que mata demônios?',opts:['Ouro purificado','Aço solar (Nichirin)','Prata sagrada','Pedra do trovão'],ans:1,tip:'Absorve a luz solar durante a forja.'},
+{num:2,title:'Respiração Básica',level:'APRENDIZ',emoji:'💧',minCorrect:3,questions:[
+  {q:'Qual Respiração Tanjiro aprende com Sakonji Urokodaki?',opts:['Respiração do Fogo','Respiração da Água','Respiração do Trovão','Respiração do Vento'],ans:1,tip:'Flui como a água corrente!'},
+  {q:'Quantas Formas tem a Respiração da Água?',opts:['6','8','10','12'],ans:2,tip:'Dez técnicas aquáticas diferentes.'},
+  {q:'Quem treinou Tanjiro nas artes de Caçador?',opts:['Rengoku','Giyu Tomioka','Sakonji Urokodaki','Kanae Kocho'],ans:2,tip:'Ele usa máscara de raposa tengu.'},
+  {q:'Que animal Inosuke tem como máscara?',opts:['Urso','Javali','Lobo','Tigre'],ans:1,tip:'Ele foi criado por esse animal na floresta.'},
+  {q:'Qual é o material das espadas que mata demônios?',opts:['Ouro purificado','Aço solar (Nichirin)','Prata sagrada','Pedra do trovão'],ans:1,tip:'Absorve a luz solar durante a forja.'},
 ]},
-{num:3,title:'Missões Iniciais',level:'CAÇADOR',emoji:'⚔️',minCorrect:3,
-story:'Suas primeiras missões como Caçador — prove seu valor!',
-questions:[
-{q:'Qual é a cicatriz/marca na testa de Tanjiro?',opts:['Lua','Sol','Cicatriz de nascença','Flor de cerejeira'],ans:2,tip:'Virou uma marca do Caçador com o tempo.'},
-{q:'Qual é a marca no brinco de Tanjiro?',opts:['Espiral','Hanafuda (flor)','Lua','Cobra'],ans:1,tip:'Brincos Hanafuda passados pelo pai.'},
-{q:'Qual é o poder do demônio Rui (Arco da Montanha Natagumo)?',opts:['Fios de sangue','Manipular fogo','Criar ilusões','Controlar veneno'],ans:0,tip:'Ele cria fios cortantes como navalhas.'},
-{q:'O que é o Kagura Hinokami que o pai de Tanjiro dançava?',opts:['Uma dança folclórica qualquer','A Respiração do Sol — a mais poderosa','Uma dança para afastar espíritos','Uma cerimônia de colheita'],ans:1,tip:'A origem de todas as Respirações.'},
-{q:'O que o demônio Kibutsuji Muzan precisa para não ser detectado?',opts:['Ficar na escuridão','Assumir aparência humana e variar formas','Usar capa mágica','Se tornar invisível'],ans:1,tip:'Ele pode transformar até seu DNA.'},
+{num:3,title:'Missões Iniciais',level:'CAÇADOR',emoji:'⚔️',minCorrect:3,questions:[
+  {q:'Qual é a cicatriz/marca na testa de Tanjiro?',opts:['Lua','Sol','Cicatriz de nascença','Flor de cerejeira'],ans:2,tip:'Virou uma marca do Caçador com o tempo.'},
+  {q:'Os brincos de Tanjiro são chamados de:',opts:['Espiral','Hanafuda (flor)','Lua','Cobra'],ans:1,tip:'Brincos Hanafuda passados pelo pai.'},
+  {q:'Qual é o poder do demônio Rui (Arco da Montanha Natagumo)?',opts:['Fios de sangue','Manipular fogo','Criar ilusões','Controle de veneno'],ans:0,tip:'Ele cria fios cortantes como navalhas.'},
+  {q:'O que é o Kagura Hinokami dançado pelo pai de Tanjiro?',opts:['Uma dança folclórica qualquer','A Respiração do Sol — a mais poderosa','Uma dança para afastar espíritos','Uma cerimônia de colheita'],ans:1,tip:'A origem de todas as Respirações.'},
+  {q:'O que Muzan Kibutsuji precisa para não ser detectado?',opts:['Ficar na escuridão','Assumir aparência humana e variar formas','Usar capa mágica','Se tornar invisível'],ans:1,tip:'Ele pode transformar até seu DNA.'},
 ]},
-{num:4,title:'Encontro com os Hashira',level:'CANDIDATO',emoji:'🏛️',minCorrect:3,
-story:'Os Pilares te julgam. Conquiste o respeito dos Hashira!',
-questions:[
-{q:'Quantos Hashira (Pilares) existem no Corpo de Caçadores?',opts:['7','8','9','10'],ans:2,tip:'Nove respirações, nove pilares.'},
-{q:'Giyu Tomioka é o Pilar de qual Respiração?',opts:['Fogo','Pedra','Água','Névoa'],ans:2,tip:'Ele ensinou a técnica a Tanjiro.'},
-{q:'Por que Shinobu não pode decepar cabeças de demônios?',opts:['É proibido','Falta força física','Espada muito curta','Não quer'],ans:1,tip:'Por isso ela usa veneno em vez de corte.'},
-{q:'Rengoku é o Pilar de qual Respiração?',opts:['Sol','Trovão','Chamas','Pedra'],ans:2,tip:'SET YOUR HEART ABLAZE!'},
-{q:'O que uma pessoa precisa fazer para se tornar Hashira?',opts:['Treinar por 10 anos','Matar 50 demônios comuns ou 1 Lua','Ser escolhido pelo Mestre','Derrotar outro Hashira'],ans:1,tip:'Ou matar uma Lua Demoníaca inferior.'},
+{num:4,title:'Encontro com os Hashira',level:'CANDIDATO',emoji:'🏛️',minCorrect:3,questions:[
+  {q:'Quantos Hashira (Pilares) existem no Corpo de Caçadores?',opts:['7','8','9','10'],ans:2,tip:'Nove respirações, nove pilares.'},
+  {q:'Giyu Tomioka é o Pilar de qual Respiração?',opts:['Fogo','Pedra','Água','Névoa'],ans:2,tip:'Ele ensinou a técnica a Tanjiro.'},
+  {q:'Por que Shinobu não pode decepar cabeças de demônios?',opts:['É proibido','Falta força física','Espada muito curta','Não quer'],ans:1,tip:'Por isso ela usa veneno em vez de corte.'},
+  {q:'Rengoku é o Pilar de qual Respiração?',opts:['Sol','Trovão','Chamas','Pedra'],ans:2,tip:'SET YOUR HEART ABLAZE!'},
+  {q:'O que uma pessoa precisa para se tornar Hashira?',opts:['Treinar por 10 anos','Matar 50 demônios comuns ou 1 Lua','Ser escolhido pelo Mestre','Derrotar outro Hashira'],ans:1,tip:'Ou matar uma Lua Demoníaca.'},
 ]},
-{num:5,title:'Trem Infinito',level:'VETERANO',emoji:'🚂',minCorrect:4,
-story:'A missão do Trem Infinito. Sobreviva à noite e à Lua Superior!',
-questions:[
-{q:'Qual Hashira acompanha o grupo no Trem Infinito?',opts:['Giyu','Shinobu','Rengoku','Tengen'],ans:2,tip:'O Pilar das Chamas enfrenta Akaza.'},
-{q:'Qual é o poder de Enmu no Trem Infinito?',opts:['Controlar o fogo','Criar sonhos e manipular o sono','Absorver almas','Regeneração infinita'],ans:1,tip:'Ele adormece os passageiros do trem.'},
-{q:'Qual amigo de Tanjiro fica dormindo involuntariamente?',opts:['Inosuke','Zenitsu','Nezuko','Giyu'],ans:1,tip:'Ele ronca bastante!'},
-{q:'Quem Rengoku enfrenta no confronto final?',opts:['Muzan','Doma','Akaza','Kokushibo'],ans:2,tip:'Luna Superior Três.'},
-{q:'O que é a Marca do Caçador que aparece em alguns personagens?',opts:['Tatuagem escolhida','Marca que surge em batalha extrema','Selo mágico de Urokodaki','Emblema do Corpo'],ans:1,tip:'Aumenta o poder do portador enormemente.'},
+{num:5,title:'Trem Infinito',level:'VETERANO',emoji:'🚂',minCorrect:4,questions:[
+  {q:'Qual Hashira acompanha o grupo no Trem Infinito?',opts:['Giyu','Shinobu','Rengoku','Tengen'],ans:2,tip:'O Pilar das Chamas enfrenta Akaza.'},
+  {q:'Qual é o poder de Enmu no Trem Infinito?',opts:['Controlar o fogo','Criar sonhos e manipular o sono','Absorver almas','Regeneração infinita'],ans:1,tip:'Ele adormece os passageiros do trem.'},
+  {q:'Qual amigo de Tanjiro fica dormindo involuntariamente?',opts:['Inosuke','Zenitsu','Nezuko','Giyu'],ans:1,tip:'Ele ronca bastante!'},
+  {q:'Quem Rengoku enfrenta no confronto final?',opts:['Muzan','Doma','Akaza','Kokushibo'],ans:2,tip:'Luna Superior Três.'},
+  {q:'O que é a Marca do Caçador?',opts:['Tatuagem escolhida','Marca que surge em batalha extrema','Selo mágico de Urokodaki','Emblema do Corpo'],ans:1,tip:'Aumenta o poder do portador enormemente.'},
 ]},
-// FASES 6-10: LUAS E MUZAN
-{num:6,title:'LUA INFERIOR 6',level:'LUA INFERIOR',emoji:'🌙',minCorrect:4,
-story:'Você enfrenta uma Lua Inferior! Esta é a prova para se tornar Hashira!',
-questions:[
-{q:'Qual Hashira lidera a missão no Distrito do Entretenimento?',opts:['Mitsuri','Tengen Uzui','Sanemi','Muichiro'],ans:1,tip:'Flamboyant ninja com três esposas!'},
-{q:'Quais demônios-irmãos os heróis enfrentam no Distrito?',opts:['Gyutaro e Daki','Akaza e Doma','Rui e família','Kokushibo e Doma'],ans:0,tip:'Luas Superiores Seis, em um só par.'},
-{q:'Zenitsu domina quantas formas da Respiração do Trovão?',opts:['1','3','5','7'],ans:0,tip:'Ele usa a Primeira Forma: Trovão Furioso.'},
-{q:'Qual é o nome da Primeira Forma da Respiração do Trovão?',opts:['Raio Infinito','Trovão Furioso (Thunderclap and Flash)','Tempestade Elétrica','Descarga Divina'],ans:1,tip:'É quase instantânea como um raio.'},
-{q:'Inosuke tem um estilo de luta único. O que é especial no seu corpo?',opts:['Usa dois estilos','Move órgãos internos distorcendo percepção inimiga','Luta sem ver','Copia inimigos'],ans:1,tip:'Ele treinou os músculos do tórax para isso.'},
+{num:6,title:'LUA INFERIOR 6',level:'LUA INFERIOR 🌙',emoji:'🌙',minCorrect:4,questions:[
+  {q:'Qual Hashira lidera a missão no Distrito do Entretenimento?',opts:['Mitsuri','Tengen Uzui','Sanemi','Muichiro'],ans:1,tip:'Flamboyant ninja com três esposas!'},
+  {q:'Quais demônios-irmãos os heróis enfrentam no Distrito?',opts:['Gyutaro e Daki','Akaza e Doma','Rui e família','Kokushibo e Doma'],ans:0,tip:'Luas Superiores Seis, em um só par.'},
+  {q:'Zenitsu domina quantas formas da Respiração do Trovão?',opts:['1','3','5','7'],ans:0,tip:'Ele usa a Primeira Forma: Trovão Furioso.'},
+  {q:'Qual é o nome da Primeira Forma da Respiração do Trovão?',opts:['Raio Infinito','Trovão Furioso (Thunderclap and Flash)','Tempestade Elétrica','Descarga Divina'],ans:1,tip:'É quase instantânea como um raio.'},
+  {q:'O que é único no estilo de luta de Inosuke?',opts:['Usa dois estilos','Move órgãos internos distorcendo percepção inimiga','Luta sem ver','Copia inimigos'],ans:1,tip:'Ele treinou os músculos do tórax para isso.'},
 ]},
-{num:7,title:'LUA SUPERIOR 5',level:'LUA SUPERIOR',emoji:'🌕',minCorrect:4,
-story:'Uma Lua Superior bloqueia seu caminho para se tornar Hashira. Lute!',
-questions:[
-{q:'Quais são as duas categorias das Doze Luas Demoníacas?',opts:['Alta e Baixa','Superior e Inferior','Forte e Fraca','Maior e Menor'],ans:1,tip:'Kizuki Superior e Kizuki Inferior.'},
-{q:'Qual Lua Superior aparece na Vila dos Ferreiros?',opts:['Hantengu','Gyokko','Doma','Akaza'],ans:1,tip:'Ele guarda criaturas dentro de potes.'},
-{q:'Muichiro Tokito tem quantos anos quando se torna Hashira?',opts:['12','14','16','18'],ans:1,tip:'O mais jovem Hashira a atingir o título.'},
-{q:'O Boneco Yoriichi Type Zero representa qual lendário Caçador?',opts:['Urokodaki','Yoriichi Tsugikuni','Kokushibo','Um Hashira sem nome'],ans:1,tip:'O maior espadachim da história.'},
-{q:'Como Muichiro Tokito desperta sua Marca do Caçador?',opts:['Em treinamento','Lutando contra Gyokko com risco de morte','Após meditar','Por ordem do Mestre'],ans:1,tip:'A Marca surge em situações de risco extremo de vida.'},
+{num:7,title:'LUA SUPERIOR 5',level:'LUA SUPERIOR 🌕',emoji:'🌕',minCorrect:4,questions:[
+  {q:'Quais são as duas categorias das Doze Luas Demoníacas?',opts:['Alta e Baixa','Superior e Inferior','Forte e Fraca','Maior e Menor'],ans:1,tip:'Kizuki Superior e Kizuki Inferior.'},
+  {q:'Qual Lua Superior aparece na Vila dos Ferreiros?',opts:['Hantengu','Gyokko','Doma','Akaza'],ans:1,tip:'Ele guarda criaturas dentro de potes.'},
+  {q:'Muichiro Tokito tem quantos anos quando se torna Hashira?',opts:['12','14','16','18'],ans:1,tip:'O mais jovem Hashira a atingir o título.'},
+  {q:'O Boneco Yoriichi Type Zero representa qual lendário Caçador?',opts:['Urokodaki','Yoriichi Tsugikuni','Kokushibo','Um Hashira sem nome'],ans:1,tip:'O maior espadachim da história.'},
+  {q:'Como Muichiro desperta sua Marca do Caçador?',opts:['Em treinamento','Lutando contra Gyokko com risco de morte','Após meditar','Por ordem do Mestre'],ans:1,tip:'A Marca surge em situações de risco extremo de vida.'},
 ]},
-{num:8,title:'LUA SUPERIOR 4',level:'LUA SUPERIOR',emoji:'🌑',minCorrect:4,
-story:'O combate se intensifica. Prove que merece o título de Hashira!',
-questions:[
-{q:'Quem é Yoriichi Tsugikuni?',opts:['O primeiro Hashira','Criador da Respiração Total do Sol e o mais poderoso Caçador','O irmão de Muzan','O mestre de Urokodaki'],ans:1,tip:'Ele quase matou Muzan sozinho.'},
-{q:'Qual é a relação de Kokushibo com Yoriichi?',opts:['Eram melhores amigos','São gêmeos — Kokushibo era irmão de Yoriichi','Inimigos desde crianças','Sem relação'],ans:1,tip:'Michikatsu Tsugikuni — o irmão invejoso.'},
-{q:'A Respiração Total do Sol é a origem de todas as outras?',opts:['Verdadeiro','Falso','Apenas metade','Só da Respiração de Água'],ans:0,tip:'Todas derivam da Respiração do Sol.'},
-{q:'Qual habilidade especial Nezuko desenvolveu única entre demônios?',opts:['Voar','Resistência à luz solar','Telepatia','Controlar outros demônios'],ans:1,tip:'Nenhum outro demônio conseguiu isso.'},
-{q:'O que é o Castelo do Labirinto Demoníaco?',opts:['Fortaleza nas montanhas','Dimensão ilusória controlada por Nakime','Uma caverna','Um templo amaldiçoado'],ans:1,tip:'Nakime controla o espaço com seu biwa.'},
+{num:8,title:'LUA SUPERIOR 4',level:'LUA SUPERIOR 🌑',emoji:'🌑',minCorrect:4,questions:[
+  {q:'Quem é Yoriichi Tsugikuni?',opts:['O primeiro Hashira','Criador da Respiração do Sol e o mais poderoso Caçador','O irmão de Muzan','O mestre de Urokodaki'],ans:1,tip:'Ele quase matou Muzan sozinho.'},
+  {q:'Qual é a relação de Kokushibo com Yoriichi?',opts:['Eram melhores amigos','São gêmeos — Kokushibo era irmão de Yoriichi','Inimigos desde crianças','Sem relação'],ans:1,tip:'Michikatsu Tsugikuni — o irmão invejoso.'},
+  {q:'A Respiração Total do Sol é a origem de todas as outras?',opts:['Verdadeiro','Falso','Apenas metade','Só da Respiração de Água'],ans:0,tip:'Todas derivam da Respiração do Sol.'},
+  {q:'Qual habilidade especial Nezuko desenvolveu única entre demônios?',opts:['Voar','Resistência à luz solar','Telepatia','Controlar outros demônios'],ans:1,tip:'Nenhum outro demônio conseguiu isso.'},
+  {q:'O que é o Castelo do Labirinto Demoníaco?',opts:['Fortaleza nas montanhas','Dimensão ilusória controlada por Nakime','Uma caverna','Um templo amaldiçoado'],ans:1,tip:'Nakime controla o espaço com seu biwa.'},
 ]},
-{num:9,title:'LUA SUPERIOR 3',level:'LUA SUPERIOR',emoji:'💀',minCorrect:4,
-story:'Akaza, a Luna Superior Três, está na sua frente. A batalha decisiva!',
-questions:[
-{q:'Akaza (Lua Superior 3) mata qual Hashira na história?',opts:['Giyu','Shinobu','Rengoku','Muichiro'],ans:2,tip:'No arco do Trem Infinito.'},
-{q:'Doma, Lua Superior 2, é derrotado por qual dupla?',opts:['Tanjiro e Giyu','Kanao e Inosuke','Zenitsu e Tengen','Sanemi e Muichiro'],ans:1,tip:'Vingança por Shinobu Kocho.'},
-{q:'O que Shinobu Kocho preparou como plano contra Doma?',opts:['Uma armadilha de fogo','Acumulou veneno wisteria em seu corpo ao longo de anos','Criou uma espada especial','Usou o sol como arma'],ans:1,tip:'Ela sacrificou anos de vida por este plano.'},
-{q:'Qual é a técnica especial de Akaza que o torna tão perigoso?',opts:['Regeneração absurda e combate corpo a corpo','Manipulação de fogo','Criação de ilusões','Controle de outros demônios'],ans:0,tip:'Ele pode regenerar qualquer ferimento instantaneamente.'},
-{q:'Como Akaza é finalmente derrotado?',opts:['Decapitado por Giyu','Ele mesmo destrói sua cabeça ao relembrar sua humanidade','Exposto ao sol','Envenenado por Shinobu'],ans:1,tip:'Ele recupera memórias de sua vida humana.'},
+{num:9,title:'LUA SUPERIOR 3',level:'LUA SUPERIOR ☠️',emoji:'💀',minCorrect:4,questions:[
+  {q:'Akaza (Lua Superior 3) mata qual Hashira na história?',opts:['Giyu','Shinobu','Rengoku','Muichiro'],ans:2,tip:'No arco do Trem Infinito.'},
+  {q:'Doma, Lua Superior 2, é derrotado por qual dupla?',opts:['Tanjiro e Giyu','Kanao e Inosuke','Zenitsu e Tengen','Sanemi e Muichiro'],ans:1,tip:'Vingança por Shinobu Kocho.'},
+  {q:'O que Shinobu preparou como plano contra Doma?',opts:['Uma armadilha de fogo','Acumulou veneno wisteria no próprio corpo por anos','Criou espada especial','Usou o sol como arma'],ans:1,tip:'Ela sacrificou anos de vida por este plano.'},
+  {q:'Qual é a técnica especial de Akaza que o torna tão perigoso?',opts:['Regeneração absurda e combate corpo a corpo','Manipulação de fogo','Criação de ilusões','Controle de outros demônios'],ans:0,tip:'Ele pode regenerar qualquer ferimento instantaneamente.'},
+  {q:'Como Akaza é finalmente derrotado?',opts:['Decapitado por Giyu','Ele mesmo destrói sua cabeça ao relembrar sua humanidade','Exposto ao sol','Envenenado por Shinobu'],ans:1,tip:'Ele recupera memórias de sua vida humana.'},
 ]},
-{num:10,title:'MUZAN KIBUTSUJI',level:'O REI DOS DEMÔNIOS',emoji:'👹',minCorrect:5,
-story:'CONFRONTO FINAL com Muzan! Derrote-o para se tornar Hashira Supremo!',
-questions:[
-{q:'Qual é a fraqueza crucial de Muzan explorada no clímax?',opts:['Espadas de ouro','O amanhecer — ele não pode sobreviver ao sol','Água benta','Chamas do Pilar do Fogo'],ans:1,tip:'Eles precisam mantê-lo lutando até o amanhecer.'},
-{q:'A Dança do Deus do Fogo (Hinokami Kagura) é qual Respiração?',opts:['Respiração das Chamas','Respiração do Sol','Respiração da Água','Respiração da Lua'],ans:1,tip:'Tanjiro a usa imitando a dança do pai.'},
-{q:'O que acontece com Muzan ao ser exposto à luz do sol?',opts:['Foge para outro reino','É destruído completamente','Vira humano','Hiberna por séculos'],ans:1,tip:'Fim de mais de mil anos de existência.'},
-{q:'Qual personagem injeta veneno no corpo de Muzan?',opts:['Kanao','Shinobu (veneno acumulado em seu corpo)','Aoi','Doma'],ans:1,tip:'Shinobu planejou isso muito antes de morrer.'},
-{q:'Como termina a história de Tanjiro?',opts:['Torna-se líder do Corpo','Morre heroicamente','Vira demônio e depois é curado, vivendo vida normal','Desaparece'],ans:2,tip:'Muzan tentou transformá-lo em seu sucessor.'},
-{q:'[BÔNUS HASHIRA] O que um caçador precisa provar para receber o título de Hashira?',opts:['Vencer em torneio','Matar 50 demônios comuns OU uma Lua Demoníaca','Treinar por 10 anos','Ser escolhido por outro Hashira'],ans:1,tip:'É o requisito oficial do Corpo de Caçadores.'},
-],
-isFinal:true},
+{num:10,title:'MUZAN KIBUTSUJI',level:'O REI DOS DEMÔNIOS 👹',emoji:'👹',minCorrect:5,isFinal:true,questions:[
+  {q:'Qual é a fraqueza crucial de Muzan explorada no clímax?',opts:['Espadas de ouro','O amanhecer — ele não pode sobreviver ao sol','Água benta','Chamas do Pilar do Fogo'],ans:1,tip:'Eles precisam mantê-lo lutando até o amanhecer.'},
+  {q:'A Dança do Deus do Fogo (Hinokami Kagura) é qual Respiração?',opts:['Respiração das Chamas','Respiração do Sol','Respiração da Água','Respiração da Lua'],ans:1,tip:'Tanjiro a usa imitando a dança do pai.'},
+  {q:'O que acontece com Muzan ao ser exposto à luz do sol?',opts:['Foge para outro reino','É destruído completamente','Vira humano','Hiberna por séculos'],ans:1,tip:'Fim de mais de mil anos de existência.'},
+  {q:'Qual personagem injeta veneno no corpo de Muzan?',opts:['Kanao','Shinobu (veneno acumulado em seu corpo)','Aoi','Doma'],ans:1,tip:'Shinobu planejou isso muito antes de morrer.'},
+  {q:'Como termina a história de Tanjiro?',opts:['Torna-se líder do Corpo','Morre heroicamente','Vira demônio e depois é curado, vivendo vida normal','Desaparece'],ans:2,tip:'Muzan tentou transformá-lo em seu sucessor.'},
+  {q:'[BÔNUS HASHIRA] O que um caçador precisa para receber o título de Hashira?',opts:['Vencer em torneio','Matar 50 demônios comuns OU uma Lua Demoníaca','Treinar por 10 anos','Ser escolhido por outro Hashira'],ans:1,tip:'É o requisito oficial do Corpo de Caçadores.'},
+]},
 ];
 
 function getRank(s){
@@ -890,32 +388,36 @@ function getRank(s){
   return{name:'Estudante',lbl:'ESTUDANTE',color:'#8a7060',bg:'rgba(138,112,96,.15)'};
 }
 
-/* STATE */
 var G={name:'',charId:null,phase:0,qIdx:0,score:0,correct:0,answered:false,timer:null,tv:30,prev:'s-home'};
 
-/* PARTICLES */
 (function(){
   var p=document.getElementById('ptcl'),em=['🌸','⚔️','🔥','💧','⭐','🌙','✨','🌺','💫','🗡️'];
-  for(var i=0;i<20;i++){var s=document.createElement('span');s.textContent=em[i%em.length];s.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.7+Math.random()*0.9)+'rem;animation-duration:'+(9+Math.random()*13)+'s;animation-delay:'+Math.random()*11+'s';p.appendChild(s)}
+  for(var i=0;i<20;i++){var s=document.createElement('span');s.textContent=em[i%em.length];
+    s.style.cssText='left:'+Math.random()*100+'%;font-size:'+(0.7+Math.random()*0.9)+'rem;animation-duration:'+(9+Math.random()*13)+'s;animation-delay:'+Math.random()*11+'s';
+    p.appendChild(s)}
 })();
 
-/* CHAR GRID */
 function buildGrid(){
   var g=document.getElementById('cgrid');g.innerHTML='';
   CHARS.forEach(function(c){
     var d=document.createElement('div');
     d.className='ccard'+(G.charId===c.id?' sel':'');
     d.style.borderColor=G.charId===c.id?c.color:'rgba(255,255,255,.1)';
-    d.style.background=G.charId===c.id?c.bg:'rgba(255,255,255,.03)';
-    if(G.charId===c.id)d.style.boxShadow='0 0 18px '+c.color+'55';
-    d.innerHTML='<div class="csvg">'+c.svg+'</div><div class="cname">'+c.name+'</div><span class="crank" style="background:'+c.bg+';color:'+c.color+';border:1px solid '+c.color+'50">'+c.rank+'</span>';
+    if(G.charId===c.id)d.style.boxShadow='0 0 18px '+c.color+'55,0 6px 20px rgba(0,0,0,.5)';
+    else d.style.boxShadow='';
+    var imgSrc=CIMGS[c.id]||'';
+    d.innerHTML=
+      '<div class="cimg-wrap"><img src="'+imgSrc+'" alt="'+c.name+'" loading="lazy"/></div>'+
+      '<div class="cinfo">'+
+        '<div class="cname">'+c.name+'</div>'+
+        '<span class="crank" style="background:'+c.bg+';color:'+c.color+';border:1px solid '+c.color+'50">'+c.rank+'</span>'+
+      '</div>';
     d.onclick=function(){G.charId=c.id;buildGrid()};
     g.appendChild(d);
   });
 }
 buildGrid();
 
-/* NAV */
 function go(id){
   G.prev=document.querySelector('.scr.on')?document.querySelector('.scr.on').id:'s-home';
   document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});
@@ -924,7 +426,6 @@ function go(id){
 }
 function goBack(){go(G.prev||'s-home')}
 
-/* START */
 function startGame(){
   var n=document.getElementById('pname').value.trim();
   if(!n){alert('Digite seu nome de guerreiro!');return}
@@ -933,25 +434,32 @@ function startGame(){
   buildDots();loadQ();go('s-quiz');
 }
 
-/* DOTS */
 function buildDots(){
   var w=document.getElementById('pdots');w.innerHTML='';
-  PHASES.forEach(function(_,i){var d=document.createElement('div');d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'');d.textContent=i+1;w.appendChild(d)});
+  PHASES.forEach(function(_,i){
+    var d=document.createElement('div');
+    d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'');
+    d.textContent=i+1;w.appendChild(d);
+  });
 }
-function updDots(){document.querySelectorAll('.pd').forEach(function(d,i){d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'')})}
+function updDots(){
+  document.querySelectorAll('.pd').forEach(function(d,i){
+    d.className='pd'+(i<G.phase?' done':i===G.phase?' cur':'');
+  });
+}
 
-/* LOAD Q */
 function loadQ(){
   var ph=PHASES[G.phase],qd=ph.questions[G.qIdx];G.answered=false;
   var ch=CHARS.find(function(c){return c.id===G.charId});
   var b=document.getElementById('pbadge');
   b.style.background=ch.bg;b.style.border='1px solid '+ch.color+'55';b.style.color=ch.color;
-  b.innerHTML='<span class="bdot" style="background:'+ch.color+'"></span>'+ch.name+' · '+G.name;
+  b.innerHTML='<span class="bdot" style="background:'+ch.color+'"></span>'+
+    '<img src="'+(CIMGS[ch.id]||'')+'" alt="'+ch.name+'" style="width:26px;height:26px;object-fit:cover;border-radius:50%;background:#f5eedc;flex-shrink:0"/>'+
+    ch.name+' · '+G.name;
   document.getElementById('lscore').textContent=G.score;
   document.getElementById('pph').textContent='Fase '+ph.num+'/10';
   document.getElementById('pq').textContent='Q '+(G.qIdx+1)+'/'+ph.questions.length;
-  var pct=((G.phase*5+G.qIdx)/(PHASES.length*5)*100);
-  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('pfill').style.width=((G.phase*5+G.qIdx)/(PHASES.length*5)*100)+'%';
   updDots();
   document.getElementById('phnum').textContent='FASE '+ph.num+' — '+ph.level;
   document.getElementById('phtitle').textContent=ph.emoji+' '+ph.title;
@@ -969,7 +477,6 @@ function loadQ(){
   startTimer();
 }
 
-/* TIMER */
 function startTimer(){
   clearInterval(G.timer);G.tv=30;
   var el=document.getElementById('timer');el.textContent='30';el.className='timer';
@@ -987,109 +494,143 @@ function timeOut(){
   document.getElementById('nwrap').style.display='block';
 }
 
-/* CHECK */
 function checkAns(idx,btn,qd){
   if(G.answered)return;G.answered=true;clearInterval(G.timer);
   document.querySelectorAll('.opt').forEach(function(b){b.disabled=true});
   var ok=idx===qd.ans;
-  if(ok){btn.classList.add('correct');var b=Math.ceil(G.tv/30*50);G.score+=100+b;G.correct++;document.getElementById('lscore').textContent=G.score;showFb(true,'✅ Correto! +'+(100+b)+' pts (bônus velocidade: +'+b+')',qd.tip);burst(true)}
-  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[qd.ans].classList.add('correct');showFb(false,'❌ Errou! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);burst(false)}
+  if(ok){btn.classList.add('correct');var b=Math.ceil(G.tv/30*50);G.score+=100+b;G.correct++;
+    document.getElementById('lscore').textContent=G.score;
+    showFb(true,'✅ Correto! +'+(100+b)+' pts (bônus velocidade: +'+b+')',qd.tip);burst(true)}
+  else{btn.classList.add('wrong');document.querySelectorAll('.opt')[qd.ans].classList.add('correct');
+    showFb(false,'❌ Errou! Resposta: <strong>'+qd.opts[qd.ans]+'</strong>',qd.tip);burst(false)}
   document.getElementById('nwrap').style.display='block';
 }
-function showFb(ok,msg,tip){var fb=document.getElementById('fb');fb.className='fb on '+(ok?'ok':'err');fb.innerHTML=msg+'<br><small style="opacity:.7;font-size:.74rem">💡 '+tip+'</small>'}
+function showFb(ok,msg,tip){
+  var fb=document.getElementById('fb');
+  fb.className='fb on '+(ok?'ok':'err');
+  fb.innerHTML=msg+'<br><small style="opacity:.7;font-size:.74rem">💡 '+tip+'</small>';
+}
 
-/* NEXT */
 function nextQ(){
   G.qIdx++;var ph=PHASES[G.phase];
   if(G.qIdx>=ph.questions.length){
-    if(G.correct>=ph.minCorrect){if(G.phase===PHASES.length-1){saveScore();showFinal()}else showPhaseClear()}
-    else{document.getElementById('overmsg').innerHTML='Você acertou '+G.correct+'/'+ph.questions.length+' na fase <strong style="color:var(--gold)">'+ph.title+'</strong>.<br>Mínimo necessário: '+ph.minCorrect+' acertos.<br><small style="opacity:.7">Um Hashira nunca desiste!</small>';go('s-over')}
+    if(G.correct>=ph.minCorrect){
+      if(G.phase===PHASES.length-1){saveScore();showFinal()}
+      else showPhaseClear();
+    }else{
+      document.getElementById('overmsg').innerHTML='Você acertou '+G.correct+'/'+ph.questions.length+' na fase <strong style="color:var(--gold)">'+ph.title+'</strong>.<br>Mínimo necessário: '+ph.minCorrect+' acertos.<br><small style="opacity:.7">Um Hashira nunca desiste!</small>';
+      go('s-over');
+    }
   }else loadQ();
 }
 
-/* PHASE CLEAR */
 function showPhaseClear(){
   var ph=PHASES[G.phase];confetti();
   var isLua=ph.num>=6;
   var nextPh=PHASES[G.phase+1];
-  var msg=isLua?'🌑 Luna derrotada! Continue rumo ao título de <strong style="color:var(--gold)">Hashira</strong>!':'⚔️ Fase superada! O caminho para Hashira continua!';
+  var ch=CHARS.find(function(c){return c.id===G.charId});
   document.getElementById('phclear').innerHTML=
     '<span class="pcicon">'+ph.emoji+'</span>'+
     '<div class="divl"></div>'+
     '<h2 class="pctitle">'+(isLua?'🌑 '+ph.title+' Derrotada!':'⚔️ Fase Superada!')+'</h2>'+
-    '<p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;line-height:1.6;margin-bottom:16px">'+msg+'<br>Acertos: '+G.correct+'/'+ph.questions.length+' · Score: <strong style="color:var(--gold)">'+G.score+'</strong></p>'+
-    '<div class="chips"><span class="chip">⭐ '+G.score+' pts</span><span class="chip">✅ '+G.correct+' acertos</span>'+(isLua?'<span class="chip" style="color:#ff9898;border-color:#ff9898aa">🌙 '+ph.title+'</span>':'<span class="chip">🏅 '+ph.title+'</span>')+'</div>'+
-    (nextPh?'<p style="color:var(--gold);font-family:\'Cinzel\',serif;font-size:.72rem;margin-bottom:14px;letter-spacing:1px">PRÓXIMO: '+nextPh.emoji+' '+nextPh.title+'</p>':'')+
-    '<button class="btn btn-red" style="margin-bottom:10px" onclick="advPhase()">▶ '+(G.phase===PHASES.length-2?'ENFRENTAR MUZAN!':'Próxima Fase')+'</button>'+
-    '<br><button class="btn btn-ol btn-sm" style="margin-top:8px" onclick="go(\'s-rank\')">🏆 Ranking</button>';
+    '<img src="'+(CIMGS[ch.id]||'')+'" style="width:72px;height:96px;object-fit:contain;background:#f5eedc;border-radius:10px;margin:0 auto 12px;display:block;box-shadow:0 4px 16px rgba(0,0,0,.4)"/>'+
+    '<p style="color:var(--muted);font-family:'Noto Serif JP',serif;line-height:1.6;margin-bottom:16px">'+
+      'Acertos: '+G.correct+'/'+ph.questions.length+' · Score: <strong style="color:var(--gold)">'+G.score+'</strong>'+
+    '</p>'+
+    '<div class="chips">'+
+      '<span class="chip">⭐ '+G.score+' pts</span>'+
+      '<span class="chip">✅ '+G.correct+' acertos</span>'+
+      (isLua?'<span class="chip" style="color:#ff9898;border-color:#ff9898aa">🌙 '+ph.title+'</span>':'<span class="chip">🏅 '+ph.title+'</span>')+
+    '</div>'+
+    (nextPh?'<p style="color:var(--gold);font-family:'Cinzel',serif;font-size:.7rem;margin-bottom:14px;letter-spacing:1px">PRÓXIMO: '+nextPh.emoji+' '+nextPh.title+'</p>':'')+
+    '<button class="btn btn-red" style="margin-bottom:10px" onclick="advPhase()">▶ '+(G.phase===PHASES.length-2?'⚔️ ENFRENTAR MUZAN!':'Próxima Fase')+'</button>'+
+    '<br><button class="btn btn-ol btn-sm" style="margin-top:8px" onclick="go('s-rank')">🏆 Ranking</button>';
   go('s-phclear');
 }
 function advPhase(){G.phase++;G.qIdx=0;G.correct=0;buildDots();loadQ();go('s-quiz')}
 function retry(){G.qIdx=0;G.correct=0;loadQ();go('s-quiz')}
 
-/* FINAL */
 function showFinal(){
-  confetti();var rk=getRank(G.score);
+  confetti();setTimeout(confetti,800);
+  var rk=getRank(G.score);
   var ch=CHARS.find(function(c){return c.id===G.charId});
   document.getElementById('finalcard').innerHTML=
-    '<span class="pcicon">🏆</span>'+
     '<div class="divl"></div>'+
-    '<h2 class="pctitle" style="font-size:clamp(1.2rem,4vw,1.7rem);color:var(--gold)">HASHIRA — '+G.name+'!</h2>'+
-    '<div style="display:flex;justify-content:center;margin:10px 0">'+ch.svg+'</div>'+
-    '<p style="color:var(--muted);font-family:\'Noto Serif JP\',serif;margin-bottom:6px;font-size:.85rem">'+ch.full+' derrota Muzan e recebe o título!</p>'+
+    '<h2 class="pctitle" style="font-size:clamp(1.1rem,3.5vw,1.6rem)">🏆 HASHIRA — '+G.name+'!</h2>'+
+    '<img src="'+(CIMGS[ch.id]||'')+'" class="final-char"/>'+
+    '<p style="color:var(--muted);font-family:'Noto Serif JP',serif;margin-bottom:6px;font-size:.83rem">'+ch.full+' derrota Muzan e recebe o título!</p>'+
     '<div class="fscore">'+G.score+'</div>'+
-    '<p style="color:var(--muted);font-size:.78rem;margin-bottom:14px">pontos totais</p>'+
-    '<div style="padding:15px 26px;border-radius:13px;margin:0 auto 18px;max-width:280px;background:'+rk.bg+';border:2px solid '+rk.color+'">'+
-    '<div style="font-size:.65rem;letter-spacing:4px;font-family:\'Cinzel\',serif;margin-bottom:5px;color:'+rk.color+'">'+rk.lbl+'</div>'+
-    '<div style="font-family:\'Cinzel\',serif;font-size:1.4rem;font-weight:900;color:'+rk.color+'">'+rk.name+'</div></div>'+
+    '<p style="color:var(--muted);font-size:.76rem;margin-bottom:14px">pontos totais</p>'+
+    '<div style="padding:14px 24px;border-radius:13px;margin:0 auto 18px;max-width:260px;background:'+rk.bg+';border:2px solid '+rk.color+'">'+
+      '<div style="font-size:.63rem;letter-spacing:4px;font-family:'Cinzel',serif;margin-bottom:5px;color:'+rk.color+'">'+rk.lbl+'</div>'+
+      '<div style="font-family:'Cinzel',serif;font-size:1.35rem;font-weight:900;color:'+rk.color+'">'+rk.name+'</div>'+
+    '</div>'+
     '<div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">'+
-    '<button class="btn btn-red" style="width:auto;padding:12px 20px" onclick="go(\'s-rank\')">🏆 Ranking</button>'+
-    '<button class="btn btn-ol" onclick="restartGame()">🔄 Nova Missão</button></div>';
+      '<button class="btn btn-red" style="width:auto;padding:12px 20px" onclick="go('s-rank')">🏆 Ranking</button>'+
+      '<button class="btn btn-ol" onclick="restartGame()">🔄 Nova Missão</button>'+
+    '</div>';
   go('s-final');
 }
 function restartGame(){G.charId=null;buildGrid();go('s-home')}
 
-/* SCORE */
 function saveScore(){
   var ch=CHARS.find(function(c){return c.id===G.charId});
-  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v5')||'[]')}catch{}
+  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v6')||'[]')}catch{}
   sc.push({name:G.name,charId:G.charId,charName:ch.full,score:G.score,date:new Date().toLocaleDateString('pt-BR')});
   sc.sort(function(a,b){return b.score-a.score});
-  try{localStorage.setItem('dsq_v5',JSON.stringify(sc.slice(0,20)))}catch{}
+  try{localStorage.setItem('dsq_v6',JSON.stringify(sc.slice(0,20)))}catch{}
 }
 function renderRank(){
-  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v5')||'[]')}catch{}
+  var sc=[];try{sc=JSON.parse(localStorage.getItem('dsq_v6')||'[]')}catch{}
   var l=document.getElementById('rlist');
-  if(!sc.length){l.innerHTML='<p style="text-align:center;color:var(--muted);padding:22px;font-family:\'Noto Serif JP\',serif">Nenhum Hashira ainda. Seja o primeiro!</p>';return}
+  if(!sc.length){l.innerHTML='<p style="text-align:center;color:var(--muted);padding:22px;font-family:'Noto Serif JP',serif">Nenhum Hashira ainda. Seja o primeiro!</p>';return}
   var medals=['🥇','🥈','🥉'];
   l.innerHTML=sc.map(function(r,i){
-    var rk=getRank(r.score);var ch=CHARS.find(function(c){return c.id===r.charId});
+    var rk=getRank(r.score);
+    var imgSrc=CIMGS[r.charId]||'';
     return '<div class="ritem '+(i===0?'r1':i===1?'r2':i===2?'r3':'')+'">'+
-      '<div style="font-family:\'Cinzel\',serif;font-size:.95rem;min-width:26px;text-align:center">'+(medals[i]||i+1)+'</div>'+
-      '<div style="width:34px;height:42px;display:flex;align-items:center;justify-content:center">'+(ch?'<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 24 40 45" width="28" height="34">'+ch.svg+'</svg>':'⚔️')+'</div>'+
-      '<div style="flex:1"><div style="font-weight:800;font-size:.88rem;color:var(--white)">'+r.name+'</div>'+
-      '<div style="font-size:.66rem;color:var(--muted);margin-top:2px">'+r.charName+' · '+r.date+'</div>'+
-      '<span style="display:inline-block;padding:2px 9px;border-radius:20px;font-size:.58rem;font-weight:800;margin-top:3px;background:'+rk.bg+';color:'+rk.color+'">'+rk.name+'</span></div>'+
-      '<div style="font-family:\'Cinzel\',serif;font-size:.95rem;color:var(--gold)">'+r.score+'</div></div>';
+      '<div style="font-family:'Cinzel',serif;font-size:.95rem;min-width:26px;text-align:center">'+(medals[i]||i+1)+'</div>'+
+      '<img src="'+imgSrc+'" alt="'+r.charName+'"/>'+
+      '<div style="flex:1">'+
+        '<div style="font-weight:800;font-size:.88rem;color:var(--white)">'+r.name+'</div>'+
+        '<div style="font-size:.66rem;color:var(--muted);margin-top:2px">'+r.charName+' · '+r.date+'</div>'+
+        '<span style="display:inline-block;padding:2px 9px;border-radius:20px;font-size:.58rem;font-weight:800;margin-top:3px;background:'+rk.bg+';color:'+rk.color+'">'+rk.name+'</span>'+
+      '</div>'+
+      '<div style="font-family:'Cinzel',serif;font-size:.95rem;color:var(--gold)">'+r.score+'</div>'+
+    '</div>';
   }).join('');
 }
 
-/* EFFECTS */
 function burst(ok){
   var em=ok?['⭐','✨','🌟','💫','⚔️']:['💀','🌑','👿','💔'];
   for(var i=0;i<7;i++){
     var s=document.createElement('span');s.textContent=em[Math.floor(Math.random()*em.length)];
     var a=(i/7)*360,d=75+Math.random()*55;
     s.style.cssText='position:fixed;pointer-events:none;z-index:1000;font-size:1.3rem;top:50%;left:50%;--tx:'+Math.cos(a*Math.PI/180)*d+'px;--ty:'+Math.sin(a*Math.PI/180)*d+'px;animation:bst .85s forwards';
-    document.body.appendChild(s);setTimeout(function(el){return function(){el.remove()}}(s),900);
+    document.body.appendChild(s);
+    setTimeout((function(el){return function(){el.remove()}})(s),900);
   }
 }
 function confetti(){
-  var cv=document.getElementById('cv');var ctx=cv.getContext('2d');cv.width=window.innerWidth;cv.height=window.innerHeight;
+  var cv=document.getElementById('cv');var ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
   var cols=['#f5c518','#c8173a','#e05808','#2888d8','#48c868','#c090f8','#f080a8','#60d0c0'];
-  var p=[];for(var i=0;i<120;i++)p.push({x:Math.random()*cv.width,y:-15-Math.random()*100,vx:(Math.random()-.5)*5,vy:2+Math.random()*4,c:cols[Math.floor(Math.random()*cols.length)],w:5+Math.random()*8,h:3+Math.random()*5,r:Math.random()*360,rv:(Math.random()-.5)*9});
+  var p=[];
+  for(var i=0;i<120;i++)p.push({x:Math.random()*cv.width,y:-15-Math.random()*100,
+    vx:(Math.random()-.5)*5,vy:2+Math.random()*4,
+    c:cols[Math.floor(Math.random()*cols.length)],
+    w:5+Math.random()*8,h:3+Math.random()*5,r:Math.random()*360,rv:(Math.random()-.5)*9});
   var fr=0;
-  function draw(){ctx.clearRect(0,0,cv.width,cv.height);p.forEach(function(q){ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.r*Math.PI/180);ctx.fillStyle=q.c+'CC';ctx.fillRect(-q.w/2,-q.h/2,q.w,q.h);ctx.restore();q.x+=q.vx;q.y+=q.vy;q.r+=q.rv});if(++fr<200)requestAnimationFrame(draw);else ctx.clearRect(0,0,cv.width,cv.height)}
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    p.forEach(function(q){
+      ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.r*Math.PI/180);
+      ctx.fillStyle=q.c+'CC';ctx.fillRect(-q.w/2,-q.h/2,q.w,q.h);
+      ctx.restore();q.x+=q.vx;q.y+=q.vy;q.r+=q.rv;
+    });
+    if(++fr<200)requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
   draw();
 }
 </script>
